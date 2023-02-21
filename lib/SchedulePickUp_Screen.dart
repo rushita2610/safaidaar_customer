@@ -32,7 +32,7 @@ class SchedulePickupScreen extends StatefulWidget {
 }
 
 class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
-  bool isReload = true;
+  bool isReload = false;
 
   // String dropdownValue = selectdate.first;
   String? dropdownValue;
@@ -278,360 +278,381 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Container(
-            padding: const EdgeInsets.only(left: 6, right: 6),
-            height: Sizee.height - 100,
-            child: Column(
-              children: [
-                Container(
-                  height: 200,
-                  width: Sizee.width,
-                  child: Card(
-                    elevation: 15,
-                    shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                            left: 15,
-                          ),
-                          child: Row(
+        body: (isReload == false)
+            ? SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
+                  height: Sizee.height - 100,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 200,
+                        width: Sizee.width,
+                        child: Card(
+                          elevation: 15,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                height: 20,
-                                child: const Text(
-                                  "DELIVERS TO",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    fontSize: 22,
-                                  ),
+                                padding: const EdgeInsets.only(
+                                  left: 15,
                                 ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  _settingModelBottomSheet(context);
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 15, bottom: 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    // width: 15,
-                                    // height: 15,
-                                    height: 40,
-                                    child: Image.asset(
-                                      "assets/Location.png",
-                                      // height: 15,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Text(
-                                    "0.05 KM",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000052),
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: 25,
-                                    child: const Text(
-                                      "Office",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        color: Color(0xFF000052),
-                                        fontSize: 17,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height: 20,
+                                      child: const Text(
+                                        "DELIVERS TO",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                          fontSize: 22,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    // color: Colors.red,
-                                    height: 90,
-                                    width: Sizee.width - 130,
-                                    child: const Text(
-                                      "4th Floor, Sunrise Avenue, Stadium - Commerce Six Road, Opp: Saraspur Nagrik Bank, Navrangpura, Ahmedabad, Gujarat 380009",
-                                      maxLines: 5,
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
+                                    IconButton(
+                                      onPressed: () {
+                                        _settingModelBottomSheet(context);
+                                      },
+                                      icon: const Icon(
+                                        Icons.edit,
                                         color: Colors.black,
-                                        fontSize: 16,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // Container(
-                //   height: 110,
-                //   width: Sizee.width,
-                //   child:
-                Card(
-                  elevation: 15,
-                  shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        height: 30,
-                        padding: const EdgeInsets.only(left: 15, top: 8),
-                        child: const Text(
-                          "PICKUP DATE & TIME",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 20, bottom: 10, top: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
-                                value: dropdownValue,
-                                offset: const Offset(0, 20),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                hint: const Text(
-                                  "Select Pickup Date",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                icon: const SizedBox.shrink(),
-                                onChanged: (String? value) {
-                                  // This is called when the user selects an item.
-                                  setState(() {
-                                    dropdownValue = value!;
-                                    dropdownValuedata = value;
-                                  });
-                                  print(dropdownValuedata);
-                                },
-                                items: selectdate.map<DropdownMenuItem<String>>(
-                                    (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                            const Icon(
-                              Icons.calendar_view_month,
-                              color: Colors.black,
-                            ),
-                          ],
-                        ),
-                      ),
-                      dropdownValuedata == ""
-                          ? const SizedBox()
-                          : Container(
-                              width: Sizee.width,
-                              height: 50,
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 20, bottom: 10),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton2<String>(
-                                  value: dropdownValuetime,
-                                  offset: const Offset(0, 10),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  hint: const Text(
-                                    "Select Pickup Time Slot",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                  ),
-                                  onChanged: (String? value) {
-                                    // This is called when the user selects an item.
-                                    setState(() {
-                                      dropdownValuetime = value!;
-                                      dropdownValuetimeselect = value;
-                                    });
-                                    print(dropdownValuetimeselect);
-                                  },
-                                  items: selecttime
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
+                                  ],
                                 ),
                               ),
-                            ),
-                    ],
-                  ),
-                ),
-                // ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 175,
-                  width: Sizee.width,
-                  child: Card(
-                    elevation: 15,
-                    shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(left: 20, top: 20),
-                          child: Container(
-                            alignment: Alignment.topLeft,
-                            height: 20,
-                            child: const Text(
-                              "DELIVERY OPTIONS",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                                fontSize: 22,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          // color: Colors.red,
-                          padding: const EdgeInsets.fromLTRB(8, 10, 0, 0),
-                          height: deliveryData.length * 38,
-                          child: ListView.builder(
-                              itemCount: deliveryData.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      print("tap");
-                                      deliveryway = deliveryData[index]["name"]
-                                          .toString();
-                                      deliverywayid =
-                                          deliveryData[index]["id"] as int;
-                                      print(deliveryway);
-                                    });
-                                  },
-                                  child: Container(
-                                    // color: Colors.red,
-                                    height: 30,
-                                    child: Row(
-                                      // crossAxisAlignment: CrossAxisAlignment.start,
+                              Container(
+                                padding:
+                                    const EdgeInsets.only(left: 15, bottom: 0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  // crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(0.0),
-                                          child: (deliveryway ==
-                                                  deliveryData[index]["name"]
-                                                      .toString())
-                                              ? const Icon(
-                                                  Icons.radio_button_on,
-                                                  size: 17,
-                                                  color: Color(0xFF000052),
-                                                )
-                                              : const Icon(
-                                                  Icons.radio_button_off,
-                                                  size: 17,
-                                                  color: Colors.black,
-                                                ),
+                                        Container(
+                                          // width: 15,
+                                          // height: 15,
+                                          height: 40,
+                                          child: Image.asset(
+                                            "assets/Location.png",
+                                            // height: 15,
+                                          ),
                                         ),
                                         const SizedBox(
-                                          width: 5,
+                                          height: 10,
                                         ),
-                                        Text(
-                                          deliveryData[index]["name"] ?? "",
-                                          style: const TextStyle(
-                                            fontSize: 18.5,
-                                            color: Colors.black,
+                                        const Text(
+                                          "0.05 KM",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xFF000052),
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 25,
+                                          child: const Text(
+                                            "Office",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              color: Color(0xFF000052),
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          // color: Colors.red,
+                                          height: 90,
+                                          width: Sizee.width - 130,
+                                          child: const Text(
+                                            "4th Floor, Sunrise Avenue, Stadium - Commerce Six Road, Opp: Saraspur Nagrik Bank, Navrangpura, Ahmedabad, Gujarat 380009",
+                                            maxLines: 5,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                );
-                              }),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // Container(
+                      //   height: 110,
+                      //   width: Sizee.width,
+                      //   child:
+                      Card(
+                        elevation: 15,
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              alignment: Alignment.topLeft,
+                              height: 30,
+                              padding: const EdgeInsets.only(left: 15, top: 8),
+                              child: const Text(
+                                "PICKUP DATE & TIME",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                  fontSize: 22,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 50,
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 20, bottom: 10, top: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  DropdownButtonHideUnderline(
+                                    child: DropdownButton2<String>(
+                                      value: dropdownValue,
+                                      offset: const Offset(0, 20),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      hint: const Text(
+                                        "Select Pickup Date",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      icon: const SizedBox.shrink(),
+                                      onChanged: (String? value) {
+                                        // This is called when the user selects an item.
+                                        setState(() {
+                                          dropdownValue = value!;
+                                          dropdownValuedata = value;
+                                        });
+                                        print(dropdownValuedata);
+                                      },
+                                      items: selectdate
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.calendar_view_month,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            dropdownValuedata == ""
+                                ? const SizedBox()
+                                : Container(
+                                    width: Sizee.width,
+                                    height: 50,
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 20, bottom: 10),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton2<String>(
+                                        value: dropdownValuetime,
+                                        offset: const Offset(0, 10),
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        hint: const Text(
+                                          "Select Pickup Time Slot",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        icon: const Icon(
+                                          Icons.arrow_drop_down,
+                                          color: Colors.black,
+                                        ),
+                                        onChanged: (String? value) {
+                                          // This is called when the user selects an item.
+                                          setState(() {
+                                            dropdownValuetime = value!;
+                                            dropdownValuetimeselect = value;
+                                          });
+                                          print(dropdownValuetimeselect);
+                                        },
+                                        items: selecttime
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ),
+                      // ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 175,
+                        width: Sizee.width,
+                        child: Card(
+                          elevation: 15,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.only(left: 20, top: 20),
+                                child: Container(
+                                  alignment: Alignment.topLeft,
+                                  height: 20,
+                                  child: const Text(
+                                    "DELIVERY OPTIONS",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                // color: Colors.red,
+                                padding: const EdgeInsets.fromLTRB(8, 10, 0, 0),
+                                height: deliveryData.length * 38,
+                                child: ListView.builder(
+                                    itemCount: deliveryData.length,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            print("tap");
+                                            deliveryway = deliveryData[index]
+                                                    ["name"]
+                                                .toString();
+                                            deliverywayid = deliveryData[index]
+                                                ["id"] as int;
+                                            print(deliveryway);
+                                          });
+                                        },
+                                        child: Container(
+                                          // color: Colors.red,
+                                          height: 30,
+                                          child: Row(
+                                            // crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(0.0),
+                                                child: (deliveryway ==
+                                                        deliveryData[index]
+                                                                ["name"]
+                                                            .toString())
+                                                    ? const Icon(
+                                                        Icons.radio_button_on,
+                                                        size: 17,
+                                                        color:
+                                                            Color(0xFF000052),
+                                                      )
+                                                    : const Icon(
+                                                        Icons.radio_button_off,
+                                                        size: 17,
+                                                        color: Colors.black,
+                                                      ),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                deliveryData[index]["name"] ??
+                                                    "",
+                                                style: const TextStyle(
+                                                  fontSize: 18.5,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF000052),
+                ),
+              ),
         bottomNavigationBar: SizedBox(
           height: 50,
           width: Sizee.width,
@@ -640,12 +661,12 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) => DeliverdetailCartScreen(
-                          dropdownValuedata: dropdownValuedata,
-                          dropdownValuetimeselect: dropdownValuetimeselect,
-                          deliveryway: deliveryway,
-                        ),
-                    ),
+                  builder: (context) => DeliverdetailCartScreen(
+                    dropdownValuedata: dropdownValuedata,
+                    dropdownValuetimeselect: dropdownValuetimeselect,
+                    deliveryway: deliveryway,
+                  ),
+                ),
               );
             },
             child: const Text(
@@ -660,5 +681,11 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
         ),
       ),
     );
+  }
+
+  GetpickupDates_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
   }
 }

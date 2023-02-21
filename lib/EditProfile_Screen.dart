@@ -420,13 +420,13 @@ class _EditProfileState extends State<EditProfile> {
                                           onPrimary: Colors.white,
                                           // <-- SEE HERE
                                           onSurface:
-                                              Colors.black, // <-- SEE HERE
+                                          Colors.black, // <-- SEE HERE
                                         ),
                                         textButtonTheme: TextButtonThemeData(
                                           style: TextButton.styleFrom(
-                                              primary: const Color(
-                                                  0xFF000052) // button text color
-                                              ),
+                                            primary: const Color(
+                                                0xFF000052), // button text color
+                                          ),
                                         ),
                                       ),
                                       child: child!);
@@ -435,17 +435,17 @@ class _EditProfileState extends State<EditProfile> {
                               print(
                                   pickedDate); //pickedDate output format => 2021-03-10
                               String formattedDate =
-                                  DateFormat('dd MMM').format(pickedDate);
+                              DateFormat('dd MMM').format(pickedDate);
                               print(
                                   formattedDate); //formatted date output using intl package =>  2021-03-16
                               setState(() {
                                 DOBdateinput.text = formattedDate;
                                 String datePattern = "dd MMM";
-                                DateTime birthDate = DateFormat(datePattern)
+                                DateTime annivsryDate = DateFormat(datePattern)
                                     .parse(DOBdateinput.text);
                                 DateTime today = DateTime.now();
                                 print(today);
-                                int yearDiff = today.year - birthDate.year;
+                                int yearDiff = today.year - annivsryDate.year;
                                 print("year $yearDiff");
                                 //set output date to TextField value.
                               });
@@ -458,7 +458,7 @@ class _EditProfileState extends State<EditProfile> {
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             ),
-                            hintText: 'Enter your Birthday',
+                            hintText: 'Enter your birth date',
                             // label: Text(
                             //   "Enter your Name",
                             //   style: TextStyle(
@@ -710,9 +710,9 @@ class _EditProfileState extends State<EditProfile> {
             DOBdateinput.text = decode["data"][0]["dob"].toString() == "null"
                 ? ""
                 : decode["data"][0]["dob"].toString();
-            Annidateinput.text = decode["data"][0]["dob"].toString() == "null"
+            Annidateinput.text = decode["data"][0]["anniversary_date"].toString() == "null"
                 ? ""
-                : decode["data"][0]["dob"].toString();
+                : decode["data"][0]["anniversary_date"].toString();
             statusid = decode["data"][0]["gender"].toString();
             print("decode: $decode");
 

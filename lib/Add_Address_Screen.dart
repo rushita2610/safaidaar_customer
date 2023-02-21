@@ -12,7 +12,7 @@ import 'Api/Api_Url.dart';
 
 class AddaddressScreen extends StatefulWidget {
   static const DEFAULT_ZOOM = 14.4746;
-  static const Currentlocation = LatLng(23.040158, 72.560379);
+  static const Currentlocation = LatLng(23.03984909999999, 72.5602797);
 
   double initZoom;
   LatLng initCoordinates;
@@ -105,8 +105,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
 
   locationdata() async {
     Position position = await _getGeoLocationPosition();
-    location =
-    'Lat: ${position.latitude} , Long: ${position.longitude}';
+    location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
     GetAddressFromLatLong(position);
   }
 

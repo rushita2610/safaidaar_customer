@@ -32,8 +32,8 @@ class _RegiatrationState extends State<Regiatration> {
   TextEditingController Customername = TextEditingController();
   TextEditingController MobileNumber = TextEditingController();
   TextEditingController Email = TextEditingController();
-  TextEditingController dateinput = TextEditingController();
-  TextEditingController dateinput2 = TextEditingController();
+  TextEditingController DOBdateinput = TextEditingController();
+  TextEditingController Annidateinput = TextEditingController();
   TextEditingController refferalcontact = TextEditingController();
 
   //text editing controller for text field
@@ -69,7 +69,8 @@ class _RegiatrationState extends State<Regiatration> {
 
   @override
   void initState() {
-    dateinput.text = ""; //set the initial value of text field
+    // DOBdateinput.text = "";
+    // Annidateinput.text = "";//set the initial value of text field
     // Signup_APIcall();
     super.initState();
   }
@@ -506,7 +507,7 @@ class _RegiatrationState extends State<Regiatration> {
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
-                            controller: dateinput,
+                            controller: DOBdateinput,
                             onTap: () async {
                               DateTime? pickedDate = await showDatePicker(
                                   context: context,
@@ -542,10 +543,10 @@ class _RegiatrationState extends State<Regiatration> {
                                 print(
                                     formattedDate); //formatted date output using intl package =>  2021-03-16
                                 setState(() {
-                                  dateinput.text = formattedDate;
+                                  DOBdateinput.text = formattedDate;
                                   String datePattern = "dd MMM";
                                   DateTime birthDate = DateFormat(datePattern)
-                                      .parse(dateinput.text);
+                                      .parse(DOBdateinput.text);
                                   DateTime today = DateTime.now();
                                   int yearDiff = today.year - birthDate.year;
                                   print("year $yearDiff");
@@ -672,7 +673,7 @@ class _RegiatrationState extends State<Regiatration> {
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
-                            controller: dateinput2,
+                            controller: Annidateinput,
                             onTap: () async {
                               DateTime? pickedDate = await showDatePicker(
                                   context: context,
@@ -708,11 +709,11 @@ class _RegiatrationState extends State<Regiatration> {
                                 print(
                                     formattedDate); //formatted date output using intl package =>  2021-03-16
                                 setState(() {
-                                  dateinput2.text = formattedDate;
+                                  Annidateinput.text = formattedDate;
                                   String datePattern = "dd MMM yy";
                                   DateTime annivsryDate =
                                       DateFormat(datePattern)
-                                          .parse(dateinput2.text);
+                                          .parse(Annidateinput.text);
                                   DateTime today = DateTime.now();
                                   int yearDiff = today.year - annivsryDate.year;
                                   print("year $yearDiff");
@@ -858,8 +859,8 @@ class _RegiatrationState extends State<Regiatration> {
         "email": Email.text.trim(),
         "mobile": "+91 ${MobileNumber.text.trim()}",
         "gender": statusitem.toString(),
-        "dob": dateinput.text.trim(),
-        "anniversary_date": dateinput2.text.trim(),
+        "dob": DOBdateinput.text.trim(),
+        "anniversary_date": Annidateinput.text.trim(),
         "referral_mobile": refferalcontact.text.length > 0 ? "+91 ${refferalcontact.text.trim()}": '',
       };
 

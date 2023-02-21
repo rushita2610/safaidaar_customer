@@ -18,6 +18,8 @@ const GetCustomerprofile_Api = BASEURL + 'customer/get-customer-profile?user_id=
 const Updatecustomerprofile_Api = BASEURL + "customer/customer-profile-update";
 const GetNotificaton_Api = BASEURL + 'get-notification';
 const ReadNotification_Api = BASEURL + 'read-notification/';
+const GetCustomerorder_Api = BASEURL + 'customer/customer-order?from_date=';
+const Getpickup_Api = BASEURL + 'get-pickup-dates';
 const Pageblock_Api = BASEURL + 'page-block?page_code=';
 const HomeBanner_Api = BASEURL + 'customer/get-home-banner';
 const Logout_Api = BASEURL + 'logout';
