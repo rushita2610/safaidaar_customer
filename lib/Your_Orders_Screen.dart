@@ -633,7 +633,7 @@ class _Your_ordersState extends State<Your_orders> {
         if (decode["success"] = true) {
           print(decode);
           orderlist.clear();
-          orderlist = decode["data"][0]["data"];
+          orderlist = decode["data"]["data"];
         } else {
           print(decode);
           print(json.decode(response.body)['errors']);
@@ -648,6 +648,9 @@ class _Your_ordersState extends State<Your_orders> {
               break;
             }
           }
+          setState(() {
+            isReload = false;
+          });
         }
         setState(() {
           isReload = false;

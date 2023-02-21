@@ -34,6 +34,8 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController DOBdateinput = TextEditingController();
   TextEditingController Annidateinput = TextEditingController();
 
+  // String bday = "dd MMM";
+
   //text editing controller for text field
   bool show_hide = false;
 
@@ -405,6 +407,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           controller: DOBdateinput,
                           onTap: () async {
+                            DOBdateinput.text = "";
                             DateTime? pickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
@@ -420,7 +423,7 @@ class _EditProfileState extends State<EditProfile> {
                                           onPrimary: Colors.white,
                                           // <-- SEE HERE
                                           onSurface:
-                                          Colors.black, // <-- SEE HERE
+                                              Colors.black, // <-- SEE HERE
                                         ),
                                         textButtonTheme: TextButtonThemeData(
                                           style: TextButton.styleFrom(
@@ -435,17 +438,17 @@ class _EditProfileState extends State<EditProfile> {
                               print(
                                   pickedDate); //pickedDate output format => 2021-03-10
                               String formattedDate =
-                              DateFormat('dd MMM').format(pickedDate);
+                                  DateFormat('dd MMM').format(pickedDate);
                               print(
                                   formattedDate); //formatted date output using intl package =>  2021-03-16
                               setState(() {
                                 DOBdateinput.text = formattedDate;
                                 String datePattern = "dd MMM";
-                                DateTime annivsryDate = DateFormat(datePattern)
-                                    .parse(DOBdateinput.text);
+                                DateTime birthDate = DateFormat(datePattern)
+                                    .parse(DOBdateinput.text.toString());
                                 DateTime today = DateTime.now();
                                 print(today);
-                                int yearDiff = today.year - annivsryDate.year;
+                                int yearDiff = today.year - birthDate.year;
                                 print("year $yearDiff");
                                 //set output date to TextField value.
                               });
@@ -572,6 +575,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           controller: Annidateinput,
                           onTap: () async {
+                            Annidateinput.text = "";
                             DateTime? pickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
@@ -710,9 +714,10 @@ class _EditProfileState extends State<EditProfile> {
             DOBdateinput.text = decode["data"][0]["dob"].toString() == "null"
                 ? ""
                 : decode["data"][0]["dob"].toString();
-            Annidateinput.text = decode["data"][0]["anniversary_date"].toString() == "null"
-                ? ""
-                : decode["data"][0]["anniversary_date"].toString();
+            Annidateinput.text =
+                decode["data"][0]["anniversary_date"].toString() == "null"
+                    ? ""
+                    : decode["data"][0]["anniversary_date"].toString();
             statusid = decode["data"][0]["gender"].toString();
             print("decode: $decode");
 
