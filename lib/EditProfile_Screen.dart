@@ -46,10 +46,11 @@ class _EditProfileState extends State<EditProfile> {
 
   String statusitem = '1';
   List<dynamic> statusData = [
-    {"name": "Female", "id": 1},
-    {"name": "Male", "id": 2},
-    {"name": "Others", "id": 3},
+    {"name": "Female", "id": "0"},
+    {"name": "Male", "id": "1"},
+    {"name": "Others", "id": "2"},
   ];
+  String statusid = "0";
 
   _getFromGallery(ImageSource gallery, Type type) async {
     PickedFile? pickedFile = await ImagePicker().getImage(
@@ -73,12 +74,10 @@ class _EditProfileState extends State<EditProfile> {
     // DOBdateinput.text = "";
     // Annidateinput.text = ""; //set the initial value of text field
     //GetCustomerProfile_APIcall();
-    //GenderAPIcall();
+    // GenderAPIcall();
     GetProfilAPIcall();
     super.initState();
   }
-
-  int statusid = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -434,7 +433,7 @@ class _EditProfileState extends State<EditProfile> {
                                 }); //DateTime(2023));
                             if (pickedDate != null) {
                               print(
-                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                  pickedDate); //pickedDate output format => 2021-03-10
                               String formattedDate =
                                   DateFormat('dd MMM').format(pickedDate);
                               print(
@@ -445,6 +444,7 @@ class _EditProfileState extends State<EditProfile> {
                                 DateTime birthDate = DateFormat(datePattern)
                                     .parse(DOBdateinput.text);
                                 DateTime today = DateTime.now();
+                                print(today);
                                 int yearDiff = today.year - birthDate.year;
                                 print("year $yearDiff");
                                 //set output date to TextField value.
@@ -505,7 +505,7 @@ class _EditProfileState extends State<EditProfile> {
                               setState(() {
                                 print("tap");
                                 statusitem = statusData[index].toString();
-                                statusid = statusData[index]["id"] as int;
+                                statusid = statusData[index]["id"].toString();
                                 print(statusitem);
                               });
                             },
@@ -518,8 +518,8 @@ class _EditProfileState extends State<EditProfile> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: (statusitem ==
-                                            statusData[index].toString())
+                                    child: (statusid ==
+                                            statusData[index]["id"].toString())
                                         ? const Icon(
                                             Icons.radio_button_on,
                                             color: Colors.black,
@@ -600,7 +600,7 @@ class _EditProfileState extends State<EditProfile> {
                                 }); //DateTime(2023));
                             if (pickedDate != null) {
                               print(
-                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                  pickedDate); //pickedDate output format => 2021-03-10
                               String formattedDate =
                                   DateFormat('dd MMM yy').format(pickedDate);
                               print(
@@ -611,6 +611,7 @@ class _EditProfileState extends State<EditProfile> {
                                 DateTime annivsryDate = DateFormat(datePattern)
                                     .parse(Annidateinput.text);
                                 DateTime today = DateTime.now();
+                                print(today);
                                 int yearDiff = today.year - annivsryDate.year;
                                 print("year $yearDiff");
                                 //set output date to TextField value.
@@ -674,36 +675,6 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  // GenderAPIcall() async {
-  //   setState(() {});
-  //   try {
-  //
-  //     //   var response = await http.post(Uri.parse(login), body: body);
-  //     var response = await http.get(Uri.parse(Getdropdown_Api));
-  //
-  //     if (response.statusCode == 200) {
-  //       var decode = jsonDecode(response.body);
-  //
-  //       if (decode["success"] == true) {
-  //         setState(() {
-  //           statusData.clear();
-  //           statusData = decode["data"][0]["customer"][0]["key"][0]["values"];
-  //           statusitem = statusData[0]["value"];
-  //         });
-  //       } else {}
-  //
-  //       setState(() {});
-  //     } else {
-  //       print("Error" + response.statusCode.toString());
-  //       print("Error" + response.body.toString());
-  //     }
-  //   } catch (e) {
-  //     setState(() {});
-  //     print("Exception in Today Attendance=>" + e.toString());
-  //     throw e;
-  //   }
-  // }
-
   GetProfilAPIcall() async {
     setState(() {
       isReload = true;
@@ -742,7 +713,7 @@ class _EditProfileState extends State<EditProfile> {
             Annidateinput.text = decode["data"][0]["dob"].toString() == "null"
                 ? ""
                 : decode["data"][0]["dob"].toString();
-            statusitem = decode["data"][0]["gender"].toString();
+            statusid = decode["data"][0]["gender"].toString();
             print("decode: $decode");
 
             if (userPhoto != "" || userPhoto != null) {
@@ -799,7 +770,8 @@ class _EditProfileState extends State<EditProfile> {
       var token = prefs.getString("token") ?? "";
       var user_id = prefs.getString("id") ?? "";
 
-      final Header = {"Authorization": "Bearer ${token.toString()}",
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
       };
 
       print(Header);
@@ -810,7 +782,7 @@ class _EditProfileState extends State<EditProfile> {
           //     'https://safaidaar.mydemoapp.us/api/v1/vendor/vendor-signup'));
           Uri.parse(Updatecustomerprofile_Api));
       Map<String, String> headers = {
-      "Authorization": "Bearer ${token.toString()}",
+        "Authorization": "Bearer ${token.toString()}",
         'Content-type': 'application/json',
         'Accept': 'application/json',
       };
@@ -820,10 +792,11 @@ class _EditProfileState extends State<EditProfile> {
         "customer_name": Customername.text.trim(),
         "email": Email.text.trim(),
         "mobile": "+91 ${MobileNumber.text.trim()}",
-        "gender": statusitem,
+        "gender": statusid,
         "dob": DOBdateinput.text.trim(),
         "anniversary_date": Annidateinput.text.trim(),
-        "referral_mobile": "",//refferalcontact.text.length > 0 ? "+91 ${refferalcontact.text.trim()}": '',
+        "referral_mobile": "",
+        //refferalcontact.text.length > 0 ? "+91 ${refferalcontact.text.trim()}": '',
       };
 
       request.fields.addAll(sendData);
@@ -843,102 +816,102 @@ class _EditProfileState extends State<EditProfile> {
 
       print(response.body);
 
-        if (response.statusCode == 200) {
-          var decode = jsonDecode(response.body);
-          if (decode["success"] == true) {
-            GetProfilAPIcall();
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Container(
-                  // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Status',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                        ),
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        if (decode["success"] == true) {
+          GetProfilAPIcall();
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Container(
+                // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Status',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
                       ),
-                      Text(
-                        decode["message"].toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          // fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                duration: const Duration(seconds: 3),
-                backgroundColor: const Color(0xFF000052),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                margin: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height / 1 - 160,
-                    right: 20,
-                    left: 20),
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Container(
-                  // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Status',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    ),
+                    Text(
+                      decode["message"].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w500,
                       ),
-                      Text(
-                        decode["message"].toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          // fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                duration: const Duration(seconds: 3),
-                backgroundColor: const Color(0xFF000052),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                margin: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height / 1 - 120,
-                    right: 20,
-                    left: 20),
               ),
-            );
-          }
+              duration: const Duration(seconds: 3),
+              backgroundColor: const Color(0xFF000052),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / 1 - 160,
+                  right: 20,
+                  left: 20),
+            ),
+          );
         } else {
-          setState(() {
-            isReload = false;
-          });
-          print("Error " + response.statusCode.toString());
-         // print("Error" + response.body.toString());
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Container(
+                // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Status',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      decode["message"].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              duration: const Duration(seconds: 3),
+              backgroundColor: const Color(0xFF000052),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / 1 - 120,
+                  right: 20,
+                  left: 20),
+            ),
+          );
         }
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error " + response.statusCode.toString());
+        // print("Error" + response.body.toString());
+      }
 
       // var request = http.MultipartRequest(
       //   "POST",
@@ -1044,7 +1017,6 @@ class _EditProfileState extends State<EditProfile> {
       //   print(onValue.headers);
       //   print(onValue.contentLength);
       // });
-
 
     } catch (e) {
       setState(() {
