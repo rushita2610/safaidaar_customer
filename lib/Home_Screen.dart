@@ -1289,7 +1289,6 @@ class _homeScreenState extends State<homeScreen> {
         "Authorization": "Bearer ${token.toString()}",
       };
       print(Header);
-      //   var response = await http.post(Uri.parse(login), body: body);
       var response = await http.get(Uri.parse(Logout_Api), headers: Header);
 
       if (response.statusCode == 200) {

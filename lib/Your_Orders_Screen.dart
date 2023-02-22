@@ -22,46 +22,46 @@ class _Your_ordersState extends State<Your_orders> {
   TextEditingController Annidateinput = TextEditingController();
 
   List<dynamic> orderlist = [
-    {
-      'image': 'assets/exp1.jpg',
-      'name': 'Namita',
-      'state': 'Maharashtra',
-      'order id': '22-23/181',
-      'img2': 'assets/Shirt-1.png',
-      'price': 2140,
-      'QTY': 4,
-      'payment status': 'Pay to Dispatch',
-    },
-    {
-      'image': 'assets/exp1.jpg',
-      'name': 'Shiva',
-      'state': 'Maharashtra',
-      'order id': '22-23/180',
-      'img2': 'assets/Shirt-1.png',
-      'price': 1439,
-      'QTY': 10,
-      'payment status': 'Paid',
-    },
-    {
-      'image': 'assets/exp1.jpg',
-      'name': 'Diyanshi',
-      'state': 'Maharashtra',
-      'order id': '22-23/178',
-      'img2': 'assets/Shirt-1.png',
-      'price': 1439,
-      'QTY': 7,
-      'payment status': 'Pay to Dispatch',
-    },
-    {
-      'image': 'assets/exp1.jpg',
-      'name': 'Hiransh',
-      'state': 'Maharashtra',
-      'order id': '22-23/256',
-      'img2': 'assets/Shirt-1.png',
-      'price': 8597,
-      'QTY': 2,
-      'payment status': 'Paid',
-    },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Namita',
+    //   'state': 'Maharashtra',
+    //   'order id': '22-23/181',
+    //   'img2': 'assets/Shirt-1.png',
+    //   'price': 2140,
+    //   'QTY': 4,
+    //   'payment status': 'Pay to Dispatch',
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Shiva',
+    //   'state': 'Maharashtra',
+    //   'order id': '22-23/180',
+    //   'img2': 'assets/Shirt-1.png',
+    //   'price': 1439,
+    //   'QTY': 10,
+    //   'payment status': 'Paid',
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Diyanshi',
+    //   'state': 'Maharashtra',
+    //   'order id': '22-23/178',
+    //   'img2': 'assets/Shirt-1.png',
+    //   'price': 1439,
+    //   'QTY': 7,
+    //   'payment status': 'Pay to Dispatch',
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Hiransh',
+    //   'state': 'Maharashtra',
+    //   'order id': '22-23/256',
+    //   'img2': 'assets/Shirt-1.png',
+    //   'price': 8597,
+    //   'QTY': 2,
+    //   'payment status': 'Paid',
+    // },
   ];
 
   @override
@@ -104,7 +104,7 @@ class _Your_ordersState extends State<Your_orders> {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   //height: Sizee.height * 2,
-                  height: height * 1.5,
+                  // height: height * 1.5,
                   child: Column(
                     children: [
                       Row(
@@ -360,8 +360,14 @@ class _Your_ordersState extends State<Your_orders> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10)),
-                                                child: Image.asset(
-                                                    orderlist[index]['image']),
+                                                child: Image.network(
+                                                  orderlist[index][
+                                                                  'order_detail']
+                                                              [
+                                                              'customer_information']
+                                                          ['customer_image']
+                                                      .toString(),
+                                                ),
                                               ),
                                               const SizedBox(
                                                 width: 10,
@@ -377,7 +383,12 @@ class _Your_ordersState extends State<Your_orders> {
                                                           .spaceAround,
                                                   children: [
                                                     Text(
-                                                      orderlist[index]['name'],
+                                                      orderlist[index][
+                                                                      'order_detail']
+                                                                  [
+                                                                  'customer_information']
+                                                              ['customer_name']
+                                                          .toString(),
                                                       style: const TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 17,
@@ -386,7 +397,12 @@ class _Your_ordersState extends State<Your_orders> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      orderlist[index]['state'],
+                                                      orderlist[index][
+                                                                      'order_detail']
+                                                                  [
+                                                                  'customer_address_information']
+                                                              ['address']
+                                                          .toString(),
                                                       style: const TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 17,
@@ -394,7 +410,7 @@ class _Your_ordersState extends State<Your_orders> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "Order ID: ${orderlist[index]['order id']}",
+                                                      "Order ID: ${orderlist[index]['order_barcode_no'].toString()}",
                                                       style: const TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 17,
@@ -425,9 +441,12 @@ class _Your_ordersState extends State<Your_orders> {
                                                             ),
                                                           );
                                                         },
-                                                        child: const Text(
-                                                          "PROCESSING",
-                                                          style: TextStyle(
+                                                        child: Text(
+                                                          orderlist[index][
+                                                                  'order_status_text']
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 12,
                                                             fontWeight:
@@ -455,14 +474,17 @@ class _Your_ordersState extends State<Your_orders> {
                                               ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(60),
-                                                child: Image.asset(
-                                                    orderlist[index]['img2']),
+                                                child: Image.network(orderlist[
+                                                                index][
+                                                            'order_item_detail']
+                                                        ['item_image']
+                                                    .toString()),
                                               ),
                                               const SizedBox(
                                                 width: 10,
                                               ),
                                               Text(
-                                                "T-Shirt x ${orderlist[index]['QTY']}",
+                                                "${orderlist[index]['order_item_detail']['item_name'].toString()} 'x' ${orderlist[index]['order_item_detail']['quantity'].toString()}",
                                                 style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 15,
@@ -532,7 +554,7 @@ class _Your_ordersState extends State<Your_orders> {
                                                           height: 20,
                                                           //color: Colors.green,
                                                           child: Text(
-                                                            "Rs ${orderlist[index]['price']}",
+                                                            "Rs ${orderlist[index]['total_amount'].toString()}",
                                                             textAlign: TextAlign
                                                                 .center,
                                                             style:
@@ -575,8 +597,11 @@ class _Your_ordersState extends State<Your_orders> {
                                                     height: 5,
                                                   ),
                                                   Text(
-                                                    orderlist[index]
-                                                        ['payment status'],
+                                                    orderlist[index][
+                                                                'order_item_detail']
+                                                            [
+                                                            'payment_status_text']
+                                                        .toString(),
                                                     style: const TextStyle(
                                                       color: Colors.black54,
                                                       fontSize: 14,
@@ -623,7 +648,9 @@ class _Your_ordersState extends State<Your_orders> {
       //   var response = await http.post(Uri.parse(login), body: body);
       var response = await http.get(
         Uri.parse(
-            "$GetCustomerorder_Api?from_date=$DOBdateinput&to_date=$Annidateinput&order_status=&search=null&paginate=false"),
+          GetCustomerorder_Api +
+              "?from_date=${DOBdateinput.text}&to_date=${Annidateinput.text}&order_status=&search=null&paginate=false",
+        ),
         headers: Header,
       );
 
@@ -635,19 +662,19 @@ class _Your_ordersState extends State<Your_orders> {
           orderlist.clear();
           orderlist = decode["data"]["data"];
         } else {
-          print(decode);
-          print(json.decode(response.body)['errors']);
-          String errorMsg = json.decode(response.body)["message"].toString();
-          print(errorMsg);
-          if (json.decode(response.body)['errors'] != null) {
-            Map errorMap = json.decode(response.body)["errors"].first;
-            for (String k in errorMap.keys) {
-              print(errorMap[k]);
-              errorMsg = errorMap[k][0] ??
-                  json.decode(response.body)["message"].toString();
-              break;
-            }
-          }
+          // print(decode);
+          // print(json.decode(response.body)['errors']);
+          // String errorMsg = json.decode(response.body)["message"].toString();
+          // print(errorMsg);
+          // if (json.decode(response.body)['errors'] != null) {
+          //   Map errorMap = json.decode(response.body)["errors"].first;
+          //   for (String k in errorMap.keys) {
+          //     print(errorMap[k]);
+          //     errorMsg = errorMap[k][0] ??
+          //         json.decode(response.body)["message"].toString();
+          //     break;
+          //   }
+          // }
           setState(() {
             isReload = false;
           });
@@ -655,6 +682,8 @@ class _Your_ordersState extends State<Your_orders> {
         setState(() {
           isReload = false;
         });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body);
       }
     } catch (e) {
       setState(() {

@@ -311,7 +311,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                                       child: TextFieldPin(
                                                           textController:
                                                               textEditingController,
-                                                          autoFocus: true,
+                                                          //autoFocus: true,
                                                           codeLength:
                                                               _otpCodeLength,
                                                           alignment:
@@ -462,92 +462,6 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 
-  // VerifyOTP_ApiCall() async {
-  //   setState(() {
-  //     isReload = true;
-  //   });
-  //   try {
-  //     final body = {
-  //       "mobile": widget.strMobile,
-  //       "otp": textEditingController.text,
-  //       "user_type": "2",
-  //     };
-  //     print("verify otp body ${body.toString()}");
-  //
-  //     var response = await http.post(Uri.parse(VerifyOTP_Api), body: body);
-  //     if (response.statusCode == 200) {
-  //       var decode = jsonDecode(response.body);
-  //       if (decode["success"] = true) {
-  //         LoginApiCall();
-  //         SharedPreferences sharedPreferences =
-  //             await SharedPreferences.getInstance();
-  //         sharedPreferences.setString(
-  //             "token", decode["data"]["token"].toString());
-  //         print(
-  //           decode["data"]["token"].toString(),
-  //         );
-  //       } else {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Container(
-  //               // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
-  //               height: 50,
-  //               width: MediaQuery.of(context).size.width,
-  //               child: Column(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   const Text(
-  //                     'Status',
-  //                     style: TextStyle(
-  //                       color: Colors.white,
-  //                       fontSize: 17,
-  //                       fontWeight: FontWeight.w500,
-  //                     ),
-  //                   ),
-  //                   Text(
-  //                     decode["message"].toString(),
-  //                     style: const TextStyle(
-  //                       color: Colors.white,
-  //                       fontSize: 16,
-  //                       // fontWeight: FontWeight.w500,
-  //                     ),
-  //                   )
-  //                 ],
-  //               ),
-  //             ),
-  //             duration: const Duration(seconds: 3),
-  //             backgroundColor: const Color(0xFF000052),
-  //             behavior: SnackBarBehavior.floating,
-  //             shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.circular(15),
-  //             ),
-  //             margin: EdgeInsets.only(
-  //                 bottom: MediaQuery.of(context).size.height / 1 - 120,
-  //                 right: 20,
-  //                 left: 20),
-  //           ),
-  //         );
-  //         setState(() {
-  //           isReload == false;
-  //         });
-  //       }
-  //     } else {
-  //       print(
-  //         "Error" + response.statusCode.toString(),
-  //       );
-  //       print(
-  //         "Error" + response.body.toString(),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print(
-  //       "Exception in Toady Error => " + e.toString(),
-  //     );
-  //     throw e;
-  //   }
-  // }
-
   VerifyOTP_ApiCall() async {
     setState(() {
       isReload = true;
@@ -567,7 +481,7 @@ class _OTPScreenState extends State<OTPScreen> {
         if (decode["success"] == true) {
           print("decode verify Otp $decode");
           SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+              await SharedPreferences.getInstance();
           sharedPreferences.setString(
               "token", decode["data"]["token"].toString());
           setState(() {});
