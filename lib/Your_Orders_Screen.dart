@@ -18,8 +18,8 @@ class Your_orders extends StatefulWidget {
 class _Your_ordersState extends State<Your_orders> {
   bool isReload = false;
 
-  TextEditingController DOBdateinput = TextEditingController();
-  TextEditingController Annidateinput = TextEditingController();
+  TextEditingController fromdate = TextEditingController();
+  TextEditingController todate = TextEditingController();
 
   List<dynamic> orderlist = [
     // {
@@ -66,8 +66,8 @@ class _Your_ordersState extends State<Your_orders> {
 
   @override
   void initState() {
-    DOBdateinput.text = "";
-    Annidateinput.text = "";
+    fromdate.text = "2023-02-06";
+    todate.text = "2023-02-22";
     GetCustomerOrder_ApiCall(); //set the initial value of text field
     super.initState();
   }
@@ -144,9 +144,9 @@ class _Your_ordersState extends State<Your_orders> {
                                 DateTime? pickedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime(1950),
+                                    firstDate: DateTime(1800),
                                     //DateTime.now() - not to allow to choose before today.
-                                    lastDate: DateTime.now(),
+                                    lastDate: DateTime(2123),
                                     builder: (context, child) {
                                       return Theme(
                                           data: Theme.of(context).copyWith(
@@ -178,18 +178,21 @@ class _Your_ordersState extends State<Your_orders> {
                                   print(
                                       formattedDate); //formatted date output using intl package =>  2021-03-16
                                   setState(() {
-                                    DOBdateinput.text = formattedDate;
+                                    fromdate.text = formattedDate;
                                     String datePattern = "yyyy-MM-dd";
                                     DateTime birthDate = DateFormat(datePattern)
-                                        .parse(DOBdateinput.text);
+                                        .parse(fromdate.text);
                                     DateTime today = DateTime.now();
                                     int yearDiff = today.year - birthDate.year;
                                     print("year $yearDiff");
                                     //set output date to TextField value.
                                   });
                                 } else {}
+                                if(todate.text != "") {
+                                  GetCustomerOrder_ApiCall();
+                                }
                               },
-                              controller: DOBdateinput,
+                              controller: fromdate,
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -228,9 +231,9 @@ class _Your_ordersState extends State<Your_orders> {
                                 DateTime? pickedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime(1950),
+                                    firstDate: DateTime(1800),
                                     //DateTime.now() - not to allow to choose before today.
-                                    lastDate: DateTime.now(),
+                                    lastDate: DateTime(2123),
                                     builder: (context, child) {
                                       return Theme(
                                           data: Theme.of(context).copyWith(
@@ -262,18 +265,21 @@ class _Your_ordersState extends State<Your_orders> {
                                   print(
                                       formattedDate); //formatted date output using intl package =>  2021-03-16
                                   setState(() {
-                                    Annidateinput.text = formattedDate;
+                                    todate.text = formattedDate;
                                     String datePattern = "yyyy-MM-dd";
                                     DateTime birthDate = DateFormat(datePattern)
-                                        .parse(Annidateinput.text);
+                                        .parse(todate.text);
                                     DateTime today = DateTime.now();
                                     int yearDiff = today.year - birthDate.year;
                                     print("year $yearDiff");
                                     //set output date to TextField value.
                                   });
                                 } else {}
+                                if(fromdate.text != "") {
+                                  GetCustomerOrder_ApiCall();
+                                }
                               },
-                              controller: Annidateinput,
+                              controller: todate,
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -308,7 +314,7 @@ class _Your_ordersState extends State<Your_orders> {
                       ),
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                            maxHeight: orderlist.length * 250, minHeight: 255),
+                            maxHeight: orderlist.length * 320, minHeight: 320),
                         // height: orderlist.length * 250,
                         // width: Sizee.width,
                         child: ListView.builder(
@@ -317,7 +323,7 @@ class _Your_ordersState extends State<Your_orders> {
                             itemCount: orderlist.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
-                                height: 250,
+                                height: 320,
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).push(
@@ -349,24 +355,31 @@ class _Your_ordersState extends State<Your_orders> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                height: 80,
-                                                width: 95,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: const Color(
-                                                          0xFF000052),
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Image.network(
-                                                  orderlist[index][
-                                                                  'order_detail']
-                                                              [
-                                                              'customer_information']
-                                                          ['customer_image']
-                                                      .toString(),
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Container(
+                                                  height: 80,
+                                                  width: 95,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: const Color(
+                                                              0xFF000052),
+                                                          width: 2.5),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Image.network(
+                                                    // "",
+                                                    orderlist[index][
+                                                                    'order_detail']
+                                                                [
+                                                                'vendor_information']
+                                                            [
+                                                            'vendor_banner_image']
+                                                        .toString(),
+                                                    fit: BoxFit.fill,
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(
@@ -396,20 +409,21 @@ class _Your_ordersState extends State<Your_orders> {
                                                             FontWeight.bold,
                                                       ),
                                                     ),
-                                                    Text(
-                                                      orderlist[index][
-                                                                      'order_detail']
-                                                                  [
-                                                                  'customer_address_information']
-                                                              ['address']
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 17,
-                                                        // fontWeight: FontWeight.bold,
+                                                    Container(
+                                                      // color: Colors.red,
+                                                      width: width * 0.52,
+                                                      child: Text(
+                                                        "${orderlist[index]['order_detail']['customer_address_information']['city'].toString()}, ${orderlist[index]['order_detail']['customer_address_information']['state'].toString()}",
+                                                        // maxLines: 4,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16,
+                                                          // fontWeight: FontWeight.bold,
+                                                        ),
                                                       ),
                                                     ),
                                                     Text(
+                                                      // "",
                                                       "Order ID: ${orderlist[index]['order_barcode_no'].toString()}",
                                                       style: const TextStyle(
                                                         color: Colors.black,
@@ -442,6 +456,7 @@ class _Your_ordersState extends State<Your_orders> {
                                                           );
                                                         },
                                                         child: Text(
+                                                          // "",
                                                           orderlist[index][
                                                                   'order_status_text']
                                                               .toString(),
@@ -467,28 +482,35 @@ class _Your_ordersState extends State<Your_orders> {
                                         ),
                                         Container(
                                           padding:
-                                              const EdgeInsets.only(left: 5),
-                                          height: 35,
+                                          const EdgeInsets.only(
+                                              left: 5),
+                                          height: 25,
                                           child: Row(
                                             children: [
                                               ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(60),
-                                                child: Image.network(orderlist[
-                                                                index][
-                                                            'order_item_detail']
-                                                        ['item_image']
-                                                    .toString()),
+                                                BorderRadius
+                                                    .circular(60),
+                                                child: Image.network(
+                                                  //"",
+                                                  orderlist[index][
+                                                  'order_item_detail']
+                                                  [
+                                                  0]['item_image']
+                                                      .toString(),
+                                                ),
                                               ),
                                               const SizedBox(
                                                 width: 10,
                                               ),
                                               Text(
-                                                "${orderlist[index]['order_item_detail']['item_name'].toString()} 'x' ${orderlist[index]['order_item_detail']['quantity'].toString()}",
+                                                // "",
+                                                "${orderlist[index]['order_item_detail'][0]['item_name'].toString()} x ${orderlist[index]['order_item_detail'][0]['quantity'].toString()}",
                                                 style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight:
+                                                  FontWeight.bold,
                                                 ),
                                               ),
                                             ],
@@ -512,18 +534,22 @@ class _Your_ordersState extends State<Your_orders> {
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: const [
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
                                                   Text(
-                                                    "January 27, 2023 at 07:02 AM",
-                                                    style: TextStyle(
+                                                    orderlist[index]
+                                                            ['order_date_text']
+                                                        .toString(),
+                                                    style: const TextStyle(
                                                       color: Colors.black54,
                                                       fontSize: 14,
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 5,
                                                   ),
-                                                  Text(
+                                                  const Text(
                                                     "Payment Status",
                                                     style: TextStyle(
                                                       color: Colors.black54,
@@ -536,11 +562,11 @@ class _Your_ordersState extends State<Your_orders> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.end,
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   Container(
                                                     // color: Colors.red,
-                                                    width: width * 0.2,
+                                                    width: width * 0.25,
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
@@ -554,6 +580,7 @@ class _Your_ordersState extends State<Your_orders> {
                                                           height: 20,
                                                           //color: Colors.green,
                                                           child: Text(
+                                                            // "",
                                                             "Rs ${orderlist[index]['total_amount'].toString()}",
                                                             textAlign: TextAlign
                                                                 .center,
@@ -569,25 +596,11 @@ class _Your_ordersState extends State<Your_orders> {
                                                           // color: Colors.blue,
                                                           height: 20,
                                                           width: 20,
-                                                          child: IconButton(
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .push(
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          const Yourorderdetail(),
-                                                                ),
-                                                              );
-                                                            },
-                                                            icon: const Icon(
-                                                              Icons
-                                                                  .arrow_forward_ios,
-                                                              color:
-                                                                  Colors.black,
-                                                              size: 15,
-                                                            ),
+                                                          child: const Icon(
+                                                            Icons
+                                                                .arrow_forward_ios,
+                                                            color: Colors.black,
+                                                            size: 13,
                                                           ),
                                                         ),
                                                       ],
@@ -597,13 +610,14 @@ class _Your_ordersState extends State<Your_orders> {
                                                     height: 5,
                                                   ),
                                                   Text(
+                                                    // "",
                                                     orderlist[index][
-                                                                'order_item_detail']
+                                                                'order_payment_detail']
                                                             [
                                                             'payment_status_text']
                                                         .toString(),
                                                     style: const TextStyle(
-                                                      color: Colors.black54,
+                                                      color: Colors.red,
                                                       fontSize: 14,
                                                     ),
                                                   ),
@@ -611,6 +625,64 @@ class _Your_ordersState extends State<Your_orders> {
                                               ),
                                             ],
                                           ),
+                                        ),
+                                        const Divider(
+                                          thickness: 1,
+                                          color: CupertinoColors.systemGrey6,
+                                        ),
+                                        Container(
+                                          height: 30,
+                                          // width: Sizee.width / 3,
+                                          width: width * 0.3,
+                                          child: RaisedButton(
+                                            elevation: 0,
+                                            color: const Color(0xFF000052),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const Yourorderdetail(),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text(
+                                              "Pay Now",
+                                              // orderlist[index][
+                                              // 'order_status_text']
+                                              //     .toString(),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        RichText(
+                                          text: const TextSpan(
+                                            text: "*",
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 14,
+                                            ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    "No Cash Payments Allowed",
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 12,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
                                         ),
                                       ],
                                     ),
@@ -646,50 +718,50 @@ class _Your_ordersState extends State<Your_orders> {
       };
       print(Header);
       //   var response = await http.post(Uri.parse(login), body: body);
+      print(GetCustomerorder_Api +
+          "?from_date=${fromdate.text}&to_date=${todate.text}&order_status=&search=&paginate=false");
       var response = await http.get(
-        Uri.parse(
-          GetCustomerorder_Api +
-              "?from_date=${DOBdateinput.text}&to_date=${Annidateinput.text}&order_status=&search=null&paginate=false",
-        ),
-        headers: Header,
-      );
+          Uri.parse(GetCustomerorder_Api
+              // + "?from_date=${fromdate.text}&to_date=${todate.text}&order_status=&search=&paginate=false",
+              ),
+          headers: Header);
 
       if (response.statusCode == 200) {
-        var decode = jsonDecode((response.body));
+        var decode = jsonDecode(response.body);
         print(decode);
-        if (decode["success"] = true) {
-          print(decode);
-          orderlist.clear();
-          orderlist = decode["data"]["data"];
-        } else {
-          // print(decode);
-          // print(json.decode(response.body)['errors']);
-          // String errorMsg = json.decode(response.body)["message"].toString();
-          // print(errorMsg);
-          // if (json.decode(response.body)['errors'] != null) {
-          //   Map errorMap = json.decode(response.body)["errors"].first;
-          //   for (String k in errorMap.keys) {
-          //     print(errorMap[k]);
-          //     errorMsg = errorMap[k][0] ??
-          //         json.decode(response.body)["message"].toString();
-          //     break;
-          //   }
-          // }
+
+        if (decode["success"] == true) {
           setState(() {
-            isReload = false;
+            //print("decode ${decode["data"][0]["data"]} " );
+            orderlist.clear();
+            orderlist = decode["data"]["data"];
           });
+        } else {
+          final snackBar = SnackBar(
+            content: Text(decode["message"].toString()),
+            action: SnackBarAction(
+              label: '',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            ),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
+
         setState(() {
           isReload = false;
         });
+      } else {
         print("Error" + response.statusCode.toString());
-        print("Error" + response.body);
+        print("Error" + response.body.toString());
       }
     } catch (e) {
       setState(() {
         isReload = false;
       });
-      print("Exception in Customerorder =>$e");
+      print("Exception in Today Attendance=>" + e.toString());
       throw e;
     }
   }

@@ -484,6 +484,10 @@ class _OTPScreenState extends State<OTPScreen> {
               await SharedPreferences.getInstance();
           sharedPreferences.setString(
               "token", decode["data"]["token"].toString());
+
+          var token = sharedPreferences.getString("token") ?? "";
+
+          print("token pref $token");
           setState(() {});
           LoginApiCall();
         } else {

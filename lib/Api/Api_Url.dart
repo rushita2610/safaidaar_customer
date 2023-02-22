@@ -12,6 +12,7 @@ const VerifyOTP_Api = BASEURL + 'mobile-verification-otp/verify?mobile=';
 const placeSearch_Api = BASEURL + "google-place-search";
 const Detail_Place_Api = BASEURL + "google-detail-place-search";
 const TopService_Api = BASEURL + 'customer/top-services?all=';
+const AllTopservices_Api = BASEURL + 'customer/top-services-vendor';
 const TopServicevendor_Api = BASEURL + 'customer/top-services-vendor?service_id=';
 const FeaturedStore_Api = BASEURL + 'customer/get-featured-vendor?lattitude=';
 const GetCustomerprofile_Api = BASEURL + 'customer/get-customer-profile?user_id=';
