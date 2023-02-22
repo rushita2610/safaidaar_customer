@@ -34,7 +34,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController DOBdateinput = TextEditingController();
   TextEditingController Annidateinput = TextEditingController();
 
-  // String bday = "dd MMM";
+//  String bday = "yyyy-MM-dd";
 
   //text editing controller for text field
   bool show_hide = false;
@@ -154,36 +154,6 @@ class _EditProfileState extends State<EditProfile> {
                                         radius: 55,
                                       ),
                               ),
-                              // imageFile == null
-                              //     ? InkWell(
-                              //         onTap: () {
-                              //           _getFromGallery(
-                              //               ImageSource.gallery, Type);
-                              //         },
-                              //         child: Container(
-                              //           // height: 20,
-                              //           // width: 20,
-                              //           decoration: BoxDecoration(
-                              //               shape: BoxShape.circle,
-                              //               color:
-                              //                   Colors.grey.withOpacity(0.1)),
-                              //           child: Image.asset(
-                              //               "assets/user_placeholder.png"),
-                              //         ),
-                              //       )
-                              //     : InkWell(
-                              //         onTap: () {
-                              //           _getFromGallery(
-                              //               ImageSource.gallery, Type);
-                              //         },
-                              //         child: ClipRRect(
-                              //           borderRadius: BorderRadius.circular(85),
-                              //           child: Image.file(
-                              //             imageFile!,
-                              //             fit: BoxFit.cover,
-                              //           ),
-                              //         ),
-                              //       ),
                             ),
                             Positioned(
                               top: Sizee.height / 8 + 10,
@@ -409,6 +379,7 @@ class _EditProfileState extends State<EditProfile> {
                           onTap: () async {
                             DOBdateinput.text = "";
                             DateTime? pickedDate = await showDatePicker(
+                                locale: const Locale('en', 'IN'),
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(1800),
@@ -437,15 +408,19 @@ class _EditProfileState extends State<EditProfile> {
                             if (pickedDate != null) {
                               print(
                                   pickedDate); //pickedDate output format => 2021-03-10
-                              String formattedDate =
-                                  DateFormat('dd MMM').format(pickedDate);
-                              print(
-                                  formattedDate); //formatted date output using intl package =>  2021-03-16
+                              // String formattedDate =
+                              //     DateFormat('dd MMM').format(pickedDate);
+                              String bday =
+                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                              String formatdate = bday;
+                              print(formatdate);
+                              // print(
+                              //     formattedDate); //formatted date output using intl package =>  2021-03-16
                               setState(() {
-                                DOBdateinput.text = formattedDate;
+                                DOBdateinput.text = formatdate;
                                 String datePattern = "dd MMM";
                                 DateTime birthDate = DateFormat(datePattern)
-                                    .parse(DOBdateinput.text.toString());
+                                    .parse(DOBdateinput.text);
                                 DateTime today = DateTime.now();
                                 print(today);
                                 int yearDiff = today.year - birthDate.year;
@@ -577,6 +552,7 @@ class _EditProfileState extends State<EditProfile> {
                           onTap: () async {
                             Annidateinput.text = "";
                             DateTime? pickedDate = await showDatePicker(
+                                locale: const Locale('en', 'IN'),
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(1800),
@@ -606,14 +582,15 @@ class _EditProfileState extends State<EditProfile> {
                               print(
                                   pickedDate); //pickedDate output format => 2021-03-10
                               String formattedDate =
-                                  DateFormat('dd MMM yy').format(pickedDate);
+                                  DateFormat('dd MMM yyyy ').format(pickedDate);
                               print(
                                   formattedDate); //formatted date output using intl package =>  2021-03-16
                               setState(() {
                                 Annidateinput.text = formattedDate;
-                                String datePattern = "dd MMM yy";
-                                DateTime annivsryDate = DateFormat(datePattern)
-                                    .parse(Annidateinput.text);
+                                // String datePattern = "d MM yyyy";
+                                DateTime annivsryDate =
+                                    DateFormat(formattedDate)
+                                        .parse(Annidateinput.text);
                                 DateTime today = DateTime.now();
                                 print(today);
                                 int yearDiff = today.year - annivsryDate.year;
@@ -798,8 +775,8 @@ class _EditProfileState extends State<EditProfile> {
         "email": Email.text.trim(),
         "mobile": "+91 ${MobileNumber.text.trim()}",
         "gender": statusid,
-        "dob": DOBdateinput.text.trim(),
-        "anniversary_date": Annidateinput.text.trim(),
+        "dob": DOBdateinput.text.toString(),
+        "anniversary_date": Annidateinput.text.toString(),
         "referral_mobile": "",
         //refferalcontact.text.length > 0 ? "+91 ${refferalcontact.text.trim()}": '',
       };
@@ -917,112 +894,6 @@ class _EditProfileState extends State<EditProfile> {
         print("Error " + response.statusCode.toString());
         // print("Error" + response.body.toString());
       }
-
-      // var request = http.MultipartRequest(
-      //   "POST",
-      //   Uri.parse(
-      //     Updatecustomerprofile_Api,
-      //   ),
-      // );
-      // // Map<String, String> headers = {
-      // //   'Content-Type': 'multipart/form-data',
-      // //   'token': token
-      // // };
-      // request.headers['Authorization'] = "Bearer ${token.toString()}";
-      // // request.headers["Content-Type"]='multipart/form-data';
-      // request.fields["customer_name"] = Customername.text;
-      // request.fields["email"] = Email.text;
-      // request.fields["preferred_language"] = dropdownValue;
-      // request.fields["dob"] = DOBdateinput.toString();
-      // request.fields["gender"] = statusitem;
-      // request.fields["anniversary_date"] = Annidateinput.toString();
-      // request.fields["status"] = userStatus.toString();
-      //
-      // if (imageFile != null) {
-      //   print(imageFile?.path.split(".").last);
-      //
-      //   request.files.add(await http.MultipartFile.fromPath(
-      //           'profile_image', imageFile?.path.toString() ?? "",
-      //           contentType: MediaType(
-      //               'application', "${imageFile?.path.split(".").last}"))
-      //
-      //       // http.MultipartFile.fromBytes(
-      //       //   "avatar",
-      //       //   imgFile?.readAsBytesSync(),
-      //       //   filename: "test.${imgFile?.path.split(".").last}",
-      //       //   contentType: MediaType(
-      //       //       "imgFile", "${imgFile?.path.split(".").last}"),
-      //       // ),
-      //
-      //       );
-      // }
-      //
-      // request.send().then((onValue) async {
-      //   print(onValue.statusCode);
-      //   final response = await request.send();
-      //   print(
-      //       "Response update Profile ==>> ${response.reasonPhrase.toString()}");
-      //   final respStr = await response.stream.bytesToString();
-      //   print("Response update Profile ==>> ${jsonDecode(respStr).toString()}");
-      //   if (onValue.statusCode == 200) {
-      //     var decode = jsonDecode(respStr);
-      //     if (decode["success"] == true) {
-      //       GetProfilAPIcall();
-      //     } else {
-      //       ScaffoldMessenger.of(context).showSnackBar(
-      //         SnackBar(
-      //           content: Container(
-      //             // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
-      //             height: 50,
-      //             width: MediaQuery.of(context).size.width,
-      //             child: Column(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               crossAxisAlignment: CrossAxisAlignment.start,
-      //               children: [
-      //                 const Text(
-      //                   'Status',
-      //                   style: TextStyle(
-      //                     color: Colors.white,
-      //                     fontSize: 17,
-      //                     fontWeight: FontWeight.w500,
-      //                   ),
-      //                 ),
-      //                 Text(
-      //                   decode["message"].toString(),
-      //                   style: const TextStyle(
-      //                     color: Colors.white,
-      //                     fontSize: 16,
-      //                     // fontWeight: FontWeight.w500,
-      //                   ),
-      //                 )
-      //               ],
-      //             ),
-      //           ),
-      //           duration: const Duration(seconds: 3),
-      //           backgroundColor: const Color(0xFF000052),
-      //           behavior: SnackBarBehavior.floating,
-      //           shape: RoundedRectangleBorder(
-      //             borderRadius: BorderRadius.circular(15),
-      //           ),
-      //           margin: EdgeInsets.only(
-      //               bottom: MediaQuery.of(context).size.height / 1 - 120,
-      //               right: 20,
-      //               left: 20),
-      //         ),
-      //       );
-      //     }
-      //   } else {
-      //     setState(() {
-      //       isReload = false;
-      //     });
-      //     print("Error " + response.statusCode.toString());
-      //    // print("Error" + response.body.toString());
-      //   }
-      //   print(onValue.toString());
-      //   print(onValue.headers);
-      //   print(onValue.contentLength);
-      // });
-
     } catch (e) {
       setState(() {
         isReload = false;
