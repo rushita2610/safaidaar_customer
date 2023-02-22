@@ -408,17 +408,12 @@ class _EditProfileState extends State<EditProfile> {
                             if (pickedDate != null) {
                               print(
                                   pickedDate); //pickedDate output format => 2021-03-10
-                              // String formattedDate =
-                              //     DateFormat('dd MMM').format(pickedDate);
-                              String bday =
+                              String formattedDate =
                                   DateFormat('yyyy-MM-dd').format(pickedDate);
-                              String formatdate = bday;
-                              print(formatdate);
-                              // print(
-                              //     formattedDate); //formatted date output using intl package =>  2021-03-16
+                              print(formattedDate);
                               setState(() {
-                                DOBdateinput.text = formatdate;
-                                String datePattern = "dd MMM";
+                                DOBdateinput.text = formattedDate;
+                                String datePattern = "yyyy-MM-dd";
                                 DateTime birthDate = DateFormat(datePattern)
                                     .parse(DOBdateinput.text);
                                 DateTime today = DateTime.now();
@@ -552,48 +547,46 @@ class _EditProfileState extends State<EditProfile> {
                           onTap: () async {
                             Annidateinput.text = "";
                             DateTime? pickedDate = await showDatePicker(
-                                locale: const Locale('en', 'IN'),
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1800),
-                                //DateTime.now() - not to allow to choose before today.
-                                lastDate: DateTime.now(),
-                                builder: (context, child) {
-                                  return Theme(
-                                      data: Theme.of(context).copyWith(
-                                        colorScheme: const ColorScheme.light(
-                                          primary: Color(0xFF000052),
-                                          // <-- SEE HERE
-                                          onPrimary: Colors.white,
-                                          // <-- SEE HERE
-                                          onSurface:
-                                              Colors.black, // <-- SEE HERE
-                                        ),
-                                        textButtonTheme: TextButtonThemeData(
-                                          style: TextButton.styleFrom(
-                                            primary: const Color(
-                                                0xFF000052), // button text color
-                                          ),
+                              // locale: const Locale('en', 'IN'),
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1800),
+                              //DateTime.now() - not to allow to choose before today.
+                              lastDate: DateTime.now(),
+                              builder: (context, child) {
+                                return Theme(
+                                    data: Theme.of(context).copyWith(
+                                      colorScheme: const ColorScheme.light(
+                                        primary: Color(0xFF000052),
+                                        // <-- SEE HERE
+                                        onPrimary: Colors.white,
+                                        // <-- SEE HERE
+                                        onSurface: Colors.black, // <-- SEE HERE
+                                      ),
+                                      textButtonTheme: TextButtonThemeData(
+                                        style: TextButton.styleFrom(
+                                          primary: const Color(
+                                              0xFF000052), // button text color
                                         ),
                                       ),
-                                      child: child!);
-                                }); //DateTime(2023));
+                                    ),
+                                    child: child!);
+                              },
+                            ); //DateTime(2023));
                             if (pickedDate != null) {
                               print(
                                   pickedDate); //pickedDate output format => 2021-03-10
                               String formattedDate =
-                                  DateFormat('dd MMM yyyy ').format(pickedDate);
-                              print(
-                                  formattedDate); //formatted date output using intl package =>  2021-03-16
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
+                              print(formattedDate);
                               setState(() {
                                 Annidateinput.text = formattedDate;
-                                // String datePattern = "d MM yyyy";
-                                DateTime annivsryDate =
-                                    DateFormat(formattedDate)
-                                        .parse(Annidateinput.text);
+                                String datePattern = "yyyy-MM-dd";
+                                DateTime annidate = DateFormat(datePattern)
+                                    .parse(Annidateinput.text);
                                 DateTime today = DateTime.now();
                                 print(today);
-                                int yearDiff = today.year - annivsryDate.year;
+                                int yearDiff = today.year - annidate.year;
                                 print("year $yearDiff");
                                 //set output date to TextField value.
                               });

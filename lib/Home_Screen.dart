@@ -1113,7 +1113,9 @@ class _homeScreenState extends State<homeScreen> {
                                 } else if (menuname[index] == "Address Book") {
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return  AddressScreen(Address: Address,);
+                                    return AddressScreen(
+                                      Address: Address,
+                                    );
                                   }));
                                 } else if (menuname[index] == "Notifications") {
                                   Navigator.of(context).push(
@@ -1179,14 +1181,6 @@ class _homeScreenState extends State<homeScreen> {
                                     ),
                                   );
                                 } else if (menuname[index] == "Log Out") {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  prefs.clear();
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => const Login(),
-                                    ),
-                                  );
                                   LogoutAPIcall();
                                 } else if (menuname[index] == "Log In") {
                                   SharedPreferences prefs =
@@ -1285,6 +1279,7 @@ class _homeScreenState extends State<homeScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token") ?? "";
       print(token);
+
       final Header = {
         "Authorization": "Bearer ${token.toString()}",
       };
@@ -1349,7 +1344,7 @@ class _homeScreenState extends State<homeScreen> {
         );
 
         SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+            await SharedPreferences.getInstance();
         sharedPreferences.clear();
         sharedPreferences.setString("isLogin", "logOut");
 
@@ -1411,47 +1406,6 @@ class _homeScreenState extends State<homeScreen> {
       throw e;
     }
   }
-
-  // FeatureStore_ApiCall() async {
-  //   setState(() {
-  //     isReload = true;
-  //   });
-  //   try {
-  //     final body = {
-  //       "lattitude" : "23.040158",
-  //       "longitude" : "72.560379",
-  //     };
-  //     final Header = {
-  //       'Content-type': 'application/json',
-  //       'Accept': 'application/json',
-  //     };
-  //     //print(body);
-  //     var response = await http.get(
-  //       Uri.parse(FeaturedStore_Api), headers: Header,
-  //     );
-  //     if (response.statusCode == 200) {
-  //       var decode = jsonDecode(response.body);
-  //       print(decode);
-  //       if (decode["success"] == true) {
-  //         featuredstorelist.clear();
-  //         featuredstorelist = decode["data"];
-  //         print(decode);
-  //       } else {}
-  //       setState(() {
-  //         isReload = false;
-  //       });
-  //     } else {
-  //       print("Error" + response.statusCode.toString());
-  //       print("Error" + response.body.toString());
-  //     }
-  //   } catch (e) {
-  //     setState(() {
-  //       isReload = false;
-  //     });
-  //     print("Exception in featurestore =>" + e.toString());
-  //     throw e;
-  //   }
-  // }
 
   _launchUrl() async {
     if (!await launchUrl(_url)) {
