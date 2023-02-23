@@ -36,7 +36,8 @@ class Servicescreen extends StatefulWidget {
 }
 
 class _ServicescreenState extends State<Servicescreen> {
-  bool? isReload;
+  bool isReload = false;
+  String serviceid = "";
 
   @override
   void initState() {
@@ -52,110 +53,118 @@ class _ServicescreenState extends State<Servicescreen> {
     //final Sizee = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
           backgroundColor: Colors.white,
-          elevation: 0,
-          automaticallyImplyLeading: true,
-          title: Transform(
-            transform: Matrix4.translationValues(-55, 0.0, 0.0),
-            child: const Text(
-              "Services",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 20,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            automaticallyImplyLeading: true,
+            title: Transform(
+              transform: Matrix4.translationValues(-55, 0.0, 0.0),
+              child: const Text(
+                "Services",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
-        ),
-        body: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
-          child: Container(
-            height: height,
-            //   color: Colors.red,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                (topserviceslist.length > 0)
-                    ? Container(
-                        padding: const EdgeInsets.only(top: 15),
-                        height: height * 0.5,
-                        width: width,
-                        // color: Colors.green,
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 35,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 0.6,
-                          ),
-                          itemCount: topserviceslist.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => Servicedetail(),
+          body: (isReload == false)
+              ? SingleChildScrollView(
+                  physics: NeverScrollableScrollPhysics(),
+                  child: Container(
+                    height: height,
+                    //   color: Colors.red,
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        (topserviceslist.length > 0)
+                            ? Container(
+                                padding: const EdgeInsets.only(top: 15),
+                                height: height * 0.5,
+                                width: width,
+                                // color: Colors.green,
+                                child: GridView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 35,
+                                    mainAxisSpacing: 15,
+                                    childAspectRatio: 0.6,
                                   ),
-                                );
-                              },
-                              child: Container(
-                                // color: Colors.red,
-                                padding: const EdgeInsets.only(
-                                  bottom: 5,
-                                ),
-                                width: width * 0.3,
-                                // height:height * 0.1,
-                                child: Column(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.circular(
-                                          70),
+                                  itemCount: topserviceslist.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        topserviceslist[index]['service_id']
+                                            .toString();
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                Servicedetail(serviceid: topserviceslist[index]['service_id']
+                                                    .toString(),),
+                                          ),
+                                        );
+                                      },
                                       child: Container(
-                                        decoration:
-                                        const BoxDecoration(
-                                          shape: BoxShape.circle,
+                                        // color: Colors.red,
+                                        padding: const EdgeInsets.only(
+                                          bottom: 5,
                                         ),
-                                        child: Image.network(
-                                          topserviceslist[index]
-                                          ['image'],
-                                          fit: BoxFit.fill,
+                                        width: width * 0.3,
+                                        // height:height * 0.1,
+                                        child: Column(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(70),
+                                              child: Container(
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Image.network(
+                                                  topserviceslist[index]
+                                                      ['image'],
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            Container(
+                                              height: 35,
+                                              child: Text(
+                                                topserviceslist[index]['name'],
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    Container(
-                                      height: 35,
-                                      child: Text(
-                                        topserviceslist[index]['name'],
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      )
-                    : const SizedBox(),
-              ],
-            ),
-          ),
-        ),
-      ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                  ),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF000052),
+                  ),
+                )),
     );
   }
 
@@ -195,5 +204,4 @@ class _ServicescreenState extends State<Servicescreen> {
       throw e;
     }
   }
-
 }

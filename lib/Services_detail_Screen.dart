@@ -9,41 +9,43 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Api/Api_Url.dart';
 
 class Servicedetail extends StatefulWidget {
-  const Servicedetail({Key? key}) : super(key: key);
+  String serviceid = "";
+
+  Servicedetail({Key? key, required this.serviceid}) : super(key: key);
 
   @override
   State<Servicedetail> createState() => _ServicedetailState();
 }
 
 class _ServicedetailState extends State<Servicedetail> {
-  bool? isReload;
+  bool? isReload = false;
 
   String strtitle = '';
   List<dynamic> topserviceslist = [
-    {
-      'image': 'assets/exp1.jpg',
-      'name': 'Exp-1',
-      'deliveryrange': 66,
-      'starting': 52.5,
-    },
-    {
-      'image': 'assets/exp2.jpg',
-      'name': 'Exp-2',
-      'deliveryrange': 50,
-      'starting': 65.5,
-    },
-    {
-      'image': 'assets/exp1.jpg',
-      'name': 'Exp-3',
-      'deliveryrange': 55,
-      'starting': 89.5,
-    },
-    {
-      'image': 'assets/exp1.jpg',
-      'name': 'Exp-4',
-      'deliveryrange': 72,
-      'starting': 40.5,
-    },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-1',
+    //   'deliveryrange': 66,
+    //   'starting': 52.5,
+    // },
+    // {
+    //   'image': 'assets/exp2.jpg',
+    //   'name': 'Exp-2',
+    //   'deliveryrange': 50,
+    //   'starting': 65.5,
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-3',
+    //   'deliveryrange': 55,
+    //   'starting': 89.5,
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-4',
+    //   'deliveryrange': 72,
+    //   'starting': 40.5,
+    // },
   ];
 
   @override
@@ -84,12 +86,12 @@ class _ServicedetailState extends State<Servicedetail> {
             ),
           ),
         ),
-        body: (isReload = false)
+        body: (isReload == false)
             ? SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Container(
-                  height: Sizee.height * 1.9,
-                  width: Sizee.width,
+                  // height: Sizee.height * 1.9,
+                  // width: Sizee.width,
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
@@ -146,7 +148,7 @@ class _ServicedetailState extends State<Servicedetail> {
                                     children: [
                                       Positioned(
                                         left: 0,
-                                        bottom: Sizee.height / 6,
+                                        bottom: Sizee.height / 9.5,
                                         right: 0,
                                         top: 0,
                                         child: Container(
@@ -154,8 +156,7 @@ class _ServicedetailState extends State<Servicedetail> {
                                           child: ClipRRect(
                                             child: Image.network(
                                               topserviceslist[index]
-                                                          ['vendor_list'][0]
-                                                      ["vendor_banner_image"]
+                                                      ['vendor_banner_image']
                                                   .toString(),
                                               fit: BoxFit.fill,
                                             ),
@@ -167,68 +168,76 @@ class _ServicedetailState extends State<Servicedetail> {
                                         // top: 50,
                                         right: 10,
                                         bottom: 0,
-                                        height: Sizee.height / 6.5,
+                                        height: Sizee.height / 11.5,
                                         child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              topserviceslist[index]
-                                                          ['vendor_list'][0]
-                                                      ["vendor_name"]
-                                                  .toString(),
-                                              maxLines: 2,
-                                              textAlign: TextAlign.left,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 19,
-                                              ),
-                                            ),
                                             Container(
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xFF000052),
-                                                  borderRadius:
-                                                      BorderRadius.circular(7)),
-                                              height: 25,
-                                              width: 55,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  const Icon(
-                                                    Icons.star,
-                                                    color: Colors.white,
-                                                    size: 20,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 2,
-                                                  ),
-                                                  Text(
-                                                    topserviceslist[index]
-                                                                ['vendor_list']
-                                                            [0]["rating"]
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  )
-                                                ],
+                                              height: 30,
+                                              child: Text(
+                                                topserviceslist[index]
+                                                        ['vendor_name']
+                                                    .toString(),
+                                                maxLines: 2,
+                                                textAlign: TextAlign.left,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 19,
+                                                ),
                                               ),
                                             ),
+                                            topserviceslist[index]["rating"] ==
+                                                    "0"
+                                                ? SizedBox()
+                                                : Container(
+                                                    decoration: BoxDecoration(
+                                                        color: const Color(
+                                                            0xFF000052),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7)),
+                                                    height: 25,
+                                                    width: 55,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.star,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 2,
+                                                        ),
+                                                        Text(
+                                                          topserviceslist[index]
+                                                                  ["rating"]
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
                                           ],
                                         ),
                                       ),
                                       Positioned(
-                                        bottom: 20,
+                                        bottom: 0,
                                         height: 70,
                                         left: 10,
                                         child: Row(
@@ -256,7 +265,7 @@ class _ServicedetailState extends State<Servicedetail> {
                                                         const EdgeInsets.only(
                                                             left: 7),
                                                     child: Text(
-                                                      "Delivery Range: ${topserviceslist[index]['vendor_list'][0]['delivery_range'].toString()} KM",
+                                                      "Delivery Range: ${topserviceslist[index]['delivery_range'].toString()} KM",
                                                       style: const TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.grey,
@@ -267,7 +276,7 @@ class _ServicedetailState extends State<Servicedetail> {
                                               ),
                                             ),
                                             Container(
-                                              width: Sizee.width / 2 - 55,
+                                              width: Sizee.width / 2 - 45,
                                               //  color:Colors.grey,
                                               child: Row(
                                                 crossAxisAlignment:
@@ -291,7 +300,7 @@ class _ServicedetailState extends State<Servicedetail> {
                                                         const EdgeInsets.only(
                                                             left: 7),
                                                     child: Text(
-                                                      "Starting From Rs ${topserviceslist[index]['vendor_list'][0]['min_price'].toString()}",
+                                                      "Starting From Rs ${topserviceslist[index]['min_price'].toString()}",
                                                       style: const TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.grey,
@@ -331,22 +340,29 @@ class _ServicedetailState extends State<Servicedetail> {
     });
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var service_id = prefs.getString("service_id") ?? "";
-      print(AllTopservices_Api +
-          "?service_id=$service_id&lattitude=23.03984909999999&longitude=72.5602797");
+      // var service_id = prefs.getString("service_id") ?? "";
+      // print(service_id);
+      print(
+        AllTopservices_Api +
+            "?service_id=${widget.serviceid}&lattitude=23.03984909999999&longitude=72.5602797",
+      );
       var response = await http.get(
-        Uri.parse(AllTopservices_Api
-            + "?service_id=$service_id&lattitude=23.03984909999999&longitude=72.5602797",
-            ),
+        Uri.parse(
+          AllTopservices_Api +
+              "?service_id=${widget.serviceid}&lattitude=23.03984909999999&longitude=72.5602797",
+        ),
       );
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
         print(response.body);
         if (decode["success"] = true) {
-          print("${decode}1");
-          topserviceslist.clear();
-          topserviceslist = decode["data"];
+          print("decode 1 ${decode}");
           strtitle = decode["data"]["service_name"].toString();
+          print("strtitle 1 ${strtitle}");
+
+          topserviceslist.clear();
+          topserviceslist = decode["data"]["vendor_list"];
+          print("topserviceslist 1 ${topserviceslist}");
         } else {}
         setState(() {
           isReload = false;
