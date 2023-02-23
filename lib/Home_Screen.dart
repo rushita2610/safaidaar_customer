@@ -27,33 +27,6 @@ import 'package:http/http.dart' as http;
 
 import 'Login.dart';
 
-List<dynamic> featuredstorelist = [
-  {
-    'image': 'assets/exp1.jpg',
-    'name': 'Exp-1',
-    'deliveryrange': 66,
-    'starting': 52.5,
-  },
-  {
-    'image': 'assets/exp2.jpg',
-    'name': 'Exp-2',
-    'deliveryrange': 50,
-    'starting': 65.5,
-  },
-  {
-    'image': 'assets/exp1.jpg',
-    'name': 'Exp-3',
-    'deliveryrange': 55,
-    'starting': 89.5,
-  },
-  {
-    'image': 'assets/exp1.jpg',
-    'name': 'Exp-4',
-    'deliveryrange': 72,
-    'starting': 40.5,
-  },
-];
-
 List<dynamic> crazyofferlist = [
   {
     'image': 'assets/customer_application_logo.svg',
@@ -99,6 +72,34 @@ class homeScreen extends StatefulWidget {
 
 class _homeScreenState extends State<homeScreen> {
   bool isReload = false;
+  String serviceid = "";
+
+  List<dynamic> featuredstorelist = [
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-1',
+    //   'deliveryrange': 66,
+    //   'starting': 52.5,
+    // },
+    // {
+    //   'image': 'assets/exp2.jpg',
+    //   'name': 'Exp-2',
+    //   'deliveryrange': 50,
+    //   'starting': 65.5,
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-3',
+    //   'deliveryrange': 55,
+    //   'starting': 89.5,
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-4',
+    //   'deliveryrange': 72,
+    //   'starting': 40.5,
+    // },
+  ];
 
   List<dynamic> menuassets = [
     "assets/your-orders.png",
@@ -154,8 +155,22 @@ class _homeScreenState extends State<homeScreen> {
     // HomeBannerApi();
     setDrawerdata();
     TopServices_ApiCall();
-    // FeatureStore_ApiCall();
+    FeatureStore_ApiCall(false);
+    profile();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        if (currentPage != lastPage) {
+          FeatureStore_ApiCall(true);
+        }
+        print("orderlist pagination");
+      }
+    });
     super.initState();
+  }
+
+  profile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
   }
 
   setDrawerdata() async {
@@ -186,6 +201,12 @@ class _homeScreenState extends State<homeScreen> {
       'https://www.youtube.com/channel/UC97VZs521SmVItFVp33E6kA?themeRefresh=1');
 
   String Address = 'search';
+
+  int currentPage = 0;
+  int lastPage = 0;
+  int pageIndex = 0;
+  bool isReloadPagination = false;
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -404,10 +425,18 @@ class _homeScreenState extends State<homeScreen> {
                                             (BuildContext context, int index) {
                                           return InkWell(
                                             onTap: () {
+                                              topserviceslist[index]
+                                                      ['service_id']
+                                                  .toString();
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const Servicedetail(),
+                                                      Servicedetail(
+                                                    serviceid:
+                                                        topserviceslist[index]
+                                                                ['service_id']
+                                                            .toString(),
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -512,6 +541,7 @@ class _homeScreenState extends State<homeScreen> {
                         height: 20,
                       ),
                       Flexible(
+                        flex: 0,
                         child: Container(
                           // padding: const EdgeInsets.only(bottom: 10),
                           // height: Sizee.height,
@@ -585,7 +615,7 @@ class _homeScreenState extends State<homeScreen> {
                                   ? Container(
                                       padding: const EdgeInsets.only(top: 15),
                                       // height: Sizee.height / 2.5,
-                                      height: featuredstorelist.length * 70,
+                                      height: featuredstorelist.length * 60,
                                       // width: Sizee.width + 10,
                                       // color: Colors.green,
                                       child: ListView.builder(
@@ -604,8 +634,8 @@ class _homeScreenState extends State<homeScreen> {
                                               padding: const EdgeInsets.only(
                                                 bottom: 30,
                                               ),
-                                              width: 200,
-                                              // height: 180,
+                                              width: 220,
+                                              // height: 100,
                                               child: Card(
                                                 elevation: 4,
                                                 shape: RoundedRectangleBorder(
@@ -640,9 +670,11 @@ class _homeScreenState extends State<homeScreen> {
                                                               BorderRadius
                                                                   .circular(
                                                                       10.0),
-                                                          child: Image.asset(
+                                                          child: Image.network(
                                                             featuredstorelist[
-                                                                index]['image'],
+                                                                        index][
+                                                                    'vendor_banner_image']
+                                                                .toString(),
                                                             fit: BoxFit.fill,
                                                           ),
                                                         ),
@@ -656,7 +688,9 @@ class _homeScreenState extends State<homeScreen> {
                                                         height: height * 0.12,
                                                         child: Text(
                                                           featuredstorelist[
-                                                              index]['name'],
+                                                                      index][
+                                                                  'vendor_name']
+                                                              .toString(),
                                                           maxLines: 2,
                                                           textAlign:
                                                               TextAlign.left,
@@ -671,7 +705,7 @@ class _homeScreenState extends State<homeScreen> {
                                                       ),
                                                       Positioned(
                                                         bottom: 45,
-                                                        // height: Sizee.height / 8.5,
+                                                        height: height * 0.02,
                                                         left: 10,
                                                         child: Row(
                                                           children: [
@@ -694,7 +728,7 @@ class _homeScreenState extends State<homeScreen> {
                                                                           .only(
                                                                       left: 7),
                                                               child: Text(
-                                                                "Delivery Range: ${featuredstorelist[index]['deliveryrange']} KM",
+                                                                "Delivery Range: ${featuredstorelist[index]['delivery_range'].toString()} KM",
                                                                 style:
                                                                     const TextStyle(
                                                                   fontSize: 12,
@@ -707,9 +741,9 @@ class _homeScreenState extends State<homeScreen> {
                                                         ),
                                                       ),
                                                       Positioned(
-                                                        bottom: 20,
+                                                        bottom: 15,
                                                         left: 10,
-                                                        // height: Sizee.height / ,
+                                                        //  height: height * 1,
                                                         child: Row(
                                                           children: [
                                                             Container(
@@ -730,7 +764,7 @@ class _homeScreenState extends State<homeScreen> {
                                                                           .only(
                                                                       left: 7),
                                                               child: Text(
-                                                                "Starting From Rs ${featuredstorelist[index]['starting']}",
+                                                                "Starting From Rs ${featuredstorelist[index]['min_price'].toString()}",
                                                                 style:
                                                                     const TextStyle(
                                                                   fontSize: 12,
@@ -746,48 +780,56 @@ class _homeScreenState extends State<homeScreen> {
                                                         top: 8,
                                                         left: 10,
                                                         // right: 0,
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              color: const Color(
-                                                                  0xFF000052),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                          height: 25,
-                                                          width: 70,
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: const [
-                                                              Icon(
-                                                                Icons.star,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 20,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 2,
-                                                              ),
-                                                              Text(
-                                                                "3",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 17,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                        child: featuredstorelist[
+                                                                        index][
+                                                                    "rating"] ==
+                                                                "0"
+                                                            ? SizedBox()
+                                                            : Container(
+                                                                decoration: BoxDecoration(
+                                                                    color: const Color(
+                                                                        0xFF000052),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10)),
+                                                                height: 25,
+                                                                width: 70,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    const Icon(
+                                                                      Icons
+                                                                          .star,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      size: 20,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      featuredstorelist[index]
+                                                                              [
+                                                                              "rating"]
+                                                                          .toString(),
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            17,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                      ),
+                                                                    )
+                                                                  ],
                                                                 ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
+                                                              ),
                                                       ),
                                                     ],
                                                   ),
@@ -1244,7 +1286,7 @@ class _homeScreenState extends State<homeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Closeaccountscreen(),
+                              builder: (context) => const Closeaccountscreen(),
                             ),
                           );
                         },
@@ -1403,6 +1445,71 @@ class _homeScreenState extends State<homeScreen> {
         isReload = false;
       });
       print("Exception in Today Attendance=>" + e.toString());
+      throw e;
+    }
+  }
+
+  FeatureStore_ApiCall(bool isPaginate) async {
+    setState(() {
+      if (!isPaginate) {
+        isReload = true;
+      } else {
+        isReloadPagination = true;
+      }
+    });
+    try {
+      // final Header = {
+      //   'Content-type': 'application/json',
+      //   'Accept': 'application/json',
+      // };
+      print(FeaturedStore_Api +
+          "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}");
+      var response = await http.get(Uri.parse(FeaturedStore_Api +
+          "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}"));
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] == true) {
+          setState(() {
+            currentPage = decode["data"]["current_page"];
+            lastPage = decode["data"]["last_page"];
+            if (currentPage == 1) {
+              featuredstorelist.clear();
+            }
+
+            for (int i = 0; i < decode["data"]["data"].length; i++) {
+              featuredstorelist.add(decode['data']['data'][i]);
+            }
+            //print("decode ${decode["data"][0]["data"]} " );
+            // orderlist.clear();
+            // orderlist = decode["data"]["data"];
+          });
+          // featuredstorelist.clear();
+          // featuredstorelist = decode["data"]["data"];
+          print(decode);
+        } else {
+          print("Error");
+        }
+        setState(() {
+          if (!isPaginate) {
+            isReload = false;
+          } else {
+            isReloadPagination = false;
+          }
+        });
+      } else {
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        if (!isPaginate) {
+          isReload = false;
+        } else {
+          isReloadPagination = false;
+        }
+      });
+      print("Exception in featurestore =>$e");
       throw e;
     }
   }
@@ -1630,7 +1737,7 @@ class _homeScreenState extends State<homeScreen> {
                       height: addresslist.length * 100,
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: addresslist.length,
                           itemBuilder: (BuildContext cntx, int index) {
                             return InkWell(
