@@ -27,19 +27,6 @@ import 'package:http/http.dart' as http;
 
 import 'Login.dart';
 
-List<dynamic> crazyofferlist = [
-  {
-    'image': 'assets/customer_application_logo.svg',
-    'name': 'Diyanshi',
-    'offer': 10,
-  },
-  {
-    'image': 'assets/customer_application_logo.svg',
-    'name': 'Diyanshi',
-    'offer': 20,
-  },
-];
-
 List<dynamic> topserviceslist = [
   // {
   //   'image': 'assets/splash-1.png',
@@ -73,6 +60,19 @@ class homeScreen extends StatefulWidget {
 class _homeScreenState extends State<homeScreen> {
   bool isReload = false;
   String serviceid = "";
+
+  List<dynamic> crazyofferlist = [
+    // {
+    //   'image': 'assets/customer_application_logo.svg',
+    //   'name': 'Diyanshi',
+    //   'offer': 10,
+    // },
+    // {
+    //   'image': 'assets/customer_application_logo.svg',
+    //   'name': 'Diyanshi',
+    //   'offer': 20,
+    // },
+  ];
 
   List<dynamic> featuredstorelist = [
     // {
@@ -156,6 +156,7 @@ class _homeScreenState extends State<homeScreen> {
     setDrawerdata();
     TopServices_ApiCall();
     FeatureStore_ApiCall(false);
+    GetOffer_ApiCall();
     profile();
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
@@ -648,11 +649,29 @@ class _homeScreenState extends State<homeScreen> {
                                                 color: Colors.white,
                                                 child: GestureDetector(
                                                   onTap: () {
+                                                    featuredstorelist[index]
+                                                            ["user_id"]
+                                                        .toString();
+                                                    featuredstorelist[index]
+                                                            ["vendor_id"]
+                                                        .toString();
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             DetailFeatured_Store(
                                                           isFrom: 'service',
+                                                          userid:
+                                                              featuredstorelist[
+                                                                          index]
+                                                                      [
+                                                                      "user_id"]
+                                                                  .toString(),
+                                                          vendorid:
+                                                              featuredstorelist[
+                                                                          index]
+                                                                      [
+                                                                      "vendor_id"]
+                                                                  .toString(),
                                                         ),
                                                       ),
                                                     );
@@ -847,6 +866,7 @@ class _homeScreenState extends State<homeScreen> {
                         height: 20,
                       ),
                       Flexible(
+                        flex: 0,
                         child: Container(
                           // padding: const EdgeInsets.only(bottom: 10),
                           // height: Sizee.height,
@@ -921,7 +941,7 @@ class _homeScreenState extends State<homeScreen> {
                                   ? Container(
                                       padding: const EdgeInsets.only(top: 15),
                                       // height: Sizee.height / 2.5,
-                                      height: crazyofferlist.length * 130,
+                                      height: crazyofferlist.length * 90,
                                       // width: Sizee.width + 10,
                                       // color: Colors.green,
                                       child: ListView.builder(
@@ -940,7 +960,7 @@ class _homeScreenState extends State<homeScreen> {
                                               padding: const EdgeInsets.only(
                                                 bottom: 30,
                                               ),
-                                              width: 200,
+                                              width: 220,
                                               // height: 180,
                                               child: Card(
                                                 elevation: 4,
@@ -954,12 +974,29 @@ class _homeScreenState extends State<homeScreen> {
                                                 color: Colors.white,
                                                 child: GestureDetector(
                                                   onTap: () {
+                                                    crazyofferlist[index]
+                                                            ["offer_id"]
+                                                        .toString();
+                                                    crazyofferlist[index]
+                                                            ["vendor_id"]
+                                                        .toString();
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DetailFeatured_Store(
-                                                                isFrom: 'offer',
-                                                              )),
+                                                        builder: (context) =>
+                                                            DetailFeatured_Store(
+                                                          isFrom: 'offer',
+                                                          userid: crazyofferlist[
+                                                                      index]
+                                                                  ["offer_id"]
+                                                              .toString(),
+                                                          vendorid:
+                                                              crazyofferlist[
+                                                                          index]
+                                                                      [
+                                                                      "vendor_id"]
+                                                                  .toString(),
+                                                        ),
+                                                      ),
                                                     );
                                                   },
                                                   child: Stack(
@@ -975,10 +1012,11 @@ class _homeScreenState extends State<homeScreen> {
                                                               BorderRadius
                                                                   .circular(
                                                                       10.0),
-                                                          child:
-                                                              SvgPicture.asset(
+                                                          child: Image.network(
                                                             crazyofferlist[
-                                                                index]['image'],
+                                                                        index][
+                                                                    'offer_image']
+                                                                .toString(),
                                                             fit: BoxFit.fill,
                                                           ),
                                                         ),
@@ -991,8 +1029,9 @@ class _homeScreenState extends State<homeScreen> {
                                                         // height: Sizee.height / 8,
                                                         height: height * 0.08,
                                                         child: Text(
-                                                          crazyofferlist[index]
-                                                              ['name'],
+                                                          crazyofferlist[index][
+                                                                  'vendor_name']
+                                                              .toString(),
                                                           maxLines: 2,
                                                           textAlign:
                                                               TextAlign.left,
@@ -1015,7 +1054,7 @@ class _homeScreenState extends State<homeScreen> {
                                                                       .only(
                                                                   left: 7),
                                                           child: Text(
-                                                            "${crazyofferlist[index]['offer']} % off on some services",
+                                                            "${crazyofferlist[index]['amount_percentage'].toString()} % off on some services",
                                                             style:
                                                                 const TextStyle(
                                                               fontSize: 12,
@@ -1510,6 +1549,49 @@ class _homeScreenState extends State<homeScreen> {
         }
       });
       print("Exception in featurestore =>$e");
+      throw e;
+    }
+  }
+
+  GetOffer_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      var user_id = prefs.getString("id") ?? "";
+
+      print(GetOffers_Api +
+          "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}");
+      var response = await http.get(
+        Uri.parse(GetOffers_Api +
+            "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}"),
+      );
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          crazyofferlist.clear();
+          crazyofferlist = decode["data"]["data"];
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+
+        setState(() {
+          isReload = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getoffer =>" + e.toString());
       throw e;
     }
   }

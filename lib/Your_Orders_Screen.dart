@@ -760,70 +760,98 @@ class _Your_ordersState extends State<Your_orders> {
                                                         ],
                                                       ),
                                                     ),
-                                                    const Divider(
-                                                      thickness: 1,
-                                                      color: CupertinoColors
-                                                          .systemGrey6,
-                                                    ),
-                                                    Container(
-                                                      height: 30,
-                                                      // width: Sizee.width / 3,
-                                                      width: width * 0.3,
-                                                      child: RaisedButton(
-                                                        elevation: 0,
-                                                        color: const Color(
-                                                            0xFF000052),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .push(
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const Yourorderdetail(),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: const Text(
-                                                          "Pay Now",
-                                                          // orderlist[index][
-                                                          // 'order_status_text']
-                                                          //     .toString(),
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
+                                                    orderlist[index][
+                                                                    'order_payment_detail']
+                                                                [
+                                                                'payment_status_text'] ==
+                                                            "Paid"
+                                                        ? SizedBox()
+                                                        : Column(
+                                                            children: [
+                                                              const Divider(
+                                                                thickness: 1,
+                                                                color: CupertinoColors
+                                                                    .systemGrey6,
+                                                              ),
+                                                              Container(
+                                                                height: 30,
+                                                                // width: Sizee.width / 3,
+                                                                width:
+                                                                    width * 0.3,
+                                                                child:
+                                                                    RaisedButton(
+                                                                  elevation: 0,
+                                                                  color: const Color(
+                                                                      0xFF000052),
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(8),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .push(
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                const Yourorderdetail(),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    "Pay Now",
+                                                                    // orderlist[index][
+                                                                    // 'order_status_text']
+                                                                    //     .toString(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              RichText(
+                                                                text:
+                                                                    const TextSpan(
+                                                                  text: "*",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontSize:
+                                                                        14,
+                                                                  ),
+                                                                  children: <
+                                                                      TextSpan>[
+                                                                    TextSpan(
+                                                                      text:
+                                                                          "No Cash Payments Allowed",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .red,
+                                                                        fontSize:
+                                                                            12,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    RichText(
-                                                      text: const TextSpan(
-                                                        text: "*",
-                                                        style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 14,
-                                                        ),
-                                                        children: <TextSpan>[
-                                                          TextSpan(
-                                                            text:
-                                                                "No Cash Payments Allowed",
-                                                            style: TextStyle(
-                                                              color: Colors.red,
-                                                              fontSize: 12,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -868,7 +896,8 @@ class _Your_ordersState extends State<Your_orders> {
                                             child: RaisedButton(
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(10)),
+                                                      BorderRadius.circular(
+                                                          10)),
                                               color: const Color(0xFF000052),
                                               onPressed: () {
                                                 Navigator.of(context).push(

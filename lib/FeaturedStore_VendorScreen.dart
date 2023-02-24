@@ -16,6 +16,7 @@ class Featuredstore extends StatefulWidget {
 
 class _FeaturedstoreState extends State<Featuredstore> {
   bool isReload = false;
+
   List<dynamic> featuredstorelist = [
     // {
     //   'image': 'assets/exp1.jpg',
@@ -129,12 +130,30 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                 color: Colors.white,
                                 child: GestureDetector(
                                   onTap: () {
+                                    print(featuredstorelist[index]["user_id"]
+                                        .toString());
+                                    print(featuredstorelist[index]["vendor_id"]
+                                        .toString());
+                                    featuredstorelist[index]["user_id"]
+                                        .toString();
+                                    featuredstorelist[index]["vendor_id"]
+                                        .toString();
+                                    // featuredstorelist[index]
+                                    // ["vendor_id"]
+                                    //     .toString();
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailFeatured_Store(
-                                                isFrom: 'service',
-                                              )),
+                                        builder: (context) =>
+                                            DetailFeatured_Store(
+                                          isFrom: 'service',
+                                          userid: featuredstorelist[index]
+                                                  ["user_id"]
+                                              .toString(),
+                                          vendorid: featuredstorelist[index]
+                                                  ["vendor_id"]
+                                              .toString(),
+                                        ),
+                                      ),
                                     );
                                   },
                                   child: Stack(

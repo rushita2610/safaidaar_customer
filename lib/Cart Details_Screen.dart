@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:safaidaar_customer/FeaturedStore_Detail_Screen.dart';
 import 'package:safaidaar_customer/SchedulePickUp_Screen.dart';
 
+import 'FeaturedStore_VendorScreen.dart';
+
 class Cartdetails extends StatefulWidget {
   const Cartdetails({Key? key}) : super(key: key);
 
@@ -572,13 +574,13 @@ class _CartdetailsState extends State<Cartdetails> {
                       IconButton(
                         onPressed: () {
                           // _searchdialogbox(context);
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => DetailFeatured_Store(
-                                isFrom: 'service',
-                              ),
-                            ),
-                          );
+                          // Navigator.of(context).pushReplacement(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => DetailFeatured_Store(
+                          //       isFrom: 'service', userid: featuredstorelist[index]["user_id"].toString(),
+                          //     ),
+                          //   ),
+                          // );
                         },
                         icon: const Icon(
                           Icons.add,
@@ -589,13 +591,13 @@ class _CartdetailsState extends State<Cartdetails> {
                       TextButton(
                         onPressed: () {
                           // _searchdialogbox(context);
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => DetailFeatured_Store(
-                                isFrom: 'service',
-                              ),
-                            ),
-                          );
+                          // Navigator.of(context).pushReplacement(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => DetailFeatured_Store(
+                          //       isFrom: 'service', userid: featuredstorelist[index]["user_id"].toString(),
+                          //     ),
+                          //   ),
+                          // );
                         },
                         child: const Text(
                           "Add More Items",

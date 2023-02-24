@@ -7,6 +7,7 @@ import 'package:safaidaar_customer/FeaturedStore_Detail_Screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Api/Api_Url.dart';
+import 'FeaturedStore_VendorScreen.dart';
 
 class Servicedetail extends StatefulWidget {
   String serviceid = "";
@@ -135,11 +136,21 @@ class _ServicedetailState extends State<Servicedetail> {
                                 color: Colors.white,
                                 child: GestureDetector(
                                   onTap: () {
+                                    topserviceslist[index]["user_id"]
+                                        .toString();
+                                    topserviceslist[index]["vendor_id"]
+                                        .toString();
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             DetailFeatured_Store(
                                           isFrom: 'service',
+                                          userid: topserviceslist[index]
+                                                  ["user_id"]
+                                              .toString(),
+                                          vendorid: topserviceslist[index]
+                                                  ["vendor_id"]
+                                              .toString(),
                                         ),
                                       ),
                                     );
