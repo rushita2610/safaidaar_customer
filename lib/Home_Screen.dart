@@ -158,15 +158,6 @@ class _homeScreenState extends State<homeScreen> {
     FeatureStore_ApiCall(false);
     GetOffer_ApiCall();
     profile();
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.position.pixels) {
-        if (currentPage != lastPage) {
-          FeatureStore_ApiCall(true);
-        }
-        print("orderlist pagination");
-      }
-    });
     super.initState();
   }
 
@@ -202,12 +193,6 @@ class _homeScreenState extends State<homeScreen> {
       'https://www.youtube.com/channel/UC97VZs521SmVItFVp33E6kA?themeRefresh=1');
 
   String Address = 'search';
-
-  int currentPage = 0;
-  int lastPage = 0;
-  int pageIndex = 0;
-  bool isReloadPagination = false;
-  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -551,63 +536,61 @@ class _homeScreenState extends State<homeScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               (featuredstorelist.isNotEmpty)
-                                  ? Row(
+                                  ? Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.topLeft,
-                                              child: const Text(
-                                                "Featured Store/Vendor",
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.w600,
+                                        Container(
+                                          height: 35,
+                                          // color:Colors.blue,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                child: const Text(
+                                                  "Featured Store/Vendor",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w900,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              // padding: const EdgeInsets.only(top: 10),
-                                              alignment: Alignment.topLeft,
-                                              height: 3,
-                                              //width: Sizee.width / 5 - 15,
-                                              width: width * 0.15,
-                                              color: const Color(0xFF000052),
-                                            ),
-                                          ],
+                                              InkWell(
+                                                child: const Text(
+                                                  "See all",
+                                                  style: TextStyle(
+                                                      color: Color(0xFF000052),
+                                                      fontSize: 17.5,
+                                                      fontWeight:
+                                                          FontWeight.w900),
+                                                ),
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return const Featuredstore();
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         Container(
-                                          // padding: const EdgeInsets.only(bottom: 10),
-                                          alignment: Alignment.topRight,
-                                          child: TextButton(
-                                            child: const Text(
-                                              "See all",
-                                              style: TextStyle(
-                                                  color: Color(0xFF000052),
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return const Featuredstore();
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                          // padding: const EdgeInsets.only(top: 10),
+                                          alignment: Alignment.topLeft,
+                                          height: 3,
+                                          //width: Sizee.width / 5 - 15,
+                                          width: width * 0.15,
+                                          color: const Color(0xFF000052),
                                         ),
                                       ],
                                     )
@@ -649,6 +632,14 @@ class _homeScreenState extends State<homeScreen> {
                                                 color: Colors.white,
                                                 child: GestureDetector(
                                                   onTap: () {
+                                                    print(
+                                                        featuredstorelist[index]
+                                                                ["user_id"]
+                                                            .toString());
+                                                    print(
+                                                        featuredstorelist[index]
+                                                                ["vendor_id"]
+                                                            .toString());
                                                     featuredstorelist[index]
                                                             ["user_id"]
                                                         .toString();
@@ -875,64 +866,61 @@ class _homeScreenState extends State<homeScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               (crazyofferlist.isNotEmpty)
-                                  ? Row(
+                                  ? Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.topLeft,
-                                              child: const Text(
-                                                "Crazy Offers",
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.w600,
+                                        Container(
+                                          height: 35,
+                                          // color:Colors.blue,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                child: const Text(
+                                                  "Crazy Offers",
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w900,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              // padding: const EdgeInsets.only(top: 10),
-                                              alignment: Alignment.topLeft,
-                                              height: 3,
-                                              //width: Sizee.width / 5 - 15,
-                                              width: width * 0.15,
-                                              color: const Color(0xFF000052),
-                                            ),
-                                          ],
+                                              InkWell(
+                                                child: const Text(
+                                                  "See all",
+                                                  style: TextStyle(
+                                                      color: Color(0xFF000052),
+                                                      fontSize: 17.5,
+                                                      fontWeight:
+                                                          FontWeight.w900),
+                                                ),
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return const Featuredstore();
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         Container(
-                                          // padding: const EdgeInsets.only(bottom: 10),
-                                          alignment: Alignment.topRight,
-                                          child: TextButton(
-                                            child: const Text(
-                                              "See all",
-                                              style: TextStyle(
-                                                  color: Color(0xFF000052),
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return const BottomNavigationScreen(
-                                                        4);
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                          // padding: const EdgeInsets.only(top: 10),
+                                          alignment: Alignment.topLeft,
+                                          height: 3,
+                                          //width: Sizee.width / 5 - 15,
+                                          width: width * 0.12,
+                                          color: const Color(0xFF000052),
                                         ),
                                       ],
                                     )
@@ -1490,11 +1478,7 @@ class _homeScreenState extends State<homeScreen> {
 
   FeatureStore_ApiCall(bool isPaginate) async {
     setState(() {
-      if (!isPaginate) {
-        isReload = true;
-      } else {
-        isReloadPagination = true;
-      }
+      isReload = true;
     });
     try {
       // final Header = {
@@ -1502,39 +1486,35 @@ class _homeScreenState extends State<homeScreen> {
       //   'Accept': 'application/json',
       // };
       print(FeaturedStore_Api +
-          "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}");
+          "?lattitude=23.03984909999999&longitude=72.5602797");
       var response = await http.get(Uri.parse(FeaturedStore_Api +
-          "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}"));
+          "?lattitude=23.03984909999999&longitude=72.5602797"));
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
         print(decode);
         if (decode["success"] == true) {
-          setState(() {
-            currentPage = decode["data"]["current_page"];
-            lastPage = decode["data"]["last_page"];
-            if (currentPage == 1) {
-              featuredstorelist.clear();
-            }
-
-            for (int i = 0; i < decode["data"]["data"].length; i++) {
-              featuredstorelist.add(decode['data']['data'][i]);
-            }
-            //print("decode ${decode["data"][0]["data"]} " );
-            // orderlist.clear();
-            // orderlist = decode["data"]["data"];
-          });
-          // featuredstorelist.clear();
-          // featuredstorelist = decode["data"]["data"];
+          // setState(() {
+          //   currentPage = decode["data"]["current_page"];
+          //   lastPage = decode["data"]["last_page"];
+          //   if (currentPage == 1) {
+          //     featuredstorelist.clear();
+          //   }
+          //
+          //   for (int i = 0; i < decode["data"]["data"].length; i++) {
+          //     featuredstorelist.add(decode['data']['data'][i]);
+          //   }
+          //   //print("decode ${decode["data"][0]["data"]} " );
+          //   // orderlist.clear();
+          //   // orderlist = decode["data"]["data"];
+          // });
+          featuredstorelist.clear();
+          featuredstorelist = decode["data"]["data"];
           print(decode);
         } else {
           print("Error");
         }
         setState(() {
-          if (!isPaginate) {
-            isReload = false;
-          } else {
-            isReloadPagination = false;
-          }
+          isReload = true;
         });
       } else {
         print("Error" + response.statusCode.toString());
@@ -1542,11 +1522,7 @@ class _homeScreenState extends State<homeScreen> {
       }
     } catch (e) {
       setState(() {
-        if (!isPaginate) {
-          isReload = false;
-        } else {
-          isReloadPagination = false;
-        }
+        isReload = false;
       });
       print("Exception in featurestore =>$e");
       throw e;

@@ -143,7 +143,7 @@ class _CartdetailsState extends State<Cartdetails> {
                 children: [
                   Text(
                     "SGST ($sgstPercent%)",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       // fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -151,7 +151,7 @@ class _CartdetailsState extends State<Cartdetails> {
                   ),
                   Text(
                     "Rs $sgst",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       // fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -167,7 +167,7 @@ class _CartdetailsState extends State<Cartdetails> {
                 children: [
                   Text(
                     "CGST ($cgstPercent%)",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       // fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -175,7 +175,7 @@ class _CartdetailsState extends State<Cartdetails> {
                   ),
                   Text(
                     "Rs $cgst",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       // fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -190,9 +190,9 @@ class _CartdetailsState extends State<Cartdetails> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "Total Tax",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -200,7 +200,7 @@ class _CartdetailsState extends State<Cartdetails> {
                   ),
                   Text(
                     "Rs $totalgst",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -384,12 +384,14 @@ class _CartdetailsState extends State<Cartdetails> {
                                               height: 30,
                                               width: 25,
                                               decoration: BoxDecoration(
-                                                  color: Color(0xFF000052),
+                                                  color:
+                                                      const Color(0xFF000052),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           9.5)),
                                               child: Text(
-                                                productList[index]['QTY'].toString(),
+                                                productList[index]['QTY']
+                                                    .toString(),
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                   color: Colors.white,
@@ -452,16 +454,20 @@ class _CartdetailsState extends State<Cartdetails> {
                                                       const Color(0xFF000052),
                                                   onPressed: () {
                                                     setState(() {
-                                                     if(productList[index]['QTY'] > 0) {
-                                                       productList[index]
-                                                       ["QTY"] = int.parse(
-                                                           productList[index]
-                                                           ["QTY"]
-                                                               .toString()) -
-                                                           1;
-                                                     } else {
-                                                       productList[index]['QTY'] == 0;
-                                                     }
+                                                      if (productList[index]
+                                                              ['QTY'] >
+                                                          0) {
+                                                        productList[index]
+                                                            ["QTY"] = int.parse(
+                                                                productList[index]
+                                                                        ["QTY"]
+                                                                    .toString()) -
+                                                            1;
+                                                      } else {
+                                                        productList[index]
+                                                                ['QTY'] ==
+                                                            0;
+                                                      }
                                                       print(
                                                         productList[index]
                                                             ["QTY"],
@@ -676,7 +682,15 @@ class _CartdetailsState extends State<Cartdetails> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           onPressed: () {
-                            // Navigator.pop(context);
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => DetailFeatured_Store(
+                            //       isFrom: 'offer',
+                            //       userid: '',
+                            //       vendorid: '',
+                            //     ),
+                            //   ),
+                            // );
                           },
                           child: const Text(
                             "Offers",
@@ -845,7 +859,7 @@ class _CartdetailsState extends State<Cartdetails> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => SchedulePickupScreen(),
+                          builder: (context) => const SchedulePickupScreen(),
                         ),
                       );
                     },

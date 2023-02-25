@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'Api/Api_Url.dart';
 
 class feedbackScreen extends StatefulWidget {
   const feedbackScreen({Key? key}) : super(key: key);
@@ -18,6 +22,7 @@ class _feedbackScreenState extends State<feedbackScreen> {
 
   TextEditingController Fullname = TextEditingController();
   TextEditingController MobileNumber = TextEditingController();
+  TextEditingController feedback = TextEditingController();
   String isvalidMobile = "";
   String strMobilevalidator = "";
 
@@ -382,7 +387,7 @@ class _feedbackScreenState extends State<feedbackScreen> {
                       bottom: 20,
                     ),
                     child: TextFormField(
-                      controller: Fullname,
+                      controller: feedback,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -430,7 +435,8 @@ class _feedbackScreenState extends State<feedbackScreen> {
             color: const Color(0xFF000052),
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                Navigator.pop(context);
+                //Navigator.pop(context);
+                Feedback_ApiCall();
               }
             },
             child: const Text(
@@ -445,5 +451,140 @@ class _feedbackScreenState extends State<feedbackScreen> {
         ),
       ),
     );
+  }
+
+  Feedback_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      print(token);
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
+      };
+      print(Header);
+      print(Feedback_Api);
+      var request = http.MultipartRequest(
+          'POST',
+          // Uri.parse(
+          //     'https://safaidaar.mydemoapp.us/api/v1/vendor/vendor-signup'));
+          Uri.parse(Feedback_Api));
+      Map<String, String> headers = {
+        "Authorization": "Bearer ${token.toString()}",
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+      };
+      request.headers.addAll(headers);
+      Map<String, String> sendData = {
+        "firstname": Fullname.text.trim(),
+        "mobile": MobileNumber.text.trim(),
+        "feedback": feedback.toString(),
+        // "dob": DOBdateinput.text.trim(),
+        // "anniversary_date": Annidateinput.text.trim(),
+        // "referral_mobile": refferalcontact.text.length > 0 ? "+91 ${refferalcontact.text.trim()}": '',
+      };
+
+      request.fields.addAll(sendData);
+      if (imgFile != null) {
+        request.files
+            .add(await http.MultipartFile.fromPath('image', imgFile!.path));
+      }
+      // if (profileImageFile != null) {
+      //   request.files.add(await http.MultipartFile.fromPath(
+      //       'vendor_image', profileImageFile!.path));
+      // }
+
+      print("sendData ==> $sendData");
+
+      http.StreamedResponse streamedResponse = await request.send();
+      http.Response response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          Fullname.text = decode["data"][0]["firstname"].toString();
+          MobileNumber.text = decode["data"][0]["mobile"].toString();
+          var userPhoto = decode["data"][0]["image"];
+          feedback.text = decode["data"][0]["feedback"].toString();
+
+          if (userPhoto != "" || userPhoto != null) {
+            imgFile = userPhoto;
+            print("photo $imgFile");
+          } else {
+            print("");
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Container(
+                // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Status',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      decode["message"].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              duration: const Duration(seconds: 3),
+              backgroundColor: const Color(0xFF000052),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / 1 - 170,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+          Navigator.pop(context);
+        } else{
+          print(json.decode(response.body)['errors']);
+          String errorMsg = json.decode(response.body)["message"].toString();
+          print(errorMsg);
+          if (json.decode(response.body)['errors'] != null) {
+            Map errorMap = json.decode(response.body)["errors"];
+            for (String k in errorMap.keys) {
+              print(errorMap[k]);
+              errorMsg = errorMap[k][0] ??
+                  json.decode(response.body)["message"].toString();
+              break;
+            }
+          }
+        }
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error " + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in feedback =>" + e.toString());
+      throw e;
+    }
   }
 }

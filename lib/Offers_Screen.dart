@@ -390,7 +390,6 @@ class _OfferScreenState extends State<OfferScreen> {
     });
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString("token") ?? "";
       var user_id = prefs.getString("id") ?? "";
 
       print(GetOffers_Api +

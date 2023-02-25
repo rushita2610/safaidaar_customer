@@ -53,6 +53,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
   ];
 
   TextEditingController searchcontroller = TextEditingController();
+  String searchoffer = "";
   TextEditingController Addproductcontroller = TextEditingController();
 
   // List<Map<String, dynamic>> _foundUsers = [];
@@ -523,7 +524,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                 Container(
                                   // color: Colors.red,
                                   height: 50,
-                                  child: TextFormField(
+                                  child: TextField(
                                     onTap: () {
                                       setState(() {
                                         _searchcursor = !_searchcursor;
@@ -563,6 +564,11 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
+                                    onSubmitted: (value) {
+                                      searchoffer = value;
+                                      GetOffer_ApiCall();
+                                      GetVendorOffer_ApiCall();
+                                    },
                                   ),
                                 ),
                                 const SizedBox(
@@ -675,10 +681,11 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                               ),
                                                             ),
                                                             Container(
-                                                             // color: Colors.red,
+                                                              // color: Colors.red,
                                                               width:
                                                                   Sizee.width /
-                                                                      2 + 27,
+                                                                          2 +
+                                                                      27,
                                                               height:
                                                                   cleaningwaysoffer
                                                                           .length *
@@ -697,7 +704,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                           mainAxisAlignment:
                                                                               MainAxisAlignment.center,
                                                                           crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
+                                                                              CrossAxisAlignment.start,
                                                                           children: [
                                                                             Container(
                                                                               height: 7,
@@ -715,7 +722,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                               child: Text(
                                                                                 "${cleaningwaysoffer[index]["offer_applicable_services"][0]["parent_category_name"].toString()} (${cleaningwaysoffer[index]["offer_applicable_services"][0]["name"].toString()})",
                                                                                 style: const TextStyle(
-                                                                                  fontSize: 14,
+                                                                                  fontSize: 12.2,
                                                                                   color: Colors.black,
                                                                                 ),
                                                                               ),
@@ -779,10 +786,9 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                       TextAlign
                                                                           .center,
                                                                   style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                            .indigo[
-                                                                        900],
+                                                                      const TextStyle(
+                                                                    color: Color(
+                                                                        0xFF000052),
                                                                     fontSize:
                                                                         16,
                                                                   ),
@@ -811,12 +817,14 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                     Sizee.width /
                                                                             3 -
                                                                         20,
-                                                                decoration: BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .rectangle,
-                                                                    border: Border.all(
-                                                                        color: Colors
-                                                                            .indigo)),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .rectangle,
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .black),
+                                                                ),
                                                                 child: Image
                                                                     .network(
                                                                   crazyofferlist[
@@ -837,13 +845,15 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                     Sizee.width /
                                                                             3 -
                                                                         20,
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10),
-                                                                    color: Colors
-                                                                            .indigo[
-                                                                        900]),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  color: const Color(
+                                                                      0xFF000052),
+                                                                ),
                                                                 child:
                                                                     TextButton(
                                                                   onPressed:
@@ -1404,11 +1414,10 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
     });
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString("token") ?? "";
       var user_id = prefs.getString("id") ?? "";
 
       print(GetVendorserviceoffer_Api +
-          "/${widget.vendorid}/?search=&user_id=${user_id}");
+          "/${widget.vendorid}/?search=${searchoffer}&user_id=${user_id}");
       var response = await http.get(
         Uri.parse(GetVendorserviceoffer_Api +
             "/${widget.vendorid}/?search=&user_id=${user_id}"),
@@ -1461,7 +1470,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
         var decode = jsonDecode(response.body);
         print(decode);
         if (decode["success"] = true) {
-          GetVendorOffer_ApiCall();
+          //GetVendorOffer_ApiCall();
           crazyofferlist.clear();
           crazyofferlist = decode["data"]["data"];
         } else {}

@@ -44,9 +44,24 @@ class _FeaturedstoreState extends State<Featuredstore> {
     // },
   ];
 
+  int currentPage = 0;
+  int lastPage = 0;
+  int pageIndex = 0;
+  bool isReloadPagination = false;
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
-    FeatureStore_ApiCall();
+    FeatureStore_ApiCall(false);
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        if (currentPage != lastPage) {
+          FeatureStore_ApiCall(true);
+        }
+        print("orderlist pagination");
+      }
+    });
     super.initState();
   }
 
@@ -348,9 +363,13 @@ class _FeaturedstoreState extends State<Featuredstore> {
     );
   }
 
-  FeatureStore_ApiCall() async {
+  FeatureStore_ApiCall(bool isPaginate) async {
     setState(() {
-      isReload = true;
+      if (!isPaginate) {
+        isReload = true;
+      } else {
+        isReloadPagination = true;
+      }
     });
     try {
       // final Header = {
@@ -358,21 +377,39 @@ class _FeaturedstoreState extends State<Featuredstore> {
       //   'Accept': 'application/json',
       // };
       print(FeaturedStore_Api +
-          "?lattitude='23.03984909999999'&longitude='72.5602797'");
+          "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}");
       var response = await http.get(Uri.parse(FeaturedStore_Api +
-          "?lattitude='23.03984909999999'&longitude='72.5602797'"));
+          "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}"));
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
         print(decode);
         if (decode["success"] == true) {
-          featuredstorelist.clear();
-          featuredstorelist = decode["data"]["data"];
+          setState(() {
+            currentPage = decode["data"]["current_page"];
+            lastPage = decode["data"]["last_page"];
+            if (currentPage == 1) {
+              featuredstorelist.clear();
+            }
+
+            for (int i = 0; i < decode["data"]["data"].length; i++) {
+              featuredstorelist.add(decode['data']['data'][i]);
+            }
+            //print("decode ${decode["data"][0]["data"]} " );
+            // orderlist.clear();
+            // orderlist = decode["data"]["data"];
+          });
+          // featuredstorelist.clear();
+          // featuredstorelist = decode["data"]["data"];
           print(decode);
         } else {
           print("Error");
         }
         setState(() {
-          isReload = false;
+          if (!isPaginate) {
+            isReload = false;
+          } else {
+            isReloadPagination = false;
+          }
         });
       } else {
         print("Error" + response.statusCode.toString());
@@ -380,7 +417,11 @@ class _FeaturedstoreState extends State<Featuredstore> {
       }
     } catch (e) {
       setState(() {
-        isReload = false;
+        if (!isPaginate) {
+          isReload = false;
+        } else {
+          isReloadPagination = false;
+        }
       });
       print("Exception in featurestore =>$e");
       throw e;
