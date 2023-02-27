@@ -153,7 +153,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
       _selectedbuttonIndex = 0;
       buttonslist.clear();
     }
-    GetOffer_ApiCall();
+    // GetOffer_ApiCall();
     GetVendorOffer_ApiCall();
   }
 
@@ -566,7 +566,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                     ),
                                     onSubmitted: (value) {
                                       searchoffer = value;
-                                      GetOffer_ApiCall();
+                                      //GetOffer_ApiCall();
                                       GetVendorOffer_ApiCall();
                                     },
                                   ),
@@ -769,7 +769,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                 width:
                                                                     Sizee.width /
                                                                             2 -
-                                                                        20,
+                                                                        30,
                                                                 decoration:
                                                                     BoxDecoration(
                                                                   shape: BoxShape
@@ -790,7 +790,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                     color: Color(
                                                                         0xFF000052),
                                                                     fontSize:
-                                                                        16,
+                                                                        14,
                                                                   ),
                                                                 ),
                                                               ),
@@ -805,13 +805,13 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                     .spaceBetween,
                                                             children: [
                                                               Container(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        bottom:
-                                                                            15,
-                                                                        top:
-                                                                            15),
+                                                                // padding:
+                                                                //     const EdgeInsets
+                                                                //             .only(
+                                                                //         bottom:
+                                                                //             15,
+                                                                //         top:
+                                                                //             15),
                                                                 height: 50,
                                                                 width:
                                                                     Sizee.width /
@@ -840,7 +840,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                height: 45,
+                                                                height: 40,
                                                                 width:
                                                                     Sizee.width /
                                                                             3 -
@@ -1420,14 +1420,16 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
           "/${widget.vendorid}/?search=${searchoffer}&user_id=${user_id}");
       var response = await http.get(
         Uri.parse(GetVendorserviceoffer_Api +
-            "/${widget.vendorid}/?search=&user_id=${user_id}"),
+            "/${widget.vendorid}/?search=${searchoffer}&user_id=${user_id}"),
       );
 
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
         print(decode);
         if (decode["success"] = true) {
+          crazyofferlist.clear();
           cleaningwaysoffer.clear();
+          crazyofferlist = decode["data"];
           cleaningwaysoffer = decode["data"];
         } else {}
         setState(() {
@@ -1450,49 +1452,49 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
     }
   }
 
-  GetOffer_ApiCall() async {
-    setState(() {
-      isReload = true;
-    });
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString("token") ?? "";
-      var user_id = prefs.getString("id") ?? "";
-
-      print(GetOffers_Api +
-          "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}");
-      var response = await http.get(
-        Uri.parse(GetOffers_Api +
-            "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}"),
-      );
-
-      if (response.statusCode == 200) {
-        var decode = jsonDecode(response.body);
-        print(decode);
-        if (decode["success"] = true) {
-          //GetVendorOffer_ApiCall();
-          crazyofferlist.clear();
-          crazyofferlist = decode["data"]["data"];
-        } else {}
-        setState(() {
-          isReload = false;
-        });
-      } else {
-        print("Error" + response.statusCode.toString());
-        print("Error" + response.body.toString());
-
-        setState(() {
-          isReload = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        isReload = false;
-      });
-      print("Exception in getoffer =>" + e.toString());
-      throw e;
-    }
-  }
+  // GetOffer_ApiCall() async {
+  //   setState(() {
+  //     isReload = true;
+  //   });
+  //   try {
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     var token = prefs.getString("token") ?? "";
+  //     var user_id = prefs.getString("id") ?? "";
+  //
+  //     print(GetOffers_Api +
+  //         "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}");
+  //     var response = await http.get(
+  //       Uri.parse(GetOffers_Api +
+  //           "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}"),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       var decode = jsonDecode(response.body);
+  //       print(decode);
+  //       if (decode["success"] = true) {
+  //         //GetVendorOffer_ApiCall();
+  //         crazyofferlist.clear();
+  //         crazyofferlist = decode["data"]["data"];
+  //       } else {}
+  //       setState(() {
+  //         isReload = false;
+  //       });
+  //     } else {
+  //       print("Error" + response.statusCode.toString());
+  //       print("Error" + response.body.toString());
+  //
+  //       setState(() {
+  //         isReload = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       isReload = false;
+  //     });
+  //     print("Exception in getoffer =>" + e.toString());
+  //     throw e;
+  //   }
+  // }
 
   UpdateCartPrice() {
     setState(() {

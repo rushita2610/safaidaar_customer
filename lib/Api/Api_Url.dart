@@ -25,6 +25,7 @@ const GetVendorserviceoffer_Api = BASEURL + 'vendor/get-vendor-service-offers';
 const Getpickup_Api = BASEURL + 'get-pickup-dates';
 const Pageblock_Api = BASEURL + 'page-block?page_code=';
 const GetCustomeraddress_Api = BASEURL + 'customer/customer-address';
+const Getdeliveryoption_Api = BASEURL + '/get-delivery-options';
 const HomeBanner_Api = BASEURL + 'customer/get-home-banner';
 const Feedback_Api = BASEURL + 'help-request';
 const Logout_Api = BASEURL + 'logout';

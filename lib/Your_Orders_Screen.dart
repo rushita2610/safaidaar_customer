@@ -135,7 +135,7 @@ class _Your_ordersState extends State<Your_orders> {
                         physics: const BouncingScrollPhysics(),
                         controller: scrollController,
                         child: Container(
-                          height: height * 2.5,
+                         height: height * 2.23,
                           child: Column(
                             children: [
                               Container(
@@ -379,485 +379,482 @@ class _Your_ordersState extends State<Your_orders> {
                               Flexible(
                                 flex: 5,
                                 child: orderlist.length > 0
-                                    ? ListView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: orderlist.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            height: 320,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Yourorderdetail(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Card(
-                                                elevation: 3,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Container(
-                                                      // color:Colors.blue,
-                                                      height: 125,
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        left: 10,
-                                                        top: 20,
+                                    ? Container(
+                                        height: orderlist.length * 320,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemCount: orderlist.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Container(
+                                                height: 320,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const Yourorderdetail(),
                                                       ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          ClipRRect(
+                                                    );
+                                                  },
+                                                  child: Card(
+                                                    elevation: 3,
+                                                    shape:
+                                                        RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        10),
-                                                            child: Container(
-                                                              height: 80,
-                                                              width: 95,
-                                                              decoration: BoxDecoration(
-                                                                  border: Border.all(
-                                                                      color: const Color(
-                                                                          0xFF000052),
-                                                                      width:
-                                                                          2.5),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10)),
-                                                              child:
-                                                                  Image.network(
-                                                                // "",
-                                                                orderlist[index]['order_detail']
-                                                                            [
-                                                                            'vendor_information']
-                                                                        [
-                                                                        'vendor_banner_image']
-                                                                    .toString(),
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                              ),
-                                                            ),
+                                                                        10)),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        Container(
+                                                          // color:Colors.blue,
+                                                          height: 125,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            left: 10,
+                                                            top: 20,
                                                           ),
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          Container(
-                                                            // color: Colors.red,
-                                                            height: 100,
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              children: [
-                                                                Text(
-                                                                  orderlist[index]['order_detail']
-                                                                              [
-                                                                              'vendor_information']
-                                                                          [
-                                                                          'vendor_name']
-                                                                      .toString(),
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                        17,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                ),
-                                                                Container(
-                                                                  // color: Colors.red,
-                                                                  width: width *
-                                                                      0.52,
-                                                                  child: Text(
-                                                                    "${orderlist[index]['order_detail']['customer_address_information']['city'].toString()}, ${orderlist[index]['order_detail']['customer_address_information']['state'].toString()}",
-                                                                    // maxLines: 4,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          16,
-                                                                      // fontWeight: FontWeight.bold,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  // "",
-                                                                  "Order ID: ${orderlist[index]['order_barcode_no'].toString()}",
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                        17,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                ),
-                                                                Container(
-                                                                  height: 25,
-                                                                  // width: Sizee.width / 3,
-                                                                  width: width *
-                                                                      0.35,
-                                                                  child:
-                                                                      RaisedButton(
-                                                                    elevation:
-                                                                        0,
-                                                                    color: const Color(
-                                                                        0xFF000052),
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                child:
+                                                                    Container(
+                                                                  height: 80,
+                                                                  width: 95,
+                                                                  decoration: BoxDecoration(
+                                                                      border: Border.all(
+                                                                          color: const Color(
+                                                                              0xFF000052),
+                                                                          width:
+                                                                              2.5),
                                                                       borderRadius:
                                                                           BorderRadius.circular(
-                                                                              8),
-                                                                    ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .push(
-                                                                        MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              const Yourorderdetail(),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                    child: Text(
-                                                                      // "",
-                                                                      orderlist[index]
+                                                                              10)),
+                                                                  child: Image
+                                                                      .network(
+                                                                    // "",
+                                                                    orderlist[index]['order_detail']['vendor_information']
+                                                                            [
+                                                                            'vendor_banner_image']
+                                                                        .toString(),
+                                                                    fit: BoxFit
+                                                                        .fill,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Container(
+                                                                // color: Colors.red,
+                                                                height: 100,
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    Text(
+                                                                      orderlist[index]['order_detail']['vendor_information']
                                                                               [
-                                                                              'order_status_text']
+                                                                              'vendor_name']
                                                                           .toString(),
                                                                       style:
                                                                           const TextStyle(
                                                                         color: Colors
-                                                                            .white,
+                                                                            .black,
                                                                         fontSize:
-                                                                            12,
+                                                                            17,
                                                                         fontWeight:
-                                                                            FontWeight.w500,
+                                                                            FontWeight.bold,
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    const Divider(
-                                                      thickness: 1,
-                                                      color: CupertinoColors
-                                                          .systemGrey6,
-                                                    ),
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 5),
-                                                      height: 25,
-                                                      child: Row(
-                                                        children: [
-                                                          ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        60),
-                                                            child:
-                                                                Image.network(
-                                                              //"",
-                                                              orderlist[index][
-                                                                          'order_item_detail'][0]
-                                                                      [
-                                                                      'item_image']
-                                                                  .toString(),
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          Text(
-                                                            // "",
-                                                            "${orderlist[index]['order_item_detail'][0]['item_name'].toString()} x ${orderlist[index]['order_item_detail'][0]['quantity'].toString()}",
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    const Divider(
-                                                      thickness: 1,
-                                                      color: CupertinoColors
-                                                          .systemGrey6,
-                                                    ),
-                                                    Container(
-                                                      height: 50,
-                                                      // color: Colors.red,
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 12,
-                                                              right: 15),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                orderlist[index]
-                                                                        [
-                                                                        'order_date_text']
-                                                                    .toString(),
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .black54,
-                                                                  fontSize: 14,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              const Text(
-                                                                "Payment Status",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black54,
-                                                                  fontSize: 14,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Container(
-                                                                // color: Colors.red,
-                                                                width: width *
-                                                                    0.25,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
                                                                     Container(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .bottomCenter,
-                                                                      height:
-                                                                          20,
-                                                                      //color: Colors.green,
+                                                                      // color: Colors.red,
+                                                                      width: width *
+                                                                          0.52,
                                                                       child:
                                                                           Text(
-                                                                        // "",
-                                                                        "Rs ${orderlist[index]['total_amount'].toString()}",
-                                                                        textAlign:
-                                                                            TextAlign.center,
+                                                                        "${orderlist[index]['order_detail']['customer_address_information']['city'].toString()}, ${orderlist[index]['order_detail']['customer_address_information']['state'].toString()}",
+                                                                        // maxLines: 4,
                                                                         style:
                                                                             const TextStyle(
                                                                           color:
-                                                                              Color(0xFF000052),
+                                                                              Colors.black,
                                                                           fontSize:
-                                                                              14,
+                                                                              16,
+                                                                          // fontWeight: FontWeight.bold,
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                    Container(
-                                                                      // color: Colors.blue,
-                                                                      height:
-                                                                          20,
-                                                                      width: 20,
-                                                                      child:
-                                                                          const Icon(
-                                                                        Icons
-                                                                            .arrow_forward_ios,
+                                                                    Text(
+                                                                      // "",
+                                                                      "Order ID: ${orderlist[index]['order_barcode_no'].toString()}",
+                                                                      style:
+                                                                          const TextStyle(
                                                                         color: Colors
                                                                             .black,
-                                                                        size:
-                                                                            13,
+                                                                        fontSize:
+                                                                            17,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      height:
+                                                                          25,
+                                                                      // width: Sizee.width / 3,
+                                                                      width: width *
+                                                                          0.35,
+                                                                      child:
+                                                                          RaisedButton(
+                                                                        elevation:
+                                                                            0,
+                                                                        color: const Color(
+                                                                            0xFF000052),
+                                                                        shape:
+                                                                            RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(8),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .push(
+                                                                            MaterialPageRoute(
+                                                                              builder: (context) => const Yourorderdetail(),
+                                                                            ),
+                                                                          );
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          // "",
+                                                                          orderlist[index]['order_status_text']
+                                                                              .toString(),
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize:
+                                                                                12,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 ),
                                                               ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        const Divider(
+                                                          thickness: 1,
+                                                          color: CupertinoColors
+                                                              .systemGrey6,
+                                                        ),
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 5),
+                                                          height: 25,
+                                                          child: Row(
+                                                            children: [
+                                                              ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            60),
+                                                                child: Image
+                                                                    .network(
+                                                                  //"",
+                                                                  orderlist[index]['order_item_detail']
+                                                                              [
+                                                                              0]
+                                                                          [
+                                                                          'item_image']
+                                                                      .toString(),
+                                                                ),
+                                                              ),
                                                               const SizedBox(
-                                                                height: 5,
+                                                                width: 10,
                                                               ),
                                                               Text(
                                                                 // "",
-                                                                orderlist[index]
-                                                                            [
-                                                                            'order_payment_detail']
-                                                                        [
-                                                                        'payment_status_text']
-                                                                    .toString(),
+                                                                "${orderlist[index]['order_item_detail'][0]['item_name'].toString()} x ${orderlist[index]['order_item_detail'][0]['quantity'].toString()}",
                                                                 style:
-                                                                    TextStyle(
-                                                                  color: orderlist[index]['order_payment_detail']
-                                                                              [
-                                                                              'payment_status_text'] ==
-                                                                          "Paid"
-                                                                      ? Colors
-                                                                          .green
-                                                                      : Colors
-                                                                          .red,
-                                                                  fontSize: 14,
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    orderlist[index][
-                                                                    'order_payment_detail']
-                                                                [
-                                                                'payment_status_text'] ==
-                                                            "Paid"
-                                                        ? SizedBox()
-                                                        : Column(
+                                                        ),
+                                                        const Divider(
+                                                          thickness: 1,
+                                                          color: CupertinoColors
+                                                              .systemGrey6,
+                                                        ),
+                                                        Container(
+                                                          height: 50,
+                                                          // color: Colors.red,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 12,
+                                                                  right: 15),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
-                                                              const Divider(
-                                                                thickness: 1,
-                                                                color: CupertinoColors
-                                                                    .systemGrey6,
-                                                              ),
-                                                              Container(
-                                                                height: 30,
-                                                                // width: Sizee.width / 3,
-                                                                width:
-                                                                    width * 0.3,
-                                                                child:
-                                                                    RaisedButton(
-                                                                  elevation: 0,
-                                                                  color: const Color(
-                                                                      0xFF000052),
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(8),
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                    orderlist[index]
+                                                                            [
+                                                                            'order_date_text']
+                                                                        .toString(),
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .black54,
+                                                                      fontSize:
+                                                                          14,
+                                                                    ),
                                                                   ),
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .push(
-                                                                      MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                const Yourorderdetail(),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                    "Pay Now",
-                                                                    // orderlist[index][
-                                                                    // 'order_status_text']
-                                                                    //     .toString(),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  const Text(
+                                                                    "Payment Status",
                                                                     style:
                                                                         TextStyle(
                                                                       color: Colors
-                                                                          .white,
+                                                                          .black54,
                                                                       fontSize:
-                                                                          12,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
+                                                                          14,
                                                                     ),
                                                                   ),
-                                                                ),
+                                                                ],
                                                               ),
-                                                              RichText(
-                                                                text:
-                                                                    const TextSpan(
-                                                                  text: "*",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .red,
-                                                                    fontSize:
-                                                                        14,
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                    // color: Colors.red,
+                                                                    width:
+                                                                        width *
+                                                                            0.25,
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .end,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Container(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          height:
+                                                                              20,
+                                                                          //color: Colors.green,
+                                                                          child:
+                                                                              Text(
+                                                                            // "",
+                                                                            "Rs ${orderlist[index]['total_amount'].toString()}",
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              color: Color(0xFF000052),
+                                                                              fontSize: 14,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          // color: Colors.blue,
+                                                                          height:
+                                                                              20,
+                                                                          width:
+                                                                              20,
+                                                                          child:
+                                                                              const Icon(
+                                                                            Icons.arrow_forward_ios,
+                                                                            color:
+                                                                                Colors.black,
+                                                                            size:
+                                                                                13,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                  children: <
-                                                                      TextSpan>[
-                                                                    TextSpan(
-                                                                      text:
-                                                                          "No Cash Payments Allowed",
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Text(
+                                                                    // "",
+                                                                    orderlist[index]['order_payment_detail']
+                                                                            [
+                                                                            'payment_status_text']
+                                                                        .toString(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: orderlist[index]['order_payment_detail']['payment_status_text'] ==
+                                                                              "Paid"
+                                                                          ? Colors
+                                                                              .green
+                                                                          : Colors
+                                                                              .red,
+                                                                      fontSize:
+                                                                          14,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        orderlist[index][
+                                                                        'order_payment_detail']
+                                                                    [
+                                                                    'payment_status_text'] ==
+                                                                "Paid"
+                                                            ? SizedBox()
+                                                            : Column(
+                                                                children: [
+                                                                  const Divider(
+                                                                    thickness:
+                                                                        1,
+                                                                    color: CupertinoColors
+                                                                        .systemGrey6,
+                                                                  ),
+                                                                  Container(
+                                                                    height: 30,
+                                                                    // width: Sizee.width / 3,
+                                                                    width:
+                                                                        width *
+                                                                            0.3,
+                                                                    child:
+                                                                        RaisedButton(
+                                                                      elevation:
+                                                                          0,
+                                                                      color: const Color(
+                                                                          0xFF000052),
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(8),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .push(
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                const Yourorderdetail(),
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                      child:
+                                                                          const Text(
+                                                                        "Pay Now",
+                                                                        // orderlist[index][
+                                                                        // 'order_status_text']
+                                                                        //     .toString(),
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  RichText(
+                                                                    text:
+                                                                        const TextSpan(
+                                                                      text: "*",
                                                                       style:
                                                                           TextStyle(
                                                                         color: Colors
                                                                             .red,
                                                                         fontSize:
-                                                                            12,
+                                                                            14,
                                                                       ),
-                                                                    )
-                                                                  ],
-                                                                ),
+                                                                      children: <
+                                                                          TextSpan>[
+                                                                        TextSpan(
+                                                                          text:
+                                                                              "No Cash Payments Allowed",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.red,
+                                                                            fontSize:
+                                                                                12,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                ],
                                                               ),
-                                                              const SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                  ],
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          );
-                                        })
+                                              );
+                                            }),
+                                      )
                                     : Column(
                                         children: [
                                           const SizedBox(

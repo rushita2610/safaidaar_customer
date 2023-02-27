@@ -677,9 +677,14 @@ class _homeScreenState extends State<homeScreen> {
                                                         top: 0,
                                                         child: ClipRRect(
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.0),
+                                                              const BorderRadius
+                                                                      .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          10),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          10)),
                                                           child: Image.network(
                                                             featuredstorelist[
                                                                         index][
@@ -929,7 +934,7 @@ class _homeScreenState extends State<homeScreen> {
                                   ? Container(
                                       padding: const EdgeInsets.only(top: 15),
                                       // height: Sizee.height / 2.5,
-                                      height: crazyofferlist.length * 90,
+                                      height: crazyofferlist.length * 70,
                                       // width: Sizee.width + 10,
                                       // color: Colors.green,
                                       child: ListView.builder(
@@ -990,16 +995,15 @@ class _homeScreenState extends State<homeScreen> {
                                                   child: Stack(
                                                     children: [
                                                       Positioned(
-                                                        left: 10,
-                                                        // bottom: Sizee.height / 6.5,
-                                                        bottom: height * 0.15,
-                                                        right: 10,
-                                                        top: 50,
+                                                        left: 0,
+                                                        bottom: height * 0.085,
+                                                        right: 0,
+                                                        top: 0,
                                                         child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.0),
+                                                          // borderRadius:
+                                                          //     BorderRadius
+                                                          //         .circular(
+                                                          //             10.0),
                                                           child: Image.network(
                                                             crazyofferlist[
                                                                         index][
@@ -1514,7 +1518,7 @@ class _homeScreenState extends State<homeScreen> {
           print("Error");
         }
         setState(() {
-          isReload = true;
+          isReload = false;
         });
       } else {
         print("Error" + response.statusCode.toString());

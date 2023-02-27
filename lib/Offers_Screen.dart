@@ -86,291 +86,360 @@ class _OfferScreenState extends State<OfferScreen> {
                   //height: height,
                   child: Column(
                     children: [
-                      Flexible(
-                        flex: 0,
-                        child: Container(
-                          height: crazyofferlist.length * 220,
-                          child: ListView.builder(
-                              itemCount: crazyofferlist.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext cntx, int index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    crazyofferlist[index]["offer_id"]
-                                        .toString();
-                                    crazyofferlist[index]["vendor_id"]
-                                        .toString();
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailFeatured_Store(
-                                          isFrom: 'offer',
-                                          userid: crazyofferlist[index]
-                                                  ["offer_id"]
-                                              .toString(),
-                                          vendorid: crazyofferlist[index]
-                                                  ["vendor_id"]
-                                              .toString(),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 220,
-                                    width: width,
-                                    child: Card(
-                                      elevation: 4,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ClipRRect(
-                                            child: Container(
-                                              height: 140,
-                                              alignment: Alignment.center,
-                                              decoration: const BoxDecoration(
-                                                // color: Colors.red,
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                      width: 1,
-                                                      color: CupertinoColors
-                                                          .systemGrey4),
-                                                ),
-                                              ),
-                                              padding: const EdgeInsets.only(
-                                                  top: 30,
-                                                  left: 5,
-                                                  right: 5,
-                                                  bottom: 30),
-                                              child: Image.network(
-                                                crazyofferlist[index]
-                                                        ["offer_image"]
+                      crazyofferlist.length > 0
+                          ? Flexible(
+                              flex: 0,
+                              child: Container(
+                                height: crazyofferlist.length * 220,
+                                child: ListView.builder(
+                                    itemCount: crazyofferlist.length,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder:
+                                        (BuildContext cntx, int index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          crazyofferlist[index]["offer_id"]
+                                              .toString();
+                                          crazyofferlist[index]["vendor_id"]
+                                              .toString();
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailFeatured_Store(
+                                                isFrom: 'offer',
+                                                userid: crazyofferlist[index]
+                                                        ["offer_id"]
                                                     .toString(),
-                                                fit: BoxFit.fill,
-                                                height: 40,
-                                                width: 90,
+                                                vendorid: crazyofferlist[index]
+                                                        ["vendor_id"]
+                                                    .toString(),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            height: 60,
-                                            width: width,
-                                            padding: const EdgeInsets.only(
-                                                left: 8, right: 15),
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 220,
+                                          width: width,
+                                          child: Card(
+                                            elevation: 4,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      height: 25,
-                                                      child: Text(
-                                                        crazyofferlist[index]
-                                                                ["vendor_name"]
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18,
-                                                        ),
+                                                ClipRRect(
+                                                  child: Container(
+                                                    height: 140,
+                                                    alignment: Alignment.center,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      // color: Colors.red,
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                            width: 1,
+                                                            color: CupertinoColors
+                                                                .systemGrey4),
                                                       ),
                                                     ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Clipboard.setData(
-                                                          ClipboardData(
-                                                            text: crazyofferlist[
-                                                                        index][
-                                                                    'offer_code']
-                                                                .toString(),
-                                                          ),
-                                                        );
-                                                        showToast(
-                                                            '\n\nCopied to Clipboard',
-                                                            context: context,
-                                                            textAlign:
-                                                                TextAlign.left,
-                                                            textStyle: const TextStyle(
-                                                                fontSize: 16.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                                color: Colors
-                                                                    .white),
-                                                            fullWidth: true,
-                                                            animation:
-                                                                StyledToastAnimation
-                                                                    .slideFromTop,
-                                                            reverseAnimation:
-                                                                StyledToastAnimation
-                                                                    .slideToTop,
-                                                            position:
-                                                                StyledToastPosition
-                                                                    .top,
-                                                            startOffset:
-                                                                const Offset(
-                                                                    0.0, -3.0),
-                                                            backgroundColor:
-                                                                const Color(
-                                                                    0xFF000052),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    15),
-                                                            reverseEndOffset:
-                                                                const Offset(
-                                                                    0.0, -3.0),
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 4),
-                                                            //Animation duration   animDuration * 2 <= duration
-                                                            animDuration:
-                                                                const Duration(seconds: 1),
-                                                            curve: Curves.easeIn,
-                                                            reverseCurve: Curves.easeInOut);
-                                                      },
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        height: 25,
-                                                        width: width * 0.15,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape: BoxShape
-                                                              .rectangle,
-                                                          border: Border.all(
-                                                            color: const Color(
-                                                                0xFF000052),
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          crazyofferlist[index]
-                                                                  ['offer_code']
-                                                              .toString(),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Color(
-                                                                0xFF000052),
-                                                            fontSize: 15,
-                                                          ),
-                                                        ),
-                                                      ),
+                                                    // padding:
+                                                    //     const EdgeInsets.only(
+                                                    //         top: 30,
+                                                    //         left: 5,
+                                                    //         right: 5,
+                                                    //         bottom: 30),
+                                                    child: Image.network(
+                                                      crazyofferlist[index]
+                                                              ["offer_image"]
+                                                          .toString(),
+                                                      fit: BoxFit.fill,
+                                                      // height: 40,
+                                                      width: MediaQuery.of(context).size.width,
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Container(
-                                                      height: 25,
-                                                      child: Text(
-                                                        "${crazyofferlist[index]["amount_percentage"].toString()}% off on some services",
-                                                        style: const TextStyle(
-                                                          color: Colors.black54,
-                                                          // fontWeight: FontWeight.bold,
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    // const SizedBox(width: 5,),
-                                                    Container(
-                                                      height: 35,
-                                                      alignment:
-                                                          Alignment.bottomRight,
-                                                      child: TextButton(
-                                                        onPressed: () {
-                                                          Clipboard.setData(
-                                                            ClipboardData(
-                                                              text: crazyofferlist[
+                                                Container(
+                                                  height: 60,
+                                                  width: width,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8, right: 15),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Container(
+                                                            height: 25,
+                                                            child: Text(
+                                                              crazyofferlist[
                                                                           index]
                                                                       [
-                                                                      'offer_code']
+                                                                      "vendor_name"]
                                                                   .toString(),
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 18,
+                                                              ),
                                                             ),
-                                                          );
-                                                          showToast(
-                                                              '\n\nCopied to Clipboard',
-                                                              context: context,
-                                                              textAlign: TextAlign
-                                                                  .left,
-                                                              textStyle: const TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  color: Colors
-                                                                      .white),
-                                                              fullWidth: true,
-                                                              animation:
-                                                                  StyledToastAnimation
-                                                                      .slideFromTop,
-                                                              reverseAnimation:
-                                                                  StyledToastAnimation
-                                                                      .slideToTop,
-                                                              position:
-                                                                  StyledToastPosition
-                                                                      .top,
-                                                              startOffset:
-                                                                  const Offset(
-                                                                      0.0, -3.0),
-                                                              backgroundColor:
-                                                                  const Color(
-                                                                      0xFF000052),
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                      15),
-                                                              reverseEndOffset:
-                                                                  const Offset(
-                                                                      0.0, -3.0),
-                                                              duration: const Duration(
-                                                                  seconds: 4),
-                                                              //Animation duration   animDuration * 2 <= duration
-                                                              animDuration:
-                                                                  const Duration(seconds: 1),
-                                                              curve: Curves.easeIn,
-                                                              reverseCurve: Curves.easeInOut);
-                                                        },
-                                                        child: const Text(
-                                                          "Copy Code",
-                                                          textAlign:
-                                                              TextAlign.right,
-                                                          style: TextStyle(
-                                                            color: Colors
-                                                                .lightBlueAccent,
-                                                            fontSize: 17,
                                                           ),
-                                                        ),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              Clipboard.setData(
+                                                                ClipboardData(
+                                                                  text: crazyofferlist[
+                                                                              index]
+                                                                          [
+                                                                          'offer_code']
+                                                                      .toString(),
+                                                                ),
+                                                              );
+                                                              showToast(
+                                                                  '\n\nCopied to Clipboard',
+                                                                  context:
+                                                                      context,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .left,
+                                                                  textStyle: const TextStyle(
+                                                                      fontSize:
+                                                                          16.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                      color: Colors
+                                                                          .white),
+                                                                  fullWidth:
+                                                                      true,
+                                                                  animation:
+                                                                      StyledToastAnimation
+                                                                          .slideFromTop,
+                                                                  reverseAnimation:
+                                                                      StyledToastAnimation
+                                                                          .slideToTop,
+                                                                  position:
+                                                                      StyledToastPosition
+                                                                          .top,
+                                                                  startOffset:
+                                                                      const Offset(
+                                                                          0.0, -3.0),
+                                                                  backgroundColor:
+                                                                      const Color(
+                                                                          0xFF000052),
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          15),
+                                                                  reverseEndOffset:
+                                                                      const Offset(
+                                                                          0.0, -3.0),
+                                                                  duration: const Duration(
+                                                                      seconds:
+                                                                          4),
+                                                                  //Animation duration   animDuration * 2 <= duration
+                                                                  animDuration:
+                                                                      const Duration(seconds: 1),
+                                                                  curve: Curves.easeIn,
+                                                                  reverseCurve: Curves.easeInOut);
+                                                            },
+                                                            child: Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              height: 25,
+                                                              width:
+                                                                  width * 0.15,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .rectangle,
+                                                                border:
+                                                                    Border.all(
+                                                                  color: const Color(
+                                                                      0xFF000052),
+                                                                ),
+                                                              ),
+                                                              child: Text(
+                                                                crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        'offer_code']
+                                                                    .toString(),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Color(
+                                                                      0xFF000052),
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ),
-                                                  ],
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Container(
+                                                            height: 25,
+                                                            child: Text(
+                                                              "${crazyofferlist[index]["amount_percentage"].toString()}% off on some services",
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .black54,
+                                                                // fontWeight: FontWeight.bold,
+                                                                fontSize: 13,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          // const SizedBox(width: 5,),
+                                                          Container(
+                                                            // color: Colors.red,
+                                                            height: 35,
+                                                            alignment: Alignment
+                                                                .bottomRight,
+                                                            child: TextButton(
+                                                              onPressed: () {
+                                                                Clipboard
+                                                                    .setData(
+                                                                  ClipboardData(
+                                                                    text: crazyofferlist[index]
+                                                                            [
+                                                                            'offer_code']
+                                                                        .toString(),
+                                                                  ),
+                                                                );
+                                                                showToast(
+                                                                    '\n\nCopied to Clipboard',
+                                                                    context:
+                                                                        context,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .left,
+                                                                    textStyle: const TextStyle(
+                                                                        fontSize:
+                                                                            16.0,
+                                                                        fontWeight: FontWeight
+                                                                            .normal,
+                                                                        color: Colors
+                                                                            .white),
+                                                                    fullWidth:
+                                                                        true,
+                                                                    animation:
+                                                                        StyledToastAnimation
+                                                                            .slideFromTop,
+                                                                    reverseAnimation:
+                                                                        StyledToastAnimation
+                                                                            .slideToTop,
+                                                                    position:
+                                                                        StyledToastPosition
+                                                                            .top,
+                                                                    startOffset:
+                                                                        const Offset(
+                                                                            0.0,
+                                                                            -3.0),
+                                                                    backgroundColor:
+                                                                        const Color(
+                                                                            0xFF000052),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15),
+                                                                    reverseEndOffset:
+                                                                        const Offset(
+                                                                            0.0,
+                                                                            -3.0),
+                                                                    duration: const Duration(
+                                                                        seconds:
+                                                                            4),
+                                                                    //Animation duration   animDuration * 2 <= duration
+                                                                    animDuration:
+                                                                        const Duration(seconds: 1),
+                                                                    curve: Curves.easeIn,
+                                                                    reverseCurve: Curves.easeInOut);
+                                                              },
+                                                              child: const Text(
+                                                                "Copy Code",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .right,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .lightBlueAccent,
+                                                                  fontSize: 15,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            )
+                          : Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  height: 250,
+                                  width: 250,
+                                  child: Center(
+                                    child: Image.asset(
+                                        "assets/no_result_found.png"),
                                   ),
-                                );
-                              }),
-                        ),
-                      ),
+                                ),
+                                const Text(
+                                  "No Result Found.",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  "We did not find anything here.",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+
+                              ],
+                            ),
                     ],
                   ),
                 ),
