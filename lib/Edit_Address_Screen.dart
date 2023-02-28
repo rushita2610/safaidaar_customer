@@ -281,11 +281,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:safaidaar_customer/Add_Address_Screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Api/Api_Url.dart';
 
 class EditaddressScreen extends StatefulWidget {
-  const EditaddressScreen({Key? key}) : super(key: key);
+  String addressid;
+   EditaddressScreen({Key? key, required this.addressid}) : super(key: key);
 
   @override
   State<EditaddressScreen> createState() => _EditaddressScreenState();
@@ -304,6 +306,8 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
   bool isShowSearch = true;
   bool isReload = false;
   bool visible = true;
+
+  Map editaddress = {};
 
   String location = 'Null, Press Button';
   String Address = '';
@@ -358,32 +362,33 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
 
   @override
   void initState() {
-    getLocation();
-    locationdata();
+    //getLocation();
+   // locationdata();
+    GetSingleAddress_ApiCall();
     super.initState();
   }
 
-  locationdata() async {
-    Position position = await _getGeoLocationPosition();
-    location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
-    GetAddressFromLatLong(position);
-  }
-
-  getLocation() async {
-    LocationPermission permission;
-    permission = await Geolocator.requestPermission();
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    double lat = position.latitude;
-    double long = position.longitude;
-
-    LatLng location = LatLng(lat, long);
-
-    setState(() {
-      _currentPosition = location;
-    });
-  }
+  // locationdata() async {
+  //   Position position = await _getGeoLocationPosition();
+  //   location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
+  //   GetAddressFromLatLong(position);
+  // }
+  //
+  // getLocation() async {
+  //   LocationPermission permission;
+  //   permission = await Geolocator.requestPermission();
+  //
+  //   Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
+  //   double lat = position.latitude;
+  //   double long = position.longitude;
+  //
+  //   LatLng location = LatLng(lat, long);
+  //
+  //   setState(() {
+  //     _currentPosition = location;
+  //   });
+  // }
 
   LatLng? _currentPosition;
 
@@ -440,7 +445,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
             ),
           ],
           title: const Text(
-            "Add Address",
+            "Edit Address",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -488,7 +493,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                     ),
                   ),
                 ),
-                isShowSearch == true
+                isShowSearch == false
                     ? Positioned(
                         // left: 10,
                         // right: 10,
@@ -615,7 +620,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                                       ),
                                       onPressed: () {
                                         setState(() {
-                                          isShowSearch = false;
+                                          isShowSearch = true;
                                         });
                                         // Navigator.pop(context);
                                       },
@@ -1474,4 +1479,48 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
       throw e;
     }
   }
+
+  GetSingleAddress_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      print(token);
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
+      };
+      print(Header);
+      print(Getsingleaddress_Api + "/${widget.addressid}");
+      var response =
+      await http.get(Uri.parse(Getsingleaddress_Api + "/${widget.addressid}"), headers: Header);
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          editaddress.clear();
+          editaddress = decode["data"];
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getaddress =>" + e.toString());
+      throw e;
+    }
+  }
+
+
 }

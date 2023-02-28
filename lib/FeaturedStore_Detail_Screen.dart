@@ -38,7 +38,11 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
   ];
   int selectedtabIndex = 0;
 
-  List<dynamic> buttonslist = ["Men's", "Shoes", "Household"];
+  List<dynamic> buttonslist = [
+    "Men's",
+    "Shoes",
+    "Household",
+  ];
 
   int _selectedbuttonIndex = 0;
 
@@ -115,15 +119,15 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
   ];
 
   List<dynamic> crazyofferlist = [
-    {
-      "clean": "Dry Cleaning With Ironing (Men's)",
-      "use code": "iLJ1bt",
-      'name': "test",
-      "image": "assets/customer_application_logo.svg",
-      "offer%": 10,
-      'QTY': 0,
-      'price': 100
-    },
+    // {
+    //   "clean": "Dry Cleaning With Ironing (Men's)",
+    //   "use code": "iLJ1bt",
+    //   'name': "test",
+    //   "image": "assets/customer_application_logo.svg",
+    //   "offer%": 10,
+    //   'QTY': 0,
+    //   'price': 100
+    // },
   ];
 
   List<dynamic> cleaningwaysoffer = [];
@@ -153,8 +157,8 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
       _selectedbuttonIndex = 0;
       buttonslist.clear();
     }
-    // GetOffer_ApiCall();
     GetVendorOffer_ApiCall();
+   // GetVendorservice_ApiCall();
   }
 
   Future<void> _showproductdialogbox(BuildContext context) async {
@@ -1416,11 +1420,9 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var user_id = prefs.getString("id") ?? "";
 
-      print(GetVendorserviceoffer_Api +
-          "/${widget.vendorid}/?search=${searchoffer}&user_id=${user_id}");
+      print("$GetVendorserviceoffer_Api/${widget.vendorid}/?search=$searchoffer&user_id=$user_id");
       var response = await http.get(
-        Uri.parse(GetVendorserviceoffer_Api +
-            "/${widget.vendorid}/?search=${searchoffer}&user_id=${user_id}"),
+        Uri.parse("$GetVendorserviceoffer_Api/${widget.vendorid}/?search=$searchoffer&user_id=$user_id"),
       );
 
       if (response.statusCode == 200) {
@@ -1452,49 +1454,45 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
     }
   }
 
-  // GetOffer_ApiCall() async {
-  //   setState(() {
-  //     isReload = true;
-  //   });
-  //   try {
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     var token = prefs.getString("token") ?? "";
-  //     var user_id = prefs.getString("id") ?? "";
-  //
-  //     print(GetOffers_Api +
-  //         "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}");
-  //     var response = await http.get(
-  //       Uri.parse(GetOffers_Api +
-  //           "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}"),
-  //     );
-  //
-  //     if (response.statusCode == 200) {
-  //       var decode = jsonDecode(response.body);
-  //       print(decode);
-  //       if (decode["success"] = true) {
-  //         //GetVendorOffer_ApiCall();
-  //         crazyofferlist.clear();
-  //         crazyofferlist = decode["data"]["data"];
-  //       } else {}
-  //       setState(() {
-  //         isReload = false;
-  //       });
-  //     } else {
-  //       print("Error" + response.statusCode.toString());
-  //       print("Error" + response.body.toString());
-  //
-  //       setState(() {
-  //         isReload = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     setState(() {
-  //       isReload = false;
-  //     });
-  //     print("Exception in getoffer =>" + e.toString());
-  //     throw e;
-  //   }
-  // }
+  GetVendorservice_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user_id = prefs.getString("id") ?? "";
+
+      print(GetVendorserviceoffer_Api + "/${widget.vendorid}");
+      var response = await http.get(
+        Uri.parse(GetVendorserviceoffer_Api + "/${widget.vendorid}"),
+      );
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          buttonslist.clear();
+          buttonslist = decode["data"];
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+
+        setState(() {
+          isReload = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getoffer =>" + e.toString());
+      throw e;
+    }
+  }
 
   UpdateCartPrice() {
     setState(() {

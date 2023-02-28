@@ -140,7 +140,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                 shape: RoundedRectangleBorder(
                                   // side: const BorderSide(
                                   //     color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(7.0),
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 color: Colors.white,
                                 child: GestureDetector(
@@ -181,6 +181,15 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                         child: Container(
                                           height: 10,
                                           child: ClipRRect(
+                                            borderRadius:
+                                            const BorderRadius
+                                                .only(
+                                                topLeft: Radius
+                                                    .circular(
+                                                    10),
+                                                topRight: Radius
+                                                    .circular(
+                                                    10)),
                                             child: Image.network(
                                               featuredstorelist[index]
                                                       ['vendor_banner_image']

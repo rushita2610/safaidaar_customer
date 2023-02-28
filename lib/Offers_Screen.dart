@@ -416,11 +416,11 @@ class _OfferScreenState extends State<OfferScreen> {
                                   width: 250,
                                   child: Center(
                                     child: Image.asset(
-                                        "assets/no_result_found.png"),
+                                        "assets/no_offer.png"),
                                   ),
                                 ),
                                 const Text(
-                                  "No Result Found.",
+                                  "Opps... It's empty here",
                                   style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold),
@@ -429,7 +429,7 @@ class _OfferScreenState extends State<OfferScreen> {
                                   height: 5,
                                 ),
                                 const Text(
-                                  "We did not find anything here.",
+                                  "No offers has been added yet.",
                                   style: TextStyle(
                                     fontSize: 17,
                                   ),

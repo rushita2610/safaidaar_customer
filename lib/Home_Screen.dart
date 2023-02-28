@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -132,15 +132,15 @@ class _homeScreenState extends State<homeScreen> {
   ];
 
   List<dynamic> addresslist = [
-    {
-      "addresstype": "Office",
-    },
-    {
-      "addresstype": "Home",
-    },
-    {
-      "addresstype": "Other",
-    },
+    // {
+    //   "addresstype": "Office",
+    // },
+    // {
+    //   "addresstype": "Home",
+    // },
+    // {
+    //   "addresstype": "Other",
+    // },
   ];
 
   TextEditingController searchcontroller = TextEditingController();
@@ -157,6 +157,7 @@ class _homeScreenState extends State<homeScreen> {
     TopServices_ApiCall();
     FeatureStore_ApiCall(false);
     GetOffer_ApiCall();
+    GetAddress_ApiCall();
     profile();
     super.initState();
   }
@@ -222,6 +223,7 @@ class _homeScreenState extends State<homeScreen> {
                             InkWell(
                               onTap: () {
                                 _settingModelBottomSheet(context);
+                                GetAddress_ApiCall();
                               },
                               child: Container(
                                 width: width * 0.78,
@@ -934,7 +936,7 @@ class _homeScreenState extends State<homeScreen> {
                                   ? Container(
                                       padding: const EdgeInsets.only(top: 15),
                                       // height: Sizee.height / 2.5,
-                                      height: crazyofferlist.length * 70,
+                                      height: crazyofferlist.length * 80,
                                       // width: Sizee.width + 10,
                                       // color: Colors.green,
                                       child: ListView.builder(
@@ -1063,7 +1065,39 @@ class _homeScreenState extends State<homeScreen> {
                                             );
                                           }),
                                     )
-                                  : const SizedBox(),
+                                  : Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Container(
+                                          height: 250,
+                                          width: 250,
+                                          child: Center(
+                                            child: Image.asset(
+                                                "assets/no_offer.png"),
+                                          ),
+                                        ),
+                                        const Text(
+                                          "No Offers Found.",
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Text(
+                                          "We did not find anything here.",
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                      ],
+                                    ),
                             ],
                           ),
                         ),
@@ -1186,9 +1220,7 @@ class _homeScreenState extends State<homeScreen> {
                                 } else if (menuname[index] == "Address Book") {
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return AddressScreen(
-                                      Address: Address,
-                                    );
+                                    return AddressScreen();
                                   }));
                                 } else if (menuname[index] == "Notifications") {
                                   Navigator.of(context).push(
@@ -1431,6 +1463,9 @@ class _homeScreenState extends State<homeScreen> {
           isReload = false;
         });
       } else {
+        setState(() {
+          isReload = false;
+        });
         print("Error" + response.statusCode.toString());
         print("Error" + response.body.toString());
       }
@@ -1468,6 +1503,9 @@ class _homeScreenState extends State<homeScreen> {
           isReload = false;
         });
       } else {
+        setState(() {
+          isReload = false;
+        });
         print("Error" + response.statusCode.toString());
         print("Error" + response.body.toString());
       }
@@ -1497,20 +1535,6 @@ class _homeScreenState extends State<homeScreen> {
         var decode = jsonDecode(response.body);
         print(decode);
         if (decode["success"] == true) {
-          // setState(() {
-          //   currentPage = decode["data"]["current_page"];
-          //   lastPage = decode["data"]["last_page"];
-          //   if (currentPage == 1) {
-          //     featuredstorelist.clear();
-          //   }
-          //
-          //   for (int i = 0; i < decode["data"]["data"].length; i++) {
-          //     featuredstorelist.add(decode['data']['data'][i]);
-          //   }
-          //   //print("decode ${decode["data"][0]["data"]} " );
-          //   // orderlist.clear();
-          //   // orderlist = decode["data"]["data"];
-          // });
           featuredstorelist.clear();
           featuredstorelist = decode["data"]["data"];
           print(decode);
@@ -1521,6 +1545,9 @@ class _homeScreenState extends State<homeScreen> {
           isReload = false;
         });
       } else {
+        setState(() {
+          isReload = false;
+        });
         print("Error" + response.statusCode.toString());
         print("Error" + response.body.toString());
       }
@@ -1591,7 +1618,7 @@ class _homeScreenState extends State<homeScreen> {
           builder: (BuildContext context, StateSetter setState) {
             return SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                // height: MediaQuery.of(context).size.height,
                 padding: const EdgeInsets.only(left: 15, right: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -1784,84 +1811,108 @@ class _homeScreenState extends State<homeScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: const Text(
-                        "Saved Addresses",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
+                    Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: const Text(
+                            "Saved Addresses",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Container(
-                      height: addresslist.length * 100,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: addresslist.length,
-                          itemBuilder: (BuildContext cntx, int index) {
-                            return InkWell(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    // crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 25,
-                                        // width: 20,
-                                        // color: Colors.red,
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child:
-                                            Image.asset("assets/direction.png"),
-                                      ),
-                                      Container(
-                                        height: 67,
-                                        // color: Colors.red,
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              addresslist[index]["addresstype"],
-                                              style: const TextStyle(
-                                                color: Color(0xFF000052),
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: const EdgeInsets.only(
-                                                left: 0,
-                                              ),
-                                              // color: Colors.blue,
-                                              child: const Text(
-                                                "User location",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
+                        Flexible(
+                          flex: 0,
+                          child: Container(
+                            height: addresslist.length * 200,
+                            width: MediaQuery.of(context).size.width,
+                            child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: addresslist.length,
+                                itemBuilder: (BuildContext cntx, int index) {
+                                  return InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      padding: EdgeInsets.only(top: 30),
+                                     // color: Colors.red,
+                                      height: 140,
+                                      width:  MediaQuery.of(context).size.width,
+                                      child: Row(
+                                        // crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            height: 25,
+                                            // width: 20,
+                                            // color: Colors.red,
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: Image.asset(
+                                                "assets/direction.png"),
+                                          ),
+                                          Container(
+                                           // height: 67,
+                                            // color: Colors.red,
+                                            padding:
+                                                const EdgeInsets.only(left: 1),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  addresslist[index]
+                                                          ['address_type_text']
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF000052),
+                                                    fontSize: 16.5,
+                                                    fontWeight: FontWeight.w500
+                                                  ),
                                                 ),
-                                              ),
+                                                const SizedBox(height: 10,),
+                                                Container(
+                                                  alignment: Alignment.centerLeft,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.1,
+                                                  //color: Colors.red,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.8,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 0,
+                                                  ),
+                                                  // color: Colors.blue,
+                                                  child: Text(
+                                                    addresslist[index]
+                                                            ["address"]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -1871,5 +1922,47 @@ class _homeScreenState extends State<homeScreen> {
         );
       },
     );
+  }
+
+  GetAddress_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      print(token);
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
+      };
+      print(Header);
+      print(GetCustomeraddress_Api);
+      var response =
+          await http.get(Uri.parse(GetCustomeraddress_Api), headers: Header);
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          addresslist.clear();
+          addresslist = decode["data"];
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getaddress =>" + e.toString());
+      throw e;
+    }
   }
 }
