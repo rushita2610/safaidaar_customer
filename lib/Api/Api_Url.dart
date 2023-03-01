@@ -15,6 +15,7 @@ const TopService_Api = BASEURL + 'customer/top-services?all=';
 const AllTopservices_Api = BASEURL + 'customer/top-services-vendor';
 const TopServicevendor_Api = BASEURL + 'customer/top-services-vendor?service_id=';
 const FeaturedStore_Api = BASEURL + 'customer/get-featured-vendor';
+const Recommended_Api = BASEURL + 'customer/get-recommended-vendor';
 const GetCustomerprofile_Api = BASEURL + 'customer/get-customer-profile?user_id=';
 const Updatecustomerprofile_Api = BASEURL + "customer/customer-profile-update";
 const GetNotificaton_Api = BASEURL + 'get-notification';

@@ -15,6 +15,8 @@ import 'package:safaidaar_customer/FeaturedStore_Detail_Screen.dart';
 import 'package:safaidaar_customer/FeaturedStore_VendorScreen.dart';
 import 'package:safaidaar_customer/Feedback_Screen.dart';
 import 'package:safaidaar_customer/Notifications_Screen.dart';
+import 'package:safaidaar_customer/Offers_Screen.dart';
+import 'package:safaidaar_customer/Recommended_Screen.dart';
 import 'package:safaidaar_customer/Services_detail_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -101,6 +103,33 @@ class _homeScreenState extends State<homeScreen> {
     // },
   ];
 
+  List<dynamic> recommendedlist = [
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-1',
+    //   'deliveryrange': 66,
+    //   'starting': 52.5,
+    // },
+    // {
+    //   'image': 'assets/exp2.jpg',
+    //   'name': 'Exp-2',
+    //   'deliveryrange': 50,
+    //   'starting': 65.5,
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-3',
+    //   'deliveryrange': 55,
+    //   'starting': 89.5,
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-4',
+    //   'deliveryrange': 72,
+    //   'starting': 40.5,
+    // },
+  ];
+
   List<dynamic> menuassets = [
     "assets/your-orders.png",
     "assets/address-book.png",
@@ -155,7 +184,8 @@ class _homeScreenState extends State<homeScreen> {
     // HomeBannerApi();
     setDrawerdata();
     TopServices_ApiCall();
-    FeatureStore_ApiCall(false);
+    FeatureStore_ApiCall();
+    Recommended_ApiCall();
     GetOffer_ApiCall();
     GetAddress_ApiCall();
     profile();
@@ -207,7 +237,7 @@ class _homeScreenState extends State<homeScreen> {
         body: (isReload == false)
             ? SingleChildScrollView(
                 child: Container(
-                  height: height * 1.56,
+                  height: height * 2,
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 0),
                   child: Column(
@@ -528,580 +558,998 @@ class _homeScreenState extends State<homeScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Flexible(
-                        flex: 0,
-                        child: Container(
-                          // padding: const EdgeInsets.only(bottom: 10),
-                          // height: Sizee.height,
-                          color: Colors.transparent,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              (featuredstorelist.isNotEmpty)
-                                  ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 35,
-                                          // color:Colors.blue,
-                                          child: Row(
+                      recommendedlist.length > 0
+                          ? Flexible(
+                              flex: 0,
+                              child: Container(
+                                // padding: const EdgeInsets.only(bottom: 10),
+                                // height: Sizee.height,
+                                color: Colors.transparent,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    (recommendedlist.isNotEmpty)
+                                        ? Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.start,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
-                                                alignment: Alignment.topLeft,
-                                                child: const Text(
-                                                  "Featured Store/Vendor",
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.w900,
-                                                  ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                child: const Text(
-                                                  "See all",
-                                                  style: TextStyle(
-                                                      color: Color(0xFF000052),
-                                                      fontSize: 17.5,
-                                                      fontWeight:
-                                                          FontWeight.w900),
-                                                ),
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) {
-                                                        return const Featuredstore();
+                                                height: 35,
+                                                // color:Colors.blue,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: const Text(
+                                                        "Recommended for you",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      child: const Text(
+                                                        "See all",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF000052),
+                                                            fontSize: 17.5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder: (context) {
+                                                              return const Recommendedscreen();
+                                                            },
+                                                          ),
+                                                        );
                                                       },
                                                     ),
-                                                  );
-                                                },
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                // padding: const EdgeInsets.only(top: 10),
+                                                alignment: Alignment.topLeft,
+                                                height: 3,
+                                                //width: Sizee.width / 5 - 15,
+                                                width: width * 0.15,
+                                                color: const Color(0xFF000052),
                                               ),
                                             ],
-                                          ),
-                                        ),
-                                        Container(
-                                          // padding: const EdgeInsets.only(top: 10),
-                                          alignment: Alignment.topLeft,
-                                          height: 3,
-                                          //width: Sizee.width / 5 - 15,
-                                          width: width * 0.15,
-                                          color: const Color(0xFF000052),
-                                        ),
-                                      ],
-                                    )
-                                  : const SizedBox(),
-                              (featuredstorelist.length > 0)
-                                  ? Container(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      // height: Sizee.height / 2.5,
-                                      height: featuredstorelist.length * 60,
-                                      // width: Sizee.width + 10,
-                                      // color: Colors.green,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          physics:
-                                              const AlwaysScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              (featuredstorelist.length >= 5)
-                                                  ? 5
-                                                  : featuredstorelist.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              // color: Colors.blue,
-                                              padding: const EdgeInsets.only(
-                                                bottom: 30,
-                                              ),
-                                              width: 220,
-                                              // height: 100,
-                                              child: Card(
-                                                elevation: 4,
-                                                shape: RoundedRectangleBorder(
-                                                  // side: const BorderSide(
-                                                  //     color: Colors.grey),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
+                                          )
+                                        : const SizedBox(),
+                                    (recommendedlist.length > 0)
+                                        ? Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            // height: Sizee.height / 2.5,
+                                            height: height * 0.35,
+                                            // featuredstorelist.length * 60,
+                                            width: recommendedlist.length * 220,
+                                            // width: Sizee.width + 10,
+                                            // color: Colors.green,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                physics:
+                                                    const AlwaysScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: (recommendedlist
+                                                            .length >=
+                                                        5)
+                                                    ? 5
+                                                    : recommendedlist.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    // color: Colors.blue,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      bottom: 30,
+                                                    ),
+                                                    width: 220,
+                                                    // height: 100,
+                                                    child: Card(
+                                                      elevation: 4,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        // side: const BorderSide(
+                                                        //     color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                      ),
+                                                      color: Colors.white,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          print(recommendedlist[
+                                                                      index]
+                                                                  ["user_id"]
+                                                              .toString());
+                                                          print(recommendedlist[
+                                                                      index]
+                                                                  ["vendor_id"]
+                                                              .toString());
+                                                          recommendedlist[index]
+                                                                  ["user_id"]
+                                                              .toString();
+                                                          recommendedlist[index]
+                                                                  ["vendor_id"]
+                                                              .toString();
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  DetailFeatured_Store(
+                                                                isFrom:
+                                                                    'service',
+                                                                userid: recommendedlist[
+                                                                            index]
+                                                                        [
+                                                                        "user_id"]
+                                                                    .toString(),
+                                                                vendorid: recommendedlist[
+                                                                            index]
+                                                                        [
+                                                                        "vendor_id"]
+                                                                    .toString(),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Stack(
+                                                          children: [
+                                                            Positioned(
+                                                              left: 0,
+                                                              // bottom: Sizee.height / 6.5,
+                                                              bottom:
+                                                                  height * 0.13,
+                                                              right: 0,
+                                                              top: 0,
+                                                              child: ClipRRect(
+                                                                borderRadius: const BorderRadius
+                                                                        .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            10)),
+                                                                child: Image
+                                                                    .network(
+                                                                  recommendedlist[
+                                                                              index]
+                                                                          [
+                                                                          'vendor_banner_image']
+                                                                      .toString(),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              left: 5,
+                                                              // top: 50,
+                                                              right: 0,
+                                                              bottom: 0,
+                                                              // height: Sizee.height / 8,
+                                                              height:
+                                                                  height * 0.12,
+                                                              child: Text(
+                                                                recommendedlist[
+                                                                            index]
+                                                                        [
+                                                                        'vendor_name']
+                                                                    .toString(),
+                                                                maxLines: 2,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 19,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 45,
+                                                              height:
+                                                                  height * 0.02,
+                                                              left: 10,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        top: 5),
+                                                                    height: 20,
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/map-blue.png",
+                                                                      color: Colors
+                                                                          .black87,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                    child: Text(
+                                                                      "Delivery Range: ${recommendedlist[index]['delivery_range'].toString()} KM",
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 15,
+                                                              left: 10,
+                                                              //  height: height * 1,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    // padding:
+                                                                    //     const EdgeInsets.only(top: 5),
+                                                                    //height: 10,
+                                                                    child:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .account_balance_wallet,
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      size: 15,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                    child: Text(
+                                                                      "Starting From Rs ${recommendedlist[index]['min_price'].toString()}",
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              top: 8,
+                                                              left: 10,
+                                                              // right: 0,
+                                                              child: recommendedlist[
+                                                                              index]
+                                                                          [
+                                                                          "rating"] ==
+                                                                      "0"
+                                                                  ? const SizedBox()
+                                                                  : Container(
+                                                                      decoration: BoxDecoration(
+                                                                          color: const Color(
+                                                                              0xFF000052),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10)),
+                                                                      height:
+                                                                          25,
+                                                                      width: 70,
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          const Icon(
+                                                                            Icons.star,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                20,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                2,
+                                                                          ),
+                                                                          Text(
+                                                                            recommendedlist[index]["rating"].toString(),
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 17,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                          )
+                                        : const SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      featuredstorelist.length > 0
+                          ? Flexible(
+                              flex: 0,
+                              child: Container(
+                                // padding: const EdgeInsets.only(bottom: 10),
+                                // height: Sizee.height,
+                                color: Colors.transparent,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    (featuredstorelist.isNotEmpty)
+                                        ? Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 35,
+                                                // color:Colors.blue,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: const Text(
+                                                        "Featured Store/Vendor",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      child: const Text(
+                                                        "See all",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF000052),
+                                                            fontSize: 17.5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder: (context) {
+                                                              return const Featuredstore();
+                                                            },
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
                                                 ),
-                                                color: Colors.white,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    print(
-                                                        featuredstorelist[index]
-                                                                ["user_id"]
-                                                            .toString());
-                                                    print(
-                                                        featuredstorelist[index]
-                                                                ["vendor_id"]
-                                                            .toString());
-                                                    featuredstorelist[index]
-                                                            ["user_id"]
-                                                        .toString();
-                                                    featuredstorelist[index]
-                                                            ["vendor_id"]
-                                                        .toString();
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            DetailFeatured_Store(
-                                                          isFrom: 'service',
-                                                          userid:
+                                              ),
+                                              Container(
+                                                // padding: const EdgeInsets.only(top: 10),
+                                                alignment: Alignment.topLeft,
+                                                height: 3,
+                                                //width: Sizee.width / 5 - 15,
+                                                width: width * 0.15,
+                                                color: const Color(0xFF000052),
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+                                    (featuredstorelist.length > 0)
+                                        ? Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            // height: Sizee.height / 2.5,
+                                            height: height * 0.35,
+                                            // featuredstorelist.length * 60,
+                                            width:
+                                                featuredstorelist.length * 220,
+                                            // color: Colors.green,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                physics:
+                                                    const AlwaysScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: (featuredstorelist
+                                                            .length >=
+                                                        5)
+                                                    ? 5
+                                                    : featuredstorelist.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    // color: Colors.blue,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      bottom: 30,
+                                                    ),
+                                                    width: 220,
+                                                    // height: 100,
+                                                    child: Card(
+                                                      elevation: 4,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        // side: const BorderSide(
+                                                        //     color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                      ),
+                                                      color: Colors.white,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          print(
                                                               featuredstorelist[
                                                                           index]
                                                                       [
                                                                       "user_id"]
-                                                                  .toString(),
-                                                          vendorid:
-                                                              featuredstorelist[
-                                                                          index]
-                                                                      [
-                                                                      "vendor_id"]
-                                                                  .toString(),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Stack(
-                                                    children: [
-                                                      Positioned(
-                                                        left: 0,
-                                                        // bottom: Sizee.height / 6.5,
-                                                        bottom: height * 0.13,
-                                                        right: 0,
-                                                        top: 0,
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                      .only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          10),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          10)),
-                                                          child: Image.network(
-                                                            featuredstorelist[
-                                                                        index][
-                                                                    'vendor_banner_image']
-                                                                .toString(),
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        left: 5,
-                                                        // top: 50,
-                                                        right: 0,
-                                                        bottom: 0,
-                                                        // height: Sizee.height / 8,
-                                                        height: height * 0.12,
-                                                        child: Text(
+                                                                  .toString());
+                                                          print(featuredstorelist[
+                                                                      index]
+                                                                  ["vendor_id"]
+                                                              .toString());
                                                           featuredstorelist[
-                                                                      index][
-                                                                  'vendor_name']
-                                                              .toString(),
-                                                          maxLines: 2,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 19,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        bottom: 45,
-                                                        height: height * 0.02,
-                                                        left: 10,
-                                                        child: Row(
+                                                                      index]
+                                                                  ["user_id"]
+                                                              .toString();
+                                                          featuredstorelist[
+                                                                      index]
+                                                                  ["vendor_id"]
+                                                              .toString();
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  DetailFeatured_Store(
+                                                                isFrom:
+                                                                    'service',
+                                                                userid: featuredstorelist[
+                                                                            index]
+                                                                        [
+                                                                        "user_id"]
+                                                                    .toString(),
+                                                                vendorid: featuredstorelist[
+                                                                            index]
+                                                                        [
+                                                                        "vendor_id"]
+                                                                    .toString(),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Stack(
                                                           children: [
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      top: 5),
-                                                              height: 20,
-                                                              child:
-                                                                  Image.asset(
-                                                                "assets/map-blue.png",
-                                                                color: Colors
-                                                                    .black87,
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 7),
-                                                              child: Text(
-                                                                "Delivery Range: ${featuredstorelist[index]['delivery_range'].toString()} KM",
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        bottom: 15,
-                                                        left: 10,
-                                                        //  height: height * 1,
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              // padding:
-                                                              //     const EdgeInsets.only(top: 5),
-                                                              //height: 10,
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .account_balance_wallet,
-                                                                color: Colors
-                                                                    .black87,
-                                                                size: 15,
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 7),
-                                                              child: Text(
-                                                                "Starting From Rs ${featuredstorelist[index]['min_price'].toString()}",
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        top: 8,
-                                                        left: 10,
-                                                        // right: 0,
-                                                        child: featuredstorelist[
-                                                                        index][
-                                                                    "rating"] ==
-                                                                "0"
-                                                            ? SizedBox()
-                                                            : Container(
-                                                                decoration: BoxDecoration(
-                                                                    color: const Color(
-                                                                        0xFF000052),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
+                                                            Positioned(
+                                                              left: 0,
+                                                              // bottom: Sizee.height / 6.5,
+                                                              bottom:
+                                                                  height * 0.13,
+                                                              right: 0,
+                                                              top: 0,
+                                                              child: ClipRRect(
+                                                                borderRadius: const BorderRadius
+                                                                        .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10),
+                                                                    topRight: Radius
+                                                                        .circular(
                                                                             10)),
-                                                                height: 25,
-                                                                width: 70,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    const Icon(
-                                                                      Icons
-                                                                          .star,
+                                                                child: Image
+                                                                    .network(
+                                                                  featuredstorelist[
+                                                                              index]
+                                                                          [
+                                                                          'vendor_banner_image']
+                                                                      .toString(),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              left: 5,
+                                                              // top: 50,
+                                                              right: 0,
+                                                              bottom: 0,
+                                                              // height: Sizee.height / 8,
+                                                              height:
+                                                                  height * 0.12,
+                                                              child: Text(
+                                                                featuredstorelist[
+                                                                            index]
+                                                                        [
+                                                                        'vendor_name']
+                                                                    .toString(),
+                                                                maxLines: 2,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 19,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 45,
+                                                              height:
+                                                                  height * 0.02,
+                                                              left: 10,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        top: 5),
+                                                                    height: 20,
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/map-blue.png",
                                                                       color: Colors
-                                                                          .white,
-                                                                      size: 20,
+                                                                          .black87,
                                                                     ),
-                                                                    const SizedBox(
-                                                                      width: 2,
-                                                                    ),
-                                                                    Text(
-                                                                      featuredstorelist[index]
-                                                                              [
-                                                                              "rating"]
-                                                                          .toString(),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                    child: Text(
+                                                                      "Delivery Range: ${featuredstorelist[index]['delivery_range'].toString()} KM",
                                                                       style:
                                                                           const TextStyle(
-                                                                        color: Colors
-                                                                            .white,
                                                                         fontSize:
-                                                                            17,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
                                                                       ),
-                                                                    )
-                                                                  ],
-                                                                ),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 15,
+                                                              left: 10,
+                                                              //  height: height * 1,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    // padding:
+                                                                    //     const EdgeInsets.only(top: 5),
+                                                                    //height: 10,
+                                                                    child:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .account_balance_wallet,
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      size: 15,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                    child: Text(
+                                                                      "Starting From Rs ${featuredstorelist[index]['min_price'].toString()}",
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              top: 8,
+                                                              left: 10,
+                                                              // right: 0,
+                                                              child: featuredstorelist[
+                                                                              index]
+                                                                          [
+                                                                          "rating"] ==
+                                                                      "0"
+                                                                  ? const SizedBox()
+                                                                  : Container(
+                                                                      decoration: BoxDecoration(
+                                                                          color: const Color(
+                                                                              0xFF000052),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10)),
+                                                                      height:
+                                                                          25,
+                                                                      width: 70,
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          const Icon(
+                                                                            Icons.star,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                20,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                2,
+                                                                          ),
+                                                                          Text(
+                                                                            featuredstorelist[index]["rating"].toString(),
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 17,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }),
-                                    )
-                                  : const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                          )
+                                        : const SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                       const SizedBox(
                         height: 20,
                       ),
-                      Flexible(
-                        flex: 0,
-                        child: Container(
-                          // padding: const EdgeInsets.only(bottom: 10),
-                          // height: Sizee.height,
-                          color: Colors.transparent,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              (crazyofferlist.isNotEmpty)
-                                  ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 35,
-                                          // color:Colors.blue,
-                                          child: Row(
+                      crazyofferlist.length > 0
+                          ? Flexible(
+                              flex: 0,
+                              child: Container(
+                                // padding: const EdgeInsets.only(bottom: 10),
+                                // height: Sizee.height,
+                                color: Colors.transparent,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    (crazyofferlist.isNotEmpty)
+                                        ? Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.start,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
-                                                alignment: Alignment.topLeft,
-                                                child: const Text(
-                                                  "Crazy Offers",
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.w900,
-                                                  ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                child: const Text(
-                                                  "See all",
-                                                  style: TextStyle(
-                                                      color: Color(0xFF000052),
-                                                      fontSize: 17.5,
-                                                      fontWeight:
-                                                          FontWeight.w900),
-                                                ),
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) {
-                                                        return const Featuredstore();
+                                                height: 35,
+                                                // color:Colors.blue,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: const Text(
+                                                        "Crazy Offers",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      child: const Text(
+                                                        "See all",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF000052),
+                                                            fontSize: 17.5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder: (context) {
+                                                              return const BottomNavigationScreen(
+                                                                  4);
+                                                            },
+                                                          ),
+                                                        );
                                                       },
                                                     ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                // padding: const EdgeInsets.only(top: 10),
+                                                alignment: Alignment.topLeft,
+                                                height: 3,
+                                                //width: Sizee.width / 5 - 15,
+                                                width: width * 0.12,
+                                                color: const Color(0xFF000052),
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+                                    (crazyofferlist.length > 0)
+                                        ? Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            // height: Sizee.height / 2.5,
+                                            height: height * 0.35,
+                                            // featuredstorelist.length * 60,
+                                            width: crazyofferlist.length * 220,
+                                            // width: Sizee.width + 10,
+                                            // color: Colors.green,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                physics:
+                                                    const AlwaysScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    (crazyofferlist.length >= 5)
+                                                        ? 5
+                                                        : crazyofferlist.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    // color: Colors.blue,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      bottom: 30,
+                                                    ),
+                                                    width: 220,
+                                                    // height: 180,
+                                                    child: Card(
+                                                      elevation: 4,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        // side: const BorderSide(
+                                                        //     color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                      ),
+                                                      color: Colors.white,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          crazyofferlist[index]
+                                                                  ["offer_id"]
+                                                              .toString();
+                                                          crazyofferlist[index]
+                                                                  ["vendor_id"]
+                                                              .toString();
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  DetailFeatured_Store(
+                                                                isFrom: 'offer',
+                                                                userid: crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        "offer_id"]
+                                                                    .toString(),
+                                                                vendorid: crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        "vendor_id"]
+                                                                    .toString(),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Stack(
+                                                          children: [
+                                                            Positioned(
+                                                              left: 0,
+                                                              bottom: height *
+                                                                  0.085,
+                                                              right: 0,
+                                                              top: 0,
+                                                              child: ClipRRect(
+                                                                // borderRadius:
+                                                                //     BorderRadius
+                                                                //         .circular(
+                                                                //             10.0),
+                                                                child: Image
+                                                                    .network(
+                                                                  crazyofferlist[
+                                                                              index]
+                                                                          [
+                                                                          'offer_image']
+                                                                      .toString(),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              left: 8,
+                                                              // top: 50,
+                                                              right: 0,
+                                                              bottom: 0,
+                                                              // height: Sizee.height / 8,
+                                                              height:
+                                                                  height * 0.08,
+                                                              child: Text(
+                                                                crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        'vendor_name']
+                                                                    .toString(),
+                                                                maxLines: 2,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 19,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 15,
+                                                              // height: Sizee.height / 8.5,
+                                                              left: 0,
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                child: Text(
+                                                                  "${crazyofferlist[index]['amount_percentage'].toString()} % off on some services",
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
                                                   );
-                                                },
+                                                }),
+                                          )
+                                        : Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Container(
+                                                height: 250,
+                                                width: 250,
+                                                child: Center(
+                                                  child: Image.asset(
+                                                      "assets/no_offer.png"),
+                                                ),
+                                              ),
+                                              const Text(
+                                                "No Offers Found.",
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              const Text(
+                                                "We did not find anything here.",
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
                                               ),
                                             ],
                                           ),
-                                        ),
-                                        Container(
-                                          // padding: const EdgeInsets.only(top: 10),
-                                          alignment: Alignment.topLeft,
-                                          height: 3,
-                                          //width: Sizee.width / 5 - 15,
-                                          width: width * 0.12,
-                                          color: const Color(0xFF000052),
-                                        ),
-                                      ],
-                                    )
-                                  : const SizedBox(),
-                              (crazyofferlist.length > 0)
-                                  ? Container(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      // height: Sizee.height / 2.5,
-                                      height: crazyofferlist.length * 80,
-                                      // width: Sizee.width + 10,
-                                      // color: Colors.green,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          physics:
-                                              const AlwaysScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              (crazyofferlist.length >= 5)
-                                                  ? 5
-                                                  : crazyofferlist.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              // color: Colors.blue,
-                                              padding: const EdgeInsets.only(
-                                                bottom: 30,
-                                              ),
-                                              width: 220,
-                                              // height: 180,
-                                              child: Card(
-                                                elevation: 4,
-                                                shape: RoundedRectangleBorder(
-                                                  // side: const BorderSide(
-                                                  //     color: Colors.grey),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                ),
-                                                color: Colors.white,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    crazyofferlist[index]
-                                                            ["offer_id"]
-                                                        .toString();
-                                                    crazyofferlist[index]
-                                                            ["vendor_id"]
-                                                        .toString();
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            DetailFeatured_Store(
-                                                          isFrom: 'offer',
-                                                          userid: crazyofferlist[
-                                                                      index]
-                                                                  ["offer_id"]
-                                                              .toString(),
-                                                          vendorid:
-                                                              crazyofferlist[
-                                                                          index]
-                                                                      [
-                                                                      "vendor_id"]
-                                                                  .toString(),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Stack(
-                                                    children: [
-                                                      Positioned(
-                                                        left: 0,
-                                                        bottom: height * 0.085,
-                                                        right: 0,
-                                                        top: 0,
-                                                        child: ClipRRect(
-                                                          // borderRadius:
-                                                          //     BorderRadius
-                                                          //         .circular(
-                                                          //             10.0),
-                                                          child: Image.network(
-                                                            crazyofferlist[
-                                                                        index][
-                                                                    'offer_image']
-                                                                .toString(),
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        left: 8,
-                                                        // top: 50,
-                                                        right: 0,
-                                                        bottom: 0,
-                                                        // height: Sizee.height / 8,
-                                                        height: height * 0.08,
-                                                        child: Text(
-                                                          crazyofferlist[index][
-                                                                  'vendor_name']
-                                                              .toString(),
-                                                          maxLines: 2,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 19,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        bottom: 15,
-                                                        // height: Sizee.height / 8.5,
-                                                        left: 0,
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 7),
-                                                          child: Text(
-                                                            "${crazyofferlist[index]['amount_percentage'].toString()} % off on some services",
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }),
-                                    )
-                                  : Column(
-                                      children: [
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                          height: 250,
-                                          width: 250,
-                                          child: Center(
-                                            child: Image.asset(
-                                                "assets/no_offer.png"),
-                                          ),
-                                        ),
-                                        const Text(
-                                          "No Offers Found.",
-                                          style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        const Text(
-                                          "We did not find anything here.",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                      ],
-                                    ),
-                            ],
-                          ),
-                        ),
-                      ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),
@@ -1518,7 +1966,7 @@ class _homeScreenState extends State<homeScreen> {
     }
   }
 
-  FeatureStore_ApiCall(bool isPaginate) async {
+  FeatureStore_ApiCall() async {
     setState(() {
       isReload = true;
     });
@@ -1537,6 +1985,44 @@ class _homeScreenState extends State<homeScreen> {
         if (decode["success"] == true) {
           featuredstorelist.clear();
           featuredstorelist = decode["data"]["data"];
+          print(decode);
+        } else {
+          print("Error");
+        }
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in featurestore =>$e");
+      throw e;
+    }
+  }
+
+  Recommended_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      print(Recommended_Api +
+          "?lattitude=23.03984909999999&longitude=72.5602797");
+      var response = await http.get(Uri.parse(Recommended_Api +
+          "?lattitude=23.03984909999999&longitude=72.5602797"));
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] == true) {
+          recommendedlist.clear();
+          recommendedlist = decode["data"]["data"];
           print(decode);
         } else {
           print("Error");
@@ -1836,10 +2322,10 @@ class _homeScreenState extends State<homeScreen> {
                                   return InkWell(
                                     onTap: () {},
                                     child: Container(
-                                      padding: EdgeInsets.only(top: 30),
-                                     // color: Colors.red,
+                                      padding: const EdgeInsets.only(top: 30),
+                                      // color: Colors.red,
                                       height: 140,
-                                      width:  MediaQuery.of(context).size.width,
+                                      width: MediaQuery.of(context).size.width,
                                       child: Row(
                                         // crossAxisAlignment: CrossAxisAlignment.center,
                                         mainAxisAlignment:
@@ -1855,7 +2341,7 @@ class _homeScreenState extends State<homeScreen> {
                                                 "assets/direction.png"),
                                           ),
                                           Container(
-                                           // height: 67,
+                                            // height: 67,
                                             // color: Colors.red,
                                             padding:
                                                 const EdgeInsets.only(left: 1),
@@ -1870,14 +2356,17 @@ class _homeScreenState extends State<homeScreen> {
                                                           ['address_type_text']
                                                       .toString(),
                                                   style: const TextStyle(
-                                                    color: Color(0xFF000052),
-                                                    fontSize: 16.5,
-                                                    fontWeight: FontWeight.w500
-                                                  ),
+                                                      color: Color(0xFF000052),
+                                                      fontSize: 16.5,
+                                                      fontWeight:
+                                                          FontWeight.w500),
                                                 ),
-                                                const SizedBox(height: 10,),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
                                                 Container(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   height: MediaQuery.of(context)
                                                           .size
                                                           .height *

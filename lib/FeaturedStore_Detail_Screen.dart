@@ -158,7 +158,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
       buttonslist.clear();
     }
     GetVendorOffer_ApiCall();
-   // GetVendorservice_ApiCall();
+    // GetVendorservice_ApiCall();
   }
 
   Future<void> _showproductdialogbox(BuildContext context) async {
@@ -724,7 +724,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                               width: Sizee.width / 2 + 20,
                                                                               height: 25,
                                                                               child: Text(
-                                                                                "${cleaningwaysoffer[index]["offer_applicable_services"][0]["parent_category_name"].toString()} (${cleaningwaysoffer[index]["offer_applicable_services"][0]["name"].toString()})",
+                                                                                "${cleaningwaysoffer[index]["offer_applicable_services"][index]["parent_category_name"].toString()} (${cleaningwaysoffer[index]["offer_applicable_services"][index]["name"].toString()})",
                                                                                 style: const TextStyle(
                                                                                   fontSize: 12.2,
                                                                                   color: Colors.black,
@@ -1420,9 +1420,11 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var user_id = prefs.getString("id") ?? "";
 
-      print("$GetVendorserviceoffer_Api/${widget.vendorid}/?search=$searchoffer&user_id=$user_id");
+      print(
+          "$GetVendorserviceoffer_Api/${widget.vendorid}/?search=$searchoffer&user_id=$user_id");
       var response = await http.get(
-        Uri.parse("$GetVendorserviceoffer_Api/${widget.vendorid}/?search=$searchoffer&user_id=$user_id"),
+        Uri.parse(
+            "$GetVendorserviceoffer_Api/${widget.vendorid}/?search=$searchoffer&user_id=$user_id"),
       );
 
       if (response.statusCode == 200) {
@@ -1430,8 +1432,9 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
         print(decode);
         if (decode["success"] = true) {
           crazyofferlist.clear();
-          cleaningwaysoffer.clear();
           crazyofferlist = decode["data"];
+
+          cleaningwaysoffer.clear();
           cleaningwaysoffer = decode["data"];
         } else {}
         setState(() {
@@ -1454,45 +1457,45 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
     }
   }
 
-  GetVendorservice_ApiCall() async {
-    setState(() {
-      isReload = true;
-    });
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var user_id = prefs.getString("id") ?? "";
-
-      print(GetVendorserviceoffer_Api + "/${widget.vendorid}");
-      var response = await http.get(
-        Uri.parse(GetVendorserviceoffer_Api + "/${widget.vendorid}"),
-      );
-
-      if (response.statusCode == 200) {
-        var decode = jsonDecode(response.body);
-        print(decode);
-        if (decode["success"] = true) {
-          buttonslist.clear();
-          buttonslist = decode["data"];
-        } else {}
-        setState(() {
-          isReload = false;
-        });
-      } else {
-        print("Error" + response.statusCode.toString());
-        print("Error" + response.body.toString());
-
-        setState(() {
-          isReload = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        isReload = false;
-      });
-      print("Exception in getoffer =>" + e.toString());
-      throw e;
-    }
-  }
+  // GetVendorservice_ApiCall() async {
+  //   setState(() {
+  //     isReload = true;
+  //   });
+  //   try {
+  //     // SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     // var user_id = prefs.getString("id") ?? "";
+  //
+  //     print(GetVendorserviceoffer_Api + "/${widget.vendorid}");
+  //     var response = await http.get(
+  //       Uri.parse(GetVendorserviceoffer_Api + "/${widget.vendorid}"),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       var decode = jsonDecode(response.body);
+  //       print(decode);
+  //       if (decode["success"] = true) {
+  //         buttonslist.clear();
+  //         buttonslist = decode["data"];
+  //       } else {}
+  //       setState(() {
+  //         isReload = false;
+  //       });
+  //     } else {
+  //       print("Error" + response.statusCode.toString());
+  //       print("Error" + response.body.toString());
+  //
+  //       setState(() {
+  //         isReload = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       isReload = false;
+  //     });
+  //     print("Exception in getoffer =>" + e.toString());
+  //     throw e;
+  //   }
+  // }
 
   UpdateCartPrice() {
     setState(() {
