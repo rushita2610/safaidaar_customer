@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -88,13 +89,14 @@ class _AddressScreenState extends State<AddressScreen> {
             ? SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.all(2),
-                  height: height,
+                  // height: height,
                   child: Column(
                     children: [
                       addresslist.length > 0
                           ? Flexible(
+                              flex: 0,
                               child: Container(
-                                height: addresslist.length * 155,
+                                height: addresslist.length * 180,
                                 width: width,
                                 child: ListView.builder(
                                     itemCount: addresslist.length,
@@ -104,7 +106,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                         (BuildContext cntx, int index) {
                                       return Container(
                                         // color: Colors.red,
-                                        height: 155,
+                                        height: 180,
                                         width: width,
                                         child: Card(
                                           shape: RoundedRectangleBorder(
@@ -178,6 +180,14 @@ class _AddressScreenState extends State<AddressScreen> {
                                                                               [
                                                                               "address_id"]
                                                                           .toString();
+                                                                      addresslist[index]
+                                                                              [
+                                                                              "address"]
+                                                                          .toString();
+                                                                      addresslist[index]
+                                                                              [
+                                                                              "address_type"]
+                                                                          .toString();
                                                                       Navigator
                                                                           .push(
                                                                         context,
@@ -186,6 +196,10 @@ class _AddressScreenState extends State<AddressScreen> {
                                                                               EditaddressScreen(
                                                                             addressid:
                                                                                 addresslist[index]["address_id"].toString(),
+                                                                            address:
+                                                                                addresslist[index]["address"].toString(),
+                                                                            addresstype:
+                                                                                addresslist[index]["address_type"].toString(),
                                                                           ),
                                                                         ),
                                                                       );
@@ -205,7 +219,18 @@ class _AddressScreenState extends State<AddressScreen> {
                                                                       IconButton(
                                                                     onPressed:
                                                                         () {
-                                                                      _confirmdialogbox();
+                                                                      addresslist[index]
+                                                                              [
+                                                                              "address_id"]
+                                                                          .toString();
+                                                                      print(addresslist[index]
+                                                                              [
+                                                                              "address_id"]
+                                                                          .toString());
+                                                                      //_confirmdialogbox();
+                                                                      _confirmdialogbox(
+                                                                          Addressid:
+                                                                              addresslist[index]["address_id"].toString());
                                                                     },
                                                                     icon:
                                                                         const Icon(
@@ -226,7 +251,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                                       height: 15,
                                                     ),
                                                     Container(
-                                                      height: height * 0.0875,
+                                                      height: height * 0.088,
                                                       // color: Colors.red,
                                                       width: width * 0.8,
                                                       child: Text(
@@ -295,49 +320,6 @@ class _AddressScreenState extends State<AddressScreen> {
     );
   }
 
-  DeleteAddress_ApiCall() async {
-    setState(() {
-      isReload = true;
-    });
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString("token") ?? "";
-      print(token);
-      final Header = {
-        "Authorization": "Bearer ${token.toString()}",
-      };
-      print(Header);
-      print(DeleteAddress_Api);
-      var response = await http
-          .delete(Uri.parse(DeleteAddress_Api + "${widget}"), headers: Header);
-
-      if (response.statusCode == 200) {
-        var decode = jsonDecode(response.body);
-        print(decode);
-        if (decode["success"] = true) {
-          // addresslist.clear();
-          // addresslist = decode["data"];
-          print("success");
-        } else {}
-        setState(() {
-          isReload = false;
-        });
-      } else {
-        setState(() {
-          isReload = false;
-        });
-        print("Error" + response.statusCode.toString());
-        print("Error" + response.body.toString());
-      }
-    } catch (e) {
-      setState(() {
-        isReload = false;
-      });
-      print("Exception in getaddress =>" + e.toString());
-      throw e;
-    }
-  }
-
   GetAddress_ApiCall() async {
     setState(() {
       isReload = true;
@@ -380,7 +362,94 @@ class _AddressScreenState extends State<AddressScreen> {
     }
   }
 
-  Future<void> _confirmdialogbox() async {
+  DeleteAddress_Apicall({required Addressid}) async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      print(token);
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
+      };
+      print(DeleteAddress_Api + "/${Addressid}");
+      var response = await http.delete(
+          Uri.parse(DeleteAddress_Api + "/${Addressid}"),
+          headers: Header);
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => AddressScreen(),
+          //   ),
+          // );
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Container(
+                // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Status',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      decode["message"].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              duration: const Duration(seconds: 3),
+              backgroundColor: const Color(0xFF000052),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / 1 - 120,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in editaddressa =>" + e.toString());
+    }
+  }
+
+  Future<void> _confirmdialogbox({required Addressid}) async {
     return showDialog(
       context: context,
       builder: (BuildContext context) => Container(
@@ -439,7 +508,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       onPressed: () {
-                        DeleteAddress_ApiCall();
+                        DeleteAddress_Apicall(Addressid: Addressid);
                       },
                       child: const Text(
                         "Yes",

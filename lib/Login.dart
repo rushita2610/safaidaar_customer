@@ -572,7 +572,10 @@ class _LoginState extends State<Login> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                           AboutUsScreen(strURL: 'terms_and_conditions',),
+                                                          AboutUsScreen(
+                                                        strURL:
+                                                            'terms_and_conditions',
+                                                      ),
                                                     ),
                                                   );
                                                 },
@@ -596,7 +599,10 @@ class _LoginState extends State<Login> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          AboutUsScreen(strURL: 'privacy_policy',),
+                                                          AboutUsScreen(
+                                                        strURL:
+                                                            'privacy_policy',
+                                                      ),
                                                     ),
                                                   );
                                                 },
@@ -621,7 +627,9 @@ class _LoginState extends State<Login> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          AboutUsScreen(strURL: 'refund_policy',),
+                                                          AboutUsScreen(
+                                                        strURL: 'refund_policy',
+                                                      ),
                                                     ),
                                                   );
                                                 },

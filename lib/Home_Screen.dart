@@ -639,12 +639,8 @@ class _homeScreenState extends State<homeScreen> {
                                         ? Container(
                                             padding:
                                                 const EdgeInsets.only(top: 15),
-                                            // height: Sizee.height / 2.5,
                                             height: height * 0.35,
-                                            // featuredstorelist.length * 60,
                                             width: recommendedlist.length * 220,
-                                            // width: Sizee.width + 10,
-                                            // color: Colors.green,
                                             child: ListView.builder(
                                                 scrollDirection:
                                                     Axis.horizontal,
@@ -1245,7 +1241,7 @@ class _homeScreenState extends State<homeScreen> {
                                                                             color:
                                                                                 Colors.white,
                                                                             size:
-                                                                                20,
+                                                                                18,
                                                                           ),
                                                                           const SizedBox(
                                                                             width:
@@ -1256,7 +1252,7 @@ class _homeScreenState extends State<homeScreen> {
                                                                             style:
                                                                                 const TextStyle(
                                                                               color: Colors.white,
-                                                                              fontSize: 17,
+                                                                              fontSize: 15,
                                                                               fontWeight: FontWeight.w500,
                                                                             ),
                                                                           )
@@ -2105,7 +2101,7 @@ class _homeScreenState extends State<homeScreen> {
             return SingleChildScrollView(
               child: Container(
                 // height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.only(left: 15, right: 10),
+                padding: const EdgeInsets.only(left: 0, right: 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -2116,6 +2112,7 @@ class _homeScreenState extends State<homeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
+                          padding: const EdgeInsets.only(left: 10),
                           child: const Text(
                             "Select a Location",
                             style: TextStyle(
@@ -2123,6 +2120,7 @@ class _homeScreenState extends State<homeScreen> {
                           ),
                         ),
                         Container(
+                          padding: const EdgeInsets.only(left: 0, right: 10),
                           child: IconButton(
                             onPressed: () {
                               Navigator.pop(context);
@@ -2136,6 +2134,7 @@ class _homeScreenState extends State<homeScreen> {
                       ],
                     ),
                     Container(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
                       height: 50,
                       child: Card(
                         elevation: 2,
@@ -2188,59 +2187,62 @@ class _homeScreenState extends State<homeScreen> {
                           ),
                         );
                       },
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 25,
-                            // width: 20,
-                            // color: Colors.red,
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Image.asset("assets/direction.png"),
-                          ),
-                          Container(
-                            height: 67,
-                            // color: Colors.red,
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Column(
-                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddaddressScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    "Use your current location",
-                                    style: TextStyle(
-                                      color: Color(0xFF000052),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                    left: 5,
-                                  ),
-                                  // color: Colors.blue,
-                                  child: Text(
-                                    "$Address",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 25,
+                              // width: 20,
+                              // color: Colors.red,
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Image.asset("assets/direction.png"),
                             ),
-                          ),
-                        ],
+                            Container(
+                              height: 67,
+                              // color: Colors.red,
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddaddressScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "Use your current location",
+                                      style: TextStyle(
+                                        color: Color(0xFF000052),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.only(
+                                      left: 5,
+                                    ),
+                                    // color: Colors.blue,
+                                    child: Text(
+                                      "$Address",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -2250,159 +2252,181 @@ class _homeScreenState extends State<homeScreen> {
                       thickness: 1,
                       color: CupertinoColors.systemGrey3,
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              // _searchdialogbox(context);
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => AddaddressScreen(),
+                    addresslist.isEmpty
+                        ? Container(
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    // _searchdialogbox(context);
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddaddressScreen(),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    CupertinoIcons.add_circled,
+                                    color: Colors.black,
+                                    // size: 22,
+                                  ),
                                 ),
-                              );
-                            },
-                            icon: const Icon(
-                              CupertinoIcons.add_circled,
-                              color: Colors.black,
-                              // size: 22,
-                            ),
-                          ),
-                          // const SizedBox(
-                          //   width: 5,
-                          // ),
-                          TextButton(
-                            onPressed: () {
-                              // _searchdialogbox(context);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => AddaddressScreen(),
+                                // const SizedBox(
+                                //   width: 5,
+                                // ),
+                                TextButton(
+                                  onPressed: () {
+                                    // _searchdialogbox(context);
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddaddressScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Add Address",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
                                 ),
-                              );
-                            },
-                            child: const Text(
-                              "Add Address",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w900,
-                              ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            "Saved Addresses",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 0,
-                          child: Container(
-                            height: addresslist.length * 200,
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: addresslist.length,
-                                itemBuilder: (BuildContext cntx, int index) {
-                                  return InkWell(
-                                    onTap: () {},
-                                    child: Container(
-                                      padding: const EdgeInsets.only(top: 30),
-                                      // color: Colors.red,
-                                      height: 140,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Row(
-                                        // crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            height: 25,
-                                            // width: 20,
-                                            // color: Colors.red,
-                                            padding:
-                                                const EdgeInsets.only(left: 10),
-                                            child: Image.asset(
-                                                "assets/direction.png"),
-                                          ),
-                                          Container(
-                                            // height: 67,
-                                            // color: Colors.red,
-                                            padding:
-                                                const EdgeInsets.only(left: 1),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  addresslist[index]
-                                                          ['address_type_text']
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      color: Color(0xFF000052),
-                                                      fontSize: 16.5,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Container(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.1,
-                                                  //color: Colors.red,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.8,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    left: 0,
+                          )
+                        : Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: const Text(
+                                    "Saved Addresses",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 0,
+                                  child: Container(
+                                    height: addresslist.length * 200,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: addresslist.length,
+                                        itemBuilder:
+                                            (BuildContext cntx, int index) {
+                                          return InkWell(
+                                            onTap: () {},
+                                            child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  top: 30),
+                                              // color: Colors.red,
+                                              height: 140,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Row(
+                                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    height: 25,
+                                                    // width: 20,
+                                                    // color: Colors.red,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10),
+                                                    child: Image.asset(
+                                                        "assets/direction.png"),
                                                   ),
-                                                  // color: Colors.blue,
-                                                  child: Text(
-                                                    addresslist[index]
-                                                            ["address"]
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16,
+                                                  const SizedBox(
+                                                    width: 12,
+                                                  ),
+                                                  Container(
+                                                    // height: 67,
+                                                    // color: Colors.red,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 1),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          addresslist[index][
+                                                                  'address_type_text']
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              color: Color(
+                                                                  0xFF000052),
+                                                              fontSize: 16.5,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Container(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.05,
+                                                          //color: Colors.red,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.8,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            left: 0,
+                                                          ),
+                                                          // color: Colors.blue,
+                                                          child: Text(
+                                                            addresslist[index]
+                                                                    ["address"]
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),

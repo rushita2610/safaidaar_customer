@@ -135,7 +135,7 @@ class _Your_ordersState extends State<Your_orders> {
                         physics: const BouncingScrollPhysics(),
                         controller: scrollController,
                         child: Container(
-                         height: height * 2.23,
+                          height: height * 2.23,
                           child: Column(
                             children: [
                               Container(
@@ -757,11 +757,14 @@ class _Your_ordersState extends State<Your_orders> {
                                                             ],
                                                           ),
                                                         ),
-                                                        orderlist[index][
-                                                                        'order_payment_detail']
-                                                                    [
-                                                                    'payment_status_text'] ==
-                                                                "Paid"
+                                                        (orderlist[index]['order_payment_detail']
+                                                                        [
+                                                                        'payment_status_text'] ==
+                                                                    "Paid" ||
+                                                                orderlist[index]
+                                                                        [
+                                                                        'order_status_text'] ==
+                                                                    "Cancelled")
                                                             ? SizedBox()
                                                             : Column(
                                                                 children: [

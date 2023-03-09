@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, constant_identifier_names
 
 const BASEURL = 'https://safaidaar-beta.mydemoapp.us/api/v5/';
 
@@ -26,10 +26,14 @@ const GetVendorserviceoffer_Api = BASEURL + 'vendor/get-vendor-service-offers';
 const Getpickup_Api = BASEURL + 'get-pickup-dates';
 const Pageblock_Api = BASEURL + 'page-block?page_code=';
 const GetCustomeraddress_Api = BASEURL + 'customer/customer-address';
-const Getsingleaddress_Api = BASEURL + 'customer/customer-address';
-const DeleteAddress_Api = BASEURL + 'customer/customer-address';
+const Geteditsingleaddress_Api = BASEURL + 'customer/customer-address'; //EditScreen getsingle address api
+const postaddress_Api = BASEURL + 'customer/customer-address';//Add_Address post address api
+const putaddress_Api = BASEURL + 'customer/customer-address'; //EditScreen put address api
+const DeleteAddress_Api = BASEURL + 'customer/customer-address'; //Addressbook screen delete address api
 const Getdeliveryoption_Api = BASEURL + '/get-delivery-options';
 const GetVendorservices_Api = BASEURL + 'vendor/get-vendor-services/';
 const HomeBanner_Api = BASEURL + 'customer/get-home-banner';
 const Feedback_Api = BASEURL + 'help-request';
+const Paymentgateway_Api = BASEURL + 'payment-gateway-list';
+const GetAdvertise_Api = BASEURL + 'customer/get-advertisements';
 const Logout_Api = BASEURL + 'logout';

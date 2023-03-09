@@ -9,8 +9,6 @@ import 'package:http/http.dart' as http;
 import 'Add_Address_Screen.dart';
 import 'Cart Details_Screen.dart';
 
-
-
 List<String> selecttime = <String>[
   '10:00 AM to 11:00 AM',
   '01:00 AM to 02:00 AM',
@@ -37,6 +35,7 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
     'February 09, 2023',
     'February 10, 2023',
   ];
+
   // String dropdownValue = selectdate.first;
   String? dropdownValue;
   String dropdownValuedata = "";
@@ -620,8 +619,8 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
                                                 padding:
                                                     const EdgeInsets.all(0.0),
                                                 child: (deliveryway ==
-                                                        deliveryData[index][
-                                                                "name"]
+                                                        deliveryData[index]
+                                                                ["name"]
                                                             .toString())
                                                     ? const Icon(
                                                         Icons.radio_button_on,
@@ -639,8 +638,7 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                deliveryData[index][
-                                                        "name"] ??
+                                                deliveryData[index]["name"] ??
                                                     "",
                                                 style: const TextStyle(
                                                   fontSize: 18.5,
@@ -696,37 +694,37 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
     );
   }
 
-  // Getdeliveryoptions_ApiCall() async {
-  //   setState(() {
-  //     isReload = true;
-  //   });
-  //   try {
-  //     print(Getdeliveryoption_Api);
-  //     var response = await http.get(Uri.parse(Getdeliveryoption_Api));
-  //
-  //     if (response.statusCode == 200) {
-  //       var decode = jsonDecode(response.body);
-  //       print(decode);
-  //       if (decode["success"] == true) {
-  //         setState(() {
-  //           deliveryData.clear();
-  //           deliveryData = decode["data"];
-  //           deliveryway = deliveryData[0]["delivery_option_label"];
-  //         });
-  //       } else {}
-  //       setState(() {
-  //         isReload = false;
-  //       });
-  //     } else {
-  //       print("Error" + response.statusCode.toString());
-  //       print("Error" + response.body.toString());
-  //     }
-  //   } catch (e) {
-  //     setState(() {
-  //       isReload = false;
-  //     });
-  //     print("Exception in getdeliveryoption =>" + e.toString());
-  //     throw e;
-  //   }
-  // }
+// Getdeliveryoptions_ApiCall() async {
+//   setState(() {
+//     isReload = true;
+//   });
+//   try {
+//     print(Getdeliveryoption_Api);
+//     var response = await http.get(Uri.parse(Getdeliveryoption_Api));
+//
+//     if (response.statusCode == 200) {
+//       var decode = jsonDecode(response.body);
+//       print(decode);
+//       if (decode["success"] == true) {
+//         setState(() {
+//           deliveryData.clear();
+//           deliveryData = decode["data"];
+//           deliveryway = deliveryData[0]["delivery_option_label"];
+//         });
+//       } else {}
+//       setState(() {
+//         isReload = false;
+//       });
+//     } else {
+//       print("Error" + response.statusCode.toString());
+//       print("Error" + response.body.toString());
+//     }
+//   } catch (e) {
+//     setState(() {
+//       isReload = false;
+//     });
+//     print("Exception in getdeliveryoption =>" + e.toString());
+//     throw e;
+//   }
+// }
 }
