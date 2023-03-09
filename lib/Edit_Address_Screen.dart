@@ -1,277 +1,3 @@
-// import 'dart:async';
-//
-// import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:url_launcher/url_launcher.dart';
-//
-// class AddaddressScreen extends StatefulWidget {
-//   const AddaddressScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   State<AddaddressScreen> createState() => _AddaddressScreenState();
-// }
-//
-// class _AddaddressScreenState extends State<AddaddressScreen> {
-//   // void launchMap(String address) async {
-//   //   String query = Uri.encodeComponent(address);
-//   //   String googleUrl = "https://www.google.com/maps/search/?api=1&query=$query";
-//   //
-//   //   if (await canLaunch(googleUrl)) {
-//   //     await launch(googleUrl);
-//   //   }
-//   // }
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     Timer.run(() {
-//       showDialog<String>(
-//         context: context,
-//         builder: (BuildContext context) => Container(
-//           height: MediaQuery.of(context).size.height,
-//           child: AlertDialog(
-//             title: Container(
-//               child: TextField(
-//                 decoration: InputDecoration(
-//                   border: const OutlineInputBorder(
-//                     //borderRadius: BorderRadius.circular(10.0),
-//                     borderSide: BorderSide(color: Colors.grey),
-//                   ),
-//                   enabledBorder: const OutlineInputBorder(
-//                     borderSide: BorderSide(
-//                       color: Colors.grey,
-//                     ),
-//                   ),
-//                   focusedBorder: const OutlineInputBorder(
-//                     borderSide: BorderSide(
-//                       color: Colors.black,
-//                     ),
-//                   ),
-//                   suffixIcon: IconButton(
-//                     icon: const Icon(
-//                       Icons.search,
-//                       color: Colors.black,
-//                     ),
-//                     onPressed: () {},
-//                   ),
-//                   hintText: "Search Location",
-//                   labelStyle: const TextStyle(color: Colors.grey, fontSize: 18),
-//                 ),
-//               ),
-//             ),
-//             actions: <Widget>[
-//               const SizedBox(
-//                 height: 149,
-//               ),
-//               Container(
-//                 alignment: Alignment.bottomRight,
-//                 child: TextButton(
-//                   onPressed: () => Navigator.pop(context, 'Cancel'),
-//                   child: const Text(
-//                     'Cancel',
-//                     textAlign: TextAlign.right,
-//                     style: TextStyle(color: Colors.black),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       );
-//     });
-//   }
-//
-//   Future<void> _searchdialogbox(BuildContext context) {
-//     return showDialog<String>(
-//       context: context,
-//       builder: (BuildContext context) => Container(
-//         height: MediaQuery.of(context).size.height,
-//         child: AlertDialog(
-//           title: Container(
-//             child: TextField(
-//               keyboardType: TextInputType.text,
-//               decoration: InputDecoration(
-//                 border: const OutlineInputBorder(
-//                   //borderRadius: BorderRadius.circular(10.0),
-//                   borderSide: BorderSide(color: Colors.grey),
-//                 ),
-//                 enabledBorder: const OutlineInputBorder(
-//                   borderSide: BorderSide(
-//                     color: Colors.black,
-//                   ),
-//                 ),
-//                 focusedBorder: const OutlineInputBorder(
-//                   borderSide: BorderSide(
-//                     color: Colors.black,
-//                   ),
-//                 ),
-//                 suffixIcon: IconButton(
-//                   icon: const Icon(
-//                     Icons.search,
-//                     color: Colors.black,
-//                   ),
-//                   onPressed: () {},
-//                 ),
-//                 hintText: "Search Location",
-//                 labelStyle: const TextStyle(color: Colors.grey, fontSize: 18),
-//               ),
-//             ),
-//           ),
-//           actions: <Widget>[
-//             const SizedBox(
-//               height: 149,
-//             ),
-//             Container(
-//               alignment: Alignment.bottomRight,
-//               child: TextButton(
-//                 onPressed: () => Navigator.pop(context, 'Cancel'),
-//                 child: const Text(
-//                   'Cancel',
-//                   textAlign: TextAlign.right,
-//                   style: TextStyle(color: Colors.black),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   late GoogleMapController mapController;
-//   final LatLng _center = const LatLng(27.2046, 77.4977);
-//
-//   void _onMapCreated(GoogleMapController controller) {
-//     mapController = controller;
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // Future.delayed(Duration.zero, () => _searchdialogbox(context));
-//     final Sizee = MediaQuery.of(context).size;
-//     return SafeArea(
-//       child: Scaffold(
-//         // resizeToAvoidBottomInset: false,
-//         appBar: AppBar(
-//           backgroundColor: Colors.white,
-//           elevation: 0,
-//           leading: IconButton(
-//             onPressed: () {
-//               Navigator.pop(context);
-//             },
-//             icon: const Icon(
-//               Icons.arrow_back_ios_new,
-//               color: Colors.black,
-//             ),
-//           ),
-//           actions: [
-//             IconButton(
-//               onPressed: () {
-//                 _searchdialogbox(context);
-//               },
-//               icon: const Icon(
-//                 Icons.search,
-//                 color: Colors.black,
-//               ),
-//             ),
-//           ],
-//           title: const Text(
-//             "Add Address",
-//             style: TextStyle(
-//               color: Colors.black,
-//               fontWeight: FontWeight.bold,
-//               fontSize: 20,
-//             ),
-//           ),
-//         ),
-//         body: SingleChildScrollView(
-//           child: Container(
-//             height: Sizee.height,
-//             width: Sizee.width,
-//             child: Column(
-//               children: [
-//                 Container(
-//                   height: Sizee.height,
-//                   child: GoogleMap(
-//                     onMapCreated: _onMapCreated,
-//                     initialCameraPosition: CameraPosition(
-//                       target: _center,
-//                       zoom: 11.0,
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//         bottomSheet: Container(
-//           // color: Colors.blue,
-//           padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
-//           height: 110,
-//           child: Column(
-//             children: [
-//               Container(
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.start,
-//                   crossAxisAlignment: CrossAxisAlignment.center,
-//                   children: [
-//                     Container(
-//                       // color: Colors.red,
-//                       child: const Icon(
-//                         Icons.location_on,
-//                         color: Color(0xFF000052),
-//                         size: 30,
-//                       ),
-//                       // Image.asset(
-//                       //   "assets/map-blue.png",
-//                       //   color: Color(0xFF000052),
-//                       // ),
-//                     ),
-//                     Container(
-//                       padding: const EdgeInsets.only(left: 5),
-//                       child: const Text(
-//                         "User location",
-//                         style: TextStyle(
-//                           color: Colors.black,
-//                           fontSize: 17,
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               Container(
-//                 height: 50,
-//                 width: MediaQuery.of(context).size.width,
-//                 padding: const EdgeInsets.only(bottom: 3),
-//                 child: RaisedButton(
-//                   color: Color(0xFF000052),
-//                   shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(8)),
-//                   onPressed: () {},
-//                   child: const Text(
-//                     "CONFIRM LOCATION",
-//                     style: TextStyle(
-//                       color: Colors.white,
-//                       fontSize: 17,
-//                       fontWeight: FontWeight.bold,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// ignore_for_file: deprecated_member_use, non_constant_identifier_names
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -281,11 +7,22 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:safaidaar_customer/Add_Address_Screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Api/Api_Url.dart';
+import 'BottomNavigationScreen.dart';
 
 class EditaddressScreen extends StatefulWidget {
-  const EditaddressScreen({Key? key}) : super(key: key);
+  String addressid;
+  String address;
+  String addresstype;
+
+  EditaddressScreen(
+      {Key? key,
+      required this.addressid,
+      required this.address,
+      required this.addresstype})
+      : super(key: key);
 
   @override
   State<EditaddressScreen> createState() => _EditaddressScreenState();
@@ -295,7 +32,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
   TextEditingController Completeaddress = TextEditingController();
   TextEditingController Country = TextEditingController();
   TextEditingController City = TextEditingController();
-  TextEditingController State = TextEditingController();
+  TextEditingController state = TextEditingController();
   TextEditingController PinCode = TextEditingController();
   TextEditingController Floor_optional = TextEditingController();
   TextEditingController Nearby_optional = TextEditingController();
@@ -304,6 +41,8 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
   bool isShowSearch = true;
   bool isReload = false;
   bool visible = true;
+
+  Map editaddress = {};
 
   String location = 'Null, Press Button';
   String Address = '';
@@ -353,37 +92,47 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
     Placemark place = placemarks[0];
     Address =
         '${place.street}, ${place.subLocality},${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}';
-    setState(() {});
+    setState(() {
+      Completeaddress.text = Address;
+      Country.text = place.country.toString();
+      state.text = place.administrativeArea.toString();
+      City.text = place.locality.toString();
+      PinCode.text = place.postalCode.toString();
+    });
   }
 
   @override
   void initState() {
-    getLocation();
-    locationdata();
+    // getLocation();
+    // locationdata();
+    GetSingleAddress_ApiCall();
+    setState(() {
+      Address = widget.address;
+    });
     super.initState();
   }
 
-  locationdata() async {
-    Position position = await _getGeoLocationPosition();
-    location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
-    GetAddressFromLatLong(position);
-  }
-
-  getLocation() async {
-    LocationPermission permission;
-    permission = await Geolocator.requestPermission();
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    double lat = position.latitude;
-    double long = position.longitude;
-
-    LatLng location = LatLng(lat, long);
-
-    setState(() {
-      _currentPosition = location;
-    });
-  }
+  // locationdata() async {
+  //   Position position = await _getGeoLocationPosition();
+  //   location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
+  //   GetAddressFromLatLong(position);
+  // }
+  //
+  // getLocation() async {
+  //   LocationPermission permission;
+  //   permission = await Geolocator.requestPermission();
+  //
+  //   Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
+  //   double lat = position.latitude;
+  //   double long = position.longitude;
+  //
+  //   LatLng location = LatLng(lat, long);
+  //
+  //   setState(() {
+  //     _currentPosition = location;
+  //   });
+  // }
 
   LatLng? _currentPosition;
 
@@ -395,9 +144,24 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
     mapController = controller;
   }
 
-  List<dynamic> buttonslist = ["Home", "Office", "Other"];
+  String buttonitem = "1";
+  List<dynamic> buttonslist = [
+    {
+      "type": "Home",
+      "id": "0",
+    },
+    {
+      "type": "Office",
+      "id": "1",
+    },
+    {
+      "type": "Other",
+      "id": "2",
+    },
+  ];
+  String buttonid = "0";
 
-  int _selectedbuttonIndex = 0;
+  // int _selectedbuttonIndex = 0;
 
   late String searchAddr;
   List<Marker> markersList = [];
@@ -440,7 +204,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
             ),
           ],
           title: const Text(
-            "Add Address",
+            "Edit Address",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -448,190 +212,208 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            height: Sizee.height,
-            width: Sizee.width,
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Container(
-                    height: Sizee.height,
-                    child: GoogleMap(
-                      mapType: MapType.terrain,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: false,
-                      zoomGesturesEnabled: true,
-                      padding: const EdgeInsets.all(0),
-                      buildingsEnabled: true,
-                      cameraTargetBounds: CameraTargetBounds.unbounded,
-                      compassEnabled: true,
-                      indoorViewEnabled: false,
-                      mapToolbarEnabled: true,
-                      minMaxZoomPreference: MinMaxZoomPreference.unbounded,
-                      rotateGesturesEnabled: true,
-                      scrollGesturesEnabled: true,
-                      tiltGesturesEnabled: true,
-                      trafficEnabled: false,
-                      onMapCreated: _onMapCreated,
-                      initialCameraPosition: const CameraPosition(
-                        //target: LatLng(23.040158, 72.560379),
-                        target: AddaddressScreen.Currentlocation,
-                        zoom: 16.0,
-                      ),
-                      onTap: (LatLng location) {},
-                      markers: Set.from(markersList),
-                    ),
-                  ),
-                ),
-                isShowSearch == true
-                    ? Positioned(
-                        // left: 10,
-                        // right: 10,
-                        // top: 50,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 50, horizontal: 30),
-                          child: Container(
-                            // color: Colors.red,
-                            width: Sizee.width,
-                            height: 370,
-                            child: Card(
-                              elevation: 5,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 8, right: 8, top: 7),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                        border: const OutlineInputBorder(
-                                          //borderRadius: BorderRadius.circular(10.0),
-                                          borderSide:
-                                              BorderSide(color: Colors.grey),
-                                        ),
-                                        enabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: const Icon(
-                                            Icons.search,
-                                            color: Colors.black,
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                        hintText: "Search Location",
-                                        labelStyle: const TextStyle(
-                                            color: Colors.grey, fontSize: 18),
-                                      ),
-                                      onChanged: (value) {
-                                        print(value);
-                                        if (value.length >= 4) {
-                                          placeSearchApiCall(value);
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  Container(
-                                    // color: Colors.green,
-                                    padding: const EdgeInsets.only(
-                                      left: 10,
-                                      right: 10,
-                                      top: 10,
-                                    ),
-                                    height: 245,
-                                    width: double.infinity,
-                                    child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: SearchList.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                isShowSearch = false;
-                                              });
-                                              placeDetailSearchApiCall(
-                                                  SearchList[index]["place_id"]
-                                                      .toString());
-                                            },
-                                            child: Container(
-                                              // height: 62,
-                                              padding: const EdgeInsets.only(
-                                                  left: 10, right: 10),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    SearchList[index][
-                                                                "structured_formatting"]
-                                                            ["main_text"]
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: 16,
-                                                        color:
-                                                            Color(0xFF000052)),
-                                                  ),
-                                                  Text(
-                                                    SearchList[index]
-                                                            ["description"]
-                                                        .toString(),
-                                                    maxLines: 2,
-                                                    style: const TextStyle(
-                                                        fontSize: 14),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                  Container(
-                                    // color: Colors.red,
-                                    padding: const EdgeInsets.only(
-                                        right: 0, bottom: 0),
-                                    alignment: Alignment.bottomRight,
-                                    child: TextButton(
-                                      child: const Text(
-                                        "Cancel",
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 16),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          isShowSearch = false;
-                                        });
-                                        // Navigator.pop(context);
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
+        body: (isReload == false)
+            ? SingleChildScrollView(
+                child: Container(
+                  height: Sizee.height,
+                  width: Sizee.width,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: Container(
+                          height: Sizee.height,
+                          child: GoogleMap(
+                            mapType: MapType.terrain,
+                            myLocationButtonEnabled: true,
+                            myLocationEnabled: false,
+                            zoomGesturesEnabled: true,
+                            padding: const EdgeInsets.all(0),
+                            buildingsEnabled: true,
+                            cameraTargetBounds: CameraTargetBounds.unbounded,
+                            compassEnabled: true,
+                            indoorViewEnabled: false,
+                            mapToolbarEnabled: true,
+                            minMaxZoomPreference:
+                                MinMaxZoomPreference.unbounded,
+                            rotateGesturesEnabled: true,
+                            scrollGesturesEnabled: true,
+                            tiltGesturesEnabled: true,
+                            trafficEnabled: false,
+                            onMapCreated: _onMapCreated,
+                            initialCameraPosition: const CameraPosition(
+                              //target: LatLng(23.040158, 72.560379),
+                              target: AddaddressScreen.Currentlocation,
+                              zoom: 16.0,
                             ),
+                            onTap: (LatLng location) {},
+                            markers: Set.from(markersList),
                           ),
                         ),
-                      )
-                    : SizedBox(),
-              ],
-            ),
-          ),
-        ),
+                      ),
+                      isShowSearch == false
+                          ? Positioned(
+                              // left: 10,
+                              // right: 10,
+                              // top: 50,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 50, horizontal: 30),
+                                child: Container(
+                                  // color: Colors.red,
+                                  width: Sizee.width,
+                                  height: 370,
+                                  child: Card(
+                                    elevation: 5,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 8, top: 7),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: const OutlineInputBorder(
+                                                //borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey),
+                                              ),
+                                              enabledBorder:
+                                                  const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              focusedBorder:
+                                                  const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              suffixIcon: IconButton(
+                                                icon: const Icon(
+                                                  Icons.search,
+                                                  color: Colors.black,
+                                                ),
+                                                onPressed: () {},
+                                              ),
+                                              hintText: "Search Location",
+                                              labelStyle: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 18),
+                                            ),
+                                            onChanged: (value) {
+                                              print(value);
+                                              if (value.length >= 4) {
+                                                placeSearchApiCall(value);
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        Container(
+                                          // color: Colors.green,
+                                          padding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 10,
+                                          ),
+                                          height: 245,
+                                          width: double.infinity,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: SearchList.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isShowSearch = false;
+                                                    });
+                                                    placeDetailSearchApiCall(
+                                                        SearchList[index]
+                                                                ["place_id"]
+                                                            .toString());
+                                                  },
+                                                  child: Container(
+                                                    // height: 62,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10,
+                                                            right: 10),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          SearchList[index][
+                                                                      "structured_formatting"]
+                                                                  ["main_text"]
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color(
+                                                                  0xFF000052)),
+                                                        ),
+                                                        Text(
+                                                          SearchList[index][
+                                                                  "description"]
+                                                              .toString(),
+                                                          maxLines: 2,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 14),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+                                        ),
+                                        Container(
+                                          // color: Colors.red,
+                                          padding: const EdgeInsets.only(
+                                              right: 0, bottom: 0),
+                                          alignment: Alignment.bottomRight,
+                                          child: TextButton(
+                                            child: const Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16),
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                isShowSearch = true;
+                                                SearchList.clear();
+                                              });
+                                              // Navigator.pop(context);
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF000052),
+                ),
+              ),
         bottomSheet: Container(
           // color: Colors.blue,
           padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
@@ -666,7 +448,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                         maxLines: 2,
                         style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 17,
+                          fontSize: 14.5,
                         ),
                       ),
                     ),
@@ -735,7 +517,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                //height: MediaQuery.of(context).size.height * 1,
                 child: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -816,28 +598,37 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                                   width: 80,
                                   child: RaisedButton(
                                     elevation: 0,
-                                    color: (_selectedbuttonIndex == index)
+                                    color: (buttonid ==
+                                            buttonslist[index]["id"].toString())
                                         ? const Color(0xFF000052)
                                         : Colors.white,
                                     shape: RoundedRectangleBorder(
                                         side: BorderSide(
-                                            color:
-                                                (_selectedbuttonIndex == index)
-                                                    ? const Color(0xFF000052)
-                                                    : const Color(0xFF000052),
+                                            color: (buttonid ==
+                                                    buttonslist[index]["id"]
+                                                        .toString())
+                                                ? const Color(0xFF000052)
+                                                : const Color(0xFF000052),
                                             width: 1),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     onPressed: () {
                                       setState(() {
-                                        _selectedbuttonIndex = index;
+                                        // _selectedbuttonIndex = index;
+                                        buttonitem =
+                                            buttonslist[index].toString();
+                                        buttonid =
+                                            buttonslist[index]["id"].toString();
+                                        print(buttonitem);
                                         //productList.clear();
                                       });
                                     },
                                     child: Text(
-                                      buttonslist[index],
+                                      buttonslist[index]["type"] ?? "",
                                       style: TextStyle(
-                                        color: (_selectedbuttonIndex == index)
+                                        color: (buttonid ==
+                                                buttonslist[index]["id"]
+                                                    .toString())
                                             ? Colors.white
                                             : Colors.black,
                                         fontSize: 13.6,
@@ -882,14 +673,15 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
+                            // color: Colors.red,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: Completeaddress,
                               keyboardType: TextInputType.streetAddress,
                               style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14.5,
                                 fontWeight: FontWeight.w500,
                               ),
                               decoration: InputDecoration(
@@ -942,14 +734,14 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: Country,
                               keyboardType: TextInputType.text,
                               style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14.5,
                                 fontWeight: FontWeight.w500,
                               ),
                               decoration: InputDecoration(
@@ -1002,14 +794,14 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
-                              controller: State,
+                              controller: state,
                               keyboardType: TextInputType.text,
                               style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14.5,
                                 fontWeight: FontWeight.w500,
                               ),
                               decoration: InputDecoration(
@@ -1062,14 +854,14 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: City,
                               keyboardType: TextInputType.text,
                               style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14.5,
                                 fontWeight: FontWeight.w500,
                               ),
                               decoration: InputDecoration(
@@ -1122,14 +914,14 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: PinCode,
                               keyboardType: TextInputType.number,
                               style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14.5,
                                 fontWeight: FontWeight.w500,
                               ),
                               decoration: InputDecoration(
@@ -1182,14 +974,14 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: Floor_optional,
                               keyboardType: TextInputType.emailAddress,
                               style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14.5,
                                 fontWeight: FontWeight.w500,
                               ),
                               decoration: InputDecoration(
@@ -1213,6 +1005,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                                     color: CupertinoColors.systemGrey5,
                                   ),
                                 ),
+                                hintText: "Floor",
                               ),
                             ),
                           ),
@@ -1242,14 +1035,14 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: Nearby_optional,
                               keyboardType: TextInputType.emailAddress,
                               style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14.5,
                                 fontWeight: FontWeight.w500,
                               ),
                               decoration: InputDecoration(
@@ -1273,6 +1066,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                                     color: CupertinoColors.systemGrey5,
                                   ),
                                 ),
+                                hintText: "landmark",
                               ),
                             ),
                           ),
@@ -1291,9 +1085,11 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                         color: const Color(0xFF000052),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
-                        onPressed: () async {},
+                        onPressed: () {
+                          EditAddress_Apicall();
+                        },
                         child: const Text(
-                          "CONFIRM LOCATION",
+                          "UPDATE ADDRESS",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 17,
@@ -1301,6 +1097,9 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
                           ),
                         ),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 30,
                     ),
                   ],
                 ),
@@ -1329,6 +1128,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
         if (decode["success"] == true) {
           print(decode);
           setState(() {
+            isReload = true;
             SearchList = decode["data"][0]["predictions"];
             print("SearchList length ${SearchList.length}");
           });
@@ -1350,15 +1150,9 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
               }
             }
           }
-          final snackBar = SnackBar(
-            content: Text(errorMsg),
-            action: SnackBarAction(
-              label: '',
-              onPressed: () {},
-            ),
-          );
-
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          setState(() {
+            isReload = false;
+          });
         }
 
         setState(() {
@@ -1472,6 +1266,182 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
       });
       print("Exception in Today Attendance=>" + e.toString());
       throw e;
+    }
+  }
+
+  GetSingleAddress_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      print(token);
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
+      };
+      print(Header);
+      print(Geteditsingleaddress_Api + "/${widget.addressid}");
+      var response = await http.get(
+          Uri.parse(Geteditsingleaddress_Api + "/${widget.addressid}"),
+          headers: Header);
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          setState(() {
+            prefs.setString("address", decode["data"][0]["address"].toString());
+            // prefs.setString("address_type",
+            //     decode["data"][0]["address_type"].toString());
+            buttonid = decode["data"][0]["address_type"].toString();
+            print(buttonid);
+            Completeaddress.text = decode["data"][0]["address"].toString();
+            Country.text = decode["data"][0]["country"].toString();
+            state.text = decode["data"][0]["state"].toString();
+            City.text = decode["data"][0]["city"].toString();
+            PinCode.text = decode["data"][0]["pincode"].toString();
+            Floor_optional.text =
+                decode["data"][0]["floor"].toString() == "null"
+                    ? ""
+                    : decode["data"][0]["floor"].toString();
+            Nearby_optional.text =
+                decode["data"][0]["near_by"].toString() == "null"
+                    ? ""
+                    : decode["data"][0]["near_by"].toString();
+            print("decode: $decode");
+          });
+        } else {
+          print(decode);
+          print(json.decode(response.body)['errors']);
+          String errorMsg = json.decode(response.body)["message"].toString();
+          print(errorMsg);
+          if (json.decode(response.body)['errors'] != null) {
+            Map errorMap = json.decode(response.body)["errors"].first;
+            for (String k in errorMap.keys) {
+              print(errorMap[k]);
+              errorMsg = errorMap[k][0] ??
+                  json.decode(response.body)["message"].toString();
+              break;
+            }
+          }
+        }
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getaddress =>" + e.toString());
+      throw e;
+    }
+  }
+
+  EditAddress_Apicall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      final body = {
+        "address_type": buttonid.toString(),
+        "address": Completeaddress.text.toString(),
+        "country": Country.text.trim(),
+        "state": state.text.trim(),
+        "city": City.text.trim(),
+        "pincode": PinCode.text.trim(),
+        "floor": Floor_optional.text.trim(),
+        "near_by": Nearby_optional.text.trim(),
+        "place_id": strPlaceId.toString(),
+        "lattitude": "23.04006",
+        "longitude": "72.56114",
+      };
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      print(token);
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
+      };
+      print(putaddress_Api + "/${widget.addressid}");
+      var response = await http.put(
+          Uri.parse(putaddress_Api + "/${widget.addressid}"),
+          body: body,
+          headers: Header);
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavigationScreen(0),
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Container(
+                // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Status',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      decode["message"].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              duration: const Duration(seconds: 3),
+              backgroundColor: const Color(0xFF000052),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / 1 - 150,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in editaddressa =>" + e.toString());
     }
   }
 }

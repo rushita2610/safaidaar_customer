@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, constant_identifier_names
 
 const BASEURL = 'https://safaidaar-beta.mydemoapp.us/api/v5/';
 
@@ -15,12 +15,25 @@ const TopService_Api = BASEURL + 'customer/top-services?all=';
 const AllTopservices_Api = BASEURL + 'customer/top-services-vendor';
 const TopServicevendor_Api = BASEURL + 'customer/top-services-vendor?service_id=';
 const FeaturedStore_Api = BASEURL + 'customer/get-featured-vendor';
+const Recommended_Api = BASEURL + 'customer/get-recommended-vendor';
 const GetCustomerprofile_Api = BASEURL + 'customer/get-customer-profile?user_id=';
 const Updatecustomerprofile_Api = BASEURL + "customer/customer-profile-update";
 const GetNotificaton_Api = BASEURL + 'get-notification';
 const ReadNotification_Api = BASEURL + 'read-notification/';
 const GetCustomerorder_Api = BASEURL + 'customer/customer-order';
+const GetOffers_Api = BASEURL + 'customer/get-offers';
+const GetVendorserviceoffer_Api = BASEURL + 'vendor/get-vendor-service-offers';
 const Getpickup_Api = BASEURL + 'get-pickup-dates';
 const Pageblock_Api = BASEURL + 'page-block?page_code=';
+const GetCustomeraddress_Api = BASEURL + 'customer/customer-address';
+const Geteditsingleaddress_Api = BASEURL + 'customer/customer-address'; //EditScreen getsingle address api
+const postaddress_Api = BASEURL + 'customer/customer-address';//Add_Address post address api
+const putaddress_Api = BASEURL + 'customer/customer-address'; //EditScreen put address api
+const DeleteAddress_Api = BASEURL + 'customer/customer-address'; //Addressbook screen delete address api
+const Getdeliveryoption_Api = BASEURL + '/get-delivery-options';
+const GetVendorservices_Api = BASEURL + 'vendor/get-vendor-services/';
 const HomeBanner_Api = BASEURL + 'customer/get-home-banner';
+const Feedback_Api = BASEURL + 'help-request';
+const Paymentgateway_Api = BASEURL + 'payment-gateway-list';
+const GetAdvertise_Api = BASEURL + 'customer/get-advertisements';
 const Logout_Api = BASEURL + 'logout';

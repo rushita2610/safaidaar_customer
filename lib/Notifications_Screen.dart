@@ -145,103 +145,150 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            // height: height * 1,
-            width: width,
-            child: Column(
-              children: [
-                // ConstrainedBox(
-                //   constraints: BoxConstraints(
-                //     maxHeight: notificationlist.length * 90,
-                //     minHeight: 90,
-                //   ),
-                Container(
-                  height: notificationlist.length * 90,
-                  child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      // shrinkWrap: true,
-                      itemCount: notificationlist.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Yourorderdetail(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            // color: Colors.red,
-                            height: 90,
-                            width: double.infinity,
-                            child: Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 15, right: 10),
-                                      height: 70,
-                                      // width: 70,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
+        body: (isReload == false)
+            ? SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  // height: height * 1,
+                  width: width,
+                  child: Column(
+                    children: [
+                      // ConstrainedBox(
+                      //   constraints: BoxConstraints(
+                      //     maxHeight: notificationlist.length * 90,
+                      //     minHeight: 90,
+                      //   ),
+                      notificationlist.length > 0
+                          ? Container(
+                              height: notificationlist.length * 90,
+                              child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  // shrinkWrap: true,
+                                  itemCount: notificationlist.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Yourorderdetail(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        // color: Colors.red,
+                                        height: 90,
+                                        width: double.infinity,
+                                        child: Card(
+                                          elevation: 2,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              ClipRRect(
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15, right: 10),
+                                                  height: 70,
+                                                  // width: 70,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Image.network(
+                                                      notificationlist[index]
+                                                          ['image']),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: width * 0.55,
+                                                // color: Colors.red,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      // "Order-${notificationlist[index]['order id']} ${notificationlist[index]['order status']}- ${notificationlist[index]['name']}",
+                                                      "${notificationlist[index]['text']}",
+                                                      style: const TextStyle(
+                                                        color: Colors.black87,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "${notificationlist[index]['time']}",
+                                                      style: const TextStyle(
+                                                        color: Colors.black54,
+                                                        fontSize: 15,
+                                                        //fontWeight: FontWeight.w700,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                      child: Image.network(
-                                          notificationlist[index]['image']),
-                                    ),
+                                    );
+                                  }),
+                            )
+                          : Column(
+                              children: [
+                                const SizedBox(
+                                  height: 100,
+                                ),
+                                Container(
+                                  height: 250,
+                                  width: 250,
+                                  child: Center(
+                                    child: Image.asset(
+                                        "assets/no_result_found.png"),
                                   ),
-                                  Container(
-                                    width: width * 0.55,
-                                    // color: Colors.red,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          // "Order-${notificationlist[index]['order id']} ${notificationlist[index]['order status']}- ${notificationlist[index]['name']}",
-                                          "${notificationlist[index]['text']}",
-                                          style: const TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          "${notificationlist[index]['time']}",
-                                          style: const TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 15,
-                                            //fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                ),
+                                const Text(
+                                  "No Result Found.",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  "We did not find anything here.",
+                                  style: TextStyle(
+                                    fontSize: 17,
                                   ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                              ],
                             ),
-                          ),
-                        );
-                      }),
+                      // ),
+                    ],
+                  ),
                 ),
-                // ),
-              ],
-            ),
-          ),
-        ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF000052),
+                ),
+              ),
       ),
     );
   }
@@ -297,5 +344,4 @@ class _NotificationScreenState extends State<NotificationScreen> {
       throw e;
     }
   }
-
 }

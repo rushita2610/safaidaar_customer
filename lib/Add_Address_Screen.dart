@@ -8,6 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
+import 'package:safaidaar_customer/BottomNavigationScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Api/Api_Url.dart';
 
 class AddaddressScreen extends StatefulWidget {
@@ -34,7 +36,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
   TextEditingController Completeaddress = TextEditingController();
   TextEditingController Country = TextEditingController();
   TextEditingController City = TextEditingController();
-  TextEditingController State = TextEditingController();
+  TextEditingController state = TextEditingController();
   TextEditingController PinCode = TextEditingController();
   TextEditingController Floor_optional = TextEditingController();
   TextEditingController Nearby_optional = TextEditingController();
@@ -93,7 +95,15 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
     Placemark place = placemarks[0];
     Address =
         '${place.street}, ${place.subLocality},${place.locality},${place.administrativeArea}, ${place.postalCode}, ${place.country}';
-    setState(() {});
+    setState(
+      () {
+        Completeaddress.text = Address;
+        Country.text = place.country.toString();
+        state.text = place.administrativeArea.toString();
+        City.text = place.locality.toString();
+        PinCode.text = place.postalCode.toString();
+      },
+    );
   }
 
   @override
@@ -135,7 +145,22 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
     mapController = controller;
   }
 
-  List<dynamic> buttonslist = ["Home", "Office", "Other"];
+  String buttonitem = "1";
+  List<dynamic> buttonslist = [
+    {
+      "type": "Home",
+      "id": "0",
+    },
+    {
+      "type": "Office",
+      "id": "1",
+    },
+    {
+      "type": "Other",
+      "id": "2",
+    },
+  ];
+  String buttonid = "";
 
   int _selectedbuttonIndex = 0;
 
@@ -188,194 +213,212 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            height: Sizee.height,
-            width: Sizee.width,
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Container(
-                    height: Sizee.height,
-                    child: GoogleMap(
-                      // zoomGesturesEnabled: true,
-                      // mapType: MapType.terrain,
-                      // compassEnabled: true,
-                      // zoomControlsEnabled: true,
-                      mapType: MapType.terrain,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: false,
-                      zoomGesturesEnabled: true,
-                      padding: const EdgeInsets.all(0),
-                      buildingsEnabled: true,
-                      cameraTargetBounds: CameraTargetBounds.unbounded,
-                      compassEnabled: true,
-                      indoorViewEnabled: false,
-                      mapToolbarEnabled: true,
-                      minMaxZoomPreference: MinMaxZoomPreference.unbounded,
-                      rotateGesturesEnabled: true,
-                      scrollGesturesEnabled: true,
-                      tiltGesturesEnabled: true,
-                      trafficEnabled: false,
-                      onMapCreated: _onMapCreated,
-                      initialCameraPosition: const CameraPosition(
-                        //target: LatLng(23.040158, 72.560379),
-                        target: AddaddressScreen.Currentlocation,
-                        zoom: 16.0,
-                      ),
-                      onTap: (LatLng location) {},
-                      markers: Set.from(markersList),
-                    ),
-                  ),
-                ),
-                isShowSearch == true
-                    ? Positioned(
-                        // left: 10,
-                        // right: 10,
-                        // top: 50,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 50, horizontal: 30),
-                          child: Container(
-                            // color: Colors.red,
-                            width: Sizee.width,
-                            height: 370,
-                            child: Card(
-                              elevation: 5,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 8, right: 8, top: 7),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                        border: const OutlineInputBorder(
-                                          //borderRadius: BorderRadius.circular(10.0),
-                                          borderSide:
-                                              BorderSide(color: Colors.grey),
-                                        ),
-                                        enabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: const Icon(
-                                            Icons.search,
-                                            color: Colors.black,
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                        hintText: "Search Location",
-                                        labelStyle: const TextStyle(
-                                            color: Colors.grey, fontSize: 18),
-                                      ),
-                                      onChanged: (value) {
-                                        print(value);
-                                        if (value.length >= 4) {
-                                          placeSearchApiCall(value);
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  Container(
-                                    // color: Colors.green,
-                                    padding: const EdgeInsets.only(
-                                      left: 10,
-                                      right: 10,
-                                      top: 10,
-                                    ),
-                                    height: 245,
-                                    width: double.infinity,
-                                    child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: SearchList.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                isShowSearch = false;
-                                              });
-                                              placeDetailSearchApiCall(
-                                                  SearchList[index]["place_id"]
-                                                      .toString());
-                                            },
-                                            child: Container(
-                                              // height: 62,
-                                              padding: const EdgeInsets.only(
-                                                  left: 10, right: 10),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    SearchList[index][
-                                                                "structured_formatting"]
-                                                            ["main_text"]
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: 16,
-                                                        color:
-                                                            Color(0xFF000052)),
-                                                  ),
-                                                  Text(
-                                                    SearchList[index]
-                                                            ["description"]
-                                                        .toString(),
-                                                    maxLines: 2,
-                                                    style: const TextStyle(
-                                                        fontSize: 14),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                  Container(
-                                    // color: Colors.red,
-                                    padding: const EdgeInsets.only(
-                                        right: 0, bottom: 0),
-                                    alignment: Alignment.bottomRight,
-                                    child: TextButton(
-                                      child: const Text(
-                                        "Cancel",
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 16),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          isShowSearch = false;
-                                        });
-                                        // Navigator.pop(context);
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
+        body: (isReload == false)
+            ? SingleChildScrollView(
+                child: Container(
+                  height: Sizee.height,
+                  width: Sizee.width,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: Container(
+                          height: Sizee.height,
+                          child: GoogleMap(
+                            // zoomGesturesEnabled: true,
+                            // mapType: MapType.terrain,
+                            // compassEnabled: true,
+                            // zoomControlsEnabled: true,
+                            mapType: MapType.terrain,
+                            myLocationButtonEnabled: true,
+                            myLocationEnabled: false,
+                            zoomGesturesEnabled: true,
+                            padding: const EdgeInsets.all(0),
+                            buildingsEnabled: true,
+                            cameraTargetBounds: CameraTargetBounds.unbounded,
+                            compassEnabled: true,
+                            indoorViewEnabled: false,
+                            mapToolbarEnabled: true,
+                            minMaxZoomPreference:
+                                MinMaxZoomPreference.unbounded,
+                            rotateGesturesEnabled: true,
+                            scrollGesturesEnabled: true,
+                            tiltGesturesEnabled: true,
+                            trafficEnabled: false,
+                            onMapCreated: _onMapCreated,
+                            initialCameraPosition: const CameraPosition(
+                              //target: LatLng(23.040158, 72.560379),
+                              target: AddaddressScreen.Currentlocation,
+                              zoom: 16.0,
                             ),
+                            onTap: (LatLng location) {},
+                            markers: Set.from(markersList),
                           ),
                         ),
-                      )
-                    : SizedBox(),
-              ],
-            ),
-          ),
-        ),
+                      ),
+                      isShowSearch == true
+                          ? Positioned(
+                              // left: 10,
+                              // right: 10,
+                              // top: 50,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 50, horizontal: 30),
+                                child: Container(
+                                  // color: Colors.red,
+                                  width: Sizee.width,
+                                  height: 370,
+                                  child: Card(
+                                    elevation: 5,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 8, top: 7),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: const OutlineInputBorder(
+                                                //borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey),
+                                              ),
+                                              enabledBorder:
+                                                  const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              focusedBorder:
+                                                  const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              suffixIcon: IconButton(
+                                                icon: const Icon(
+                                                  Icons.search,
+                                                  color: Colors.black,
+                                                ),
+                                                onPressed: () {},
+                                              ),
+                                              hintText: "Search Location",
+                                              labelStyle: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 18),
+                                            ),
+                                            onChanged: (value) {
+                                              print(value);
+                                              if (value.length >= 4) {
+                                                placeSearchApiCall(value);
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        Container(
+                                          // color: Colors.green,
+                                          padding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 10,
+                                          ),
+                                          height: 245,
+                                          width: double.infinity,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: SearchList.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isShowSearch = false;
+                                                    });
+                                                    placeDetailSearchApiCall(
+                                                        SearchList[index]
+                                                                ["place_id"]
+                                                            .toString());
+                                                  },
+                                                  child: Container(
+                                                    // height: 62,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10,
+                                                            right: 10),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          SearchList[index][
+                                                                      "structured_formatting"]
+                                                                  ["main_text"]
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color(
+                                                                  0xFF000052)),
+                                                        ),
+                                                        Text(
+                                                          SearchList[index][
+                                                                  "description"]
+                                                              .toString(),
+                                                          maxLines: 2,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 14),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+                                        ),
+                                        Container(
+                                          // color: Colors.red,
+                                          padding: const EdgeInsets.only(
+                                              right: 0, bottom: 0),
+                                          alignment: Alignment.bottomRight,
+                                          child: TextButton(
+                                            child: const Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16),
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                isShowSearch = false;
+                                                SearchList.clear();
+                                              });
+                                              // Navigator.pop(context);
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF000052),
+                ),
+              ),
         bottomSheet: Container(
           // color: Colors.blue,
           padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
@@ -458,7 +501,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                // height: MediaQuery.of(context).size.height,
                 child: Column(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -539,28 +582,32 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                                   width: 80,
                                   child: RaisedButton(
                                     elevation: 0,
-                                    color: (_selectedbuttonIndex == index)
+                                    color: (buttonid ==
+                                            buttonslist[index]["id"].toString())
                                         ? const Color(0xFF000052)
                                         : Colors.white,
                                     shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            color:
-                                                (_selectedbuttonIndex == index)
-                                                    ? const Color(0xFF000052)
-                                                    : const Color(0xFF000052),
-                                            width: 1),
+                                        side: const BorderSide(
+                                            color: Color(0xFF000052), width: 1),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     onPressed: () {
                                       setState(() {
-                                        _selectedbuttonIndex = index;
+                                        // _selectedbuttonIndex = index;
+                                        buttonitem =
+                                            buttonslist[index].toString();
+                                        buttonid =
+                                            buttonslist[index]["id"].toString();
+                                        print(buttonitem);
                                         //productList.clear();
                                       });
                                     },
                                     child: Text(
-                                      buttonslist[index],
+                                      buttonslist[index]["type"] ?? "",
                                       style: TextStyle(
-                                        color: (_selectedbuttonIndex == index)
+                                        color: (buttonid ==
+                                                buttonslist[index]["id"]
+                                                    .toString())
                                             ? Colors.white
                                             : Colors.black,
                                         fontSize: 13.6,
@@ -605,7 +652,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: Completeaddress,
@@ -672,7 +719,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: Country,
@@ -739,10 +786,10 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
-                              controller: State,
+                              controller: state,
                               keyboardType: TextInputType.text,
                               style: const TextStyle(
                                 color: Colors.black,
@@ -806,7 +853,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: City,
@@ -873,7 +920,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: PinCode,
@@ -940,7 +987,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: Floor_optional,
@@ -1000,7 +1047,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                             ),
                           ),
                           Container(
-                            height: 50,
+                            height: 67,
                             padding: const EdgeInsets.only(top: 7, bottom: 7),
                             child: TextFormField(
                               controller: Nearby_optional,
@@ -1049,9 +1096,11 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                         color: const Color(0xFF000052),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
-                        onPressed: () async {},
+                        onPressed: () {
+                          PostAddress_APIcall();
+                        },
                         child: const Text(
-                          "CONFIRM LOCATION",
+                          "SAVE ADDRESS",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 17,
@@ -1059,6 +1108,9 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
                           ),
                         ),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 30,
                     ),
                   ],
                 ),
@@ -1072,7 +1124,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
 
   placeSearchApiCall(String Search) async {
     setState(() {
-      isReload = true;
+      isReload = false;
     });
     try {
       final body = {
@@ -1087,6 +1139,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
         if (decode["success"] == true) {
           print(decode);
           setState(() {
+            isReload = true;
             SearchList = decode["data"][0]["predictions"];
             print("SearchList length ${SearchList.length}");
           });
@@ -1108,15 +1161,9 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
               }
             }
           }
-          final snackBar = SnackBar(
-            content: Text(errorMsg),
-            action: SnackBarAction(
-              label: '',
-              onPressed: () {},
-            ),
-          );
-
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          setState(() {
+            isReload = false;
+          });
         }
 
         setState(() {
@@ -1217,6 +1264,163 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
 
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in Today Attendance=>" + e.toString());
+      throw e;
+    }
+  }
+
+  PostAddress_APIcall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      final body = {
+        "address_type": buttonid.toString(),
+        "address": Completeaddress.text.toString(),
+        "country": Country.text.trim(),
+        "state": state.text.trim(),
+        "city": City.text.trim(),
+        "pincode": PinCode.text.trim(),
+        "floor": Floor_optional.text.trim(),
+        "near_by": Nearby_optional.text.trim(),
+        "place_id": strPlaceId.toString(),
+        "lattitude": strLatt.toString(),
+        "longitude": strLong.toString(),
+      };
+      print(body);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      print(token);
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
+      };
+      print(postaddress_Api);
+      var response = await http.post(Uri.parse(postaddress_Api),
+          body: body, headers: Header);
+// print(response.body);
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print("decode $decode");
+        if (decode["success"] == true) {
+          print(decode);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavigationScreen(0),
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Container(
+                // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Status',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      decode["message"].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              duration: const Duration(seconds: 3),
+              backgroundColor: const Color(0xFF000052),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / 1 - 150,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+        } else {
+          print(json.decode(response.body)['errors']);
+          String errorMsg = json.decode(response.body)["message"].toString();
+          print(errorMsg);
+          if (json.decode(response.body)["data"] != null) {
+            print(errorMsg);
+            var errorList = json.decode(response.body)["data"];
+
+            for (int i = 0; i < errorList.length; i++) {
+              Map errorMap = errorList[i];
+              for (String k in errorMap.keys) {
+                print(errorMap[k]);
+                errorMsg = errorMap[k][0] ??
+                    json.decode(response.body)["message"].toString();
+                break;
+              }
+            }
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Container(
+                // padding: const EdgeInsets.only(left: 15,top: 10,bottom: 10),
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Status',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      errorMsg,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              duration: const Duration(seconds: 3),
+              backgroundColor: const Color(0xFF000052),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height / 1 - 120,
+                  right: 20,
+                  left: 20),
+            ),
+          );
+        }
         setState(() {
           isReload = false;
         });

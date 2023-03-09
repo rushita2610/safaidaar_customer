@@ -1,23 +1,13 @@
+import 'dart:convert';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:safaidaar_customer/Api/Api_Url.dart';
 import 'package:safaidaar_customer/Deliverydetail_CartScreen.dart';
-
+import 'package:http/http.dart' as http;
 import 'Add_Address_Screen.dart';
 import 'Cart Details_Screen.dart';
-
-List<String> selectdate = <String>[
-  'February 01, 2023',
-  'February 02, 2023',
-  'February 03, 2023',
-  'February 04, 2023',
-  'February 05, 2023',
-  'February 06, 2023',
-  'February 07, 2023',
-  'February 08, 2023',
-  'February 09, 2023',
-  'February 10, 2023',
-];
 
 List<String> selecttime = <String>[
   '10:00 AM to 11:00 AM',
@@ -33,6 +23,18 @@ class SchedulePickupScreen extends StatefulWidget {
 
 class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
   bool isReload = false;
+  List<dynamic> selectdate = <String>[
+    'February 01, 2023',
+    'February 02, 2023',
+    'February 03, 2023',
+    'February 04, 2023',
+    'February 05, 2023',
+    'February 06, 2023',
+    'February 07, 2023',
+    'February 08, 2023',
+    'February 09, 2023',
+    'February 10, 2023',
+  ];
 
   // String dropdownValue = selectdate.first;
   String? dropdownValue;
@@ -246,6 +248,12 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    // Getdeliveryoptions_ApiCall();
+    super.initState();
   }
 
   @override
@@ -478,7 +486,7 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
                                       },
                                       items: selectdate
                                           .map<DropdownMenuItem<String>>(
-                                              (String value) {
+                                              (dynamic value) {
                                         return DropdownMenuItem<String>(
                                           value: value,
                                           child: Text(value),
@@ -590,6 +598,9 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
                                         onTap: () {
                                           setState(() {
                                             print("tap");
+                                            // deliveryway = deliveryData[index]
+                                            //         ["delivery_option_label"]
+                                            //     .toString();
                                             deliveryway = deliveryData[index]
                                                     ["name"]
                                                 .toString();
@@ -683,9 +694,37 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
     );
   }
 
-  GetpickupDates_ApiCall() async {
-    setState(() {
-      isReload = true;
-    });
-  }
+// Getdeliveryoptions_ApiCall() async {
+//   setState(() {
+//     isReload = true;
+//   });
+//   try {
+//     print(Getdeliveryoption_Api);
+//     var response = await http.get(Uri.parse(Getdeliveryoption_Api));
+//
+//     if (response.statusCode == 200) {
+//       var decode = jsonDecode(response.body);
+//       print(decode);
+//       if (decode["success"] == true) {
+//         setState(() {
+//           deliveryData.clear();
+//           deliveryData = decode["data"];
+//           deliveryway = deliveryData[0]["delivery_option_label"];
+//         });
+//       } else {}
+//       setState(() {
+//         isReload = false;
+//       });
+//     } else {
+//       print("Error" + response.statusCode.toString());
+//       print("Error" + response.body.toString());
+//     }
+//   } catch (e) {
+//     setState(() {
+//       isReload = false;
+//     });
+//     print("Exception in getdeliveryoption =>" + e.toString());
+//     throw e;
+//   }
+// }
 }

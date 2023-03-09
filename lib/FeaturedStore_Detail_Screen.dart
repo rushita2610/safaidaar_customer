@@ -1,22 +1,34 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types, deprecated_member_use, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:safaidaar_customer/BottomNavigationScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'Api/Api_Url.dart';
 
 class DetailFeatured_Store extends StatefulWidget {
   String isFrom;
+  String userid;
+  String vendorid;
 
-   DetailFeatured_Store({Key? key, required this.isFrom}) : super(key: key);
+  DetailFeatured_Store(
+      {Key? key,
+      required this.isFrom,
+      required this.userid,
+      required this.vendorid})
+      : super(key: key);
 
   @override
   State<DetailFeatured_Store> createState() => _DetailFeatured_StoreState();
 }
 
 class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
-  bool? isReload = true;
+  bool isReload = false;
   bool _isShow = true;
   List<dynamic> tabs = [
     "Ironing",
@@ -26,7 +38,11 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
   ];
   int selectedtabIndex = 0;
 
-  List<dynamic> buttonslist = ["Men's", "Shoes", "Household"];
+  List<dynamic> buttonslist = [
+    "Men's",
+    "Shoes",
+    "Household",
+  ];
 
   int _selectedbuttonIndex = 0;
 
@@ -41,6 +57,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
   ];
 
   TextEditingController searchcontroller = TextEditingController();
+  String searchoffer = "";
   TextEditingController Addproductcontroller = TextEditingController();
 
   // List<Map<String, dynamic>> _foundUsers = [];
@@ -101,17 +118,19 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
     },
   ];
 
-  List<dynamic> offerList = [
-    {
-      "clean": "Dry Cleaning With Ironing (Men's)",
-      "use code": "iLJ1bt",
-      'name': "test",
-      "image": "assets/customer_application_logo.svg",
-      "offer%": 10,
-      'QTY': 0,
-      'price': 100
-    },
+  List<dynamic> crazyofferlist = [
+    // {
+    //   "clean": "Dry Cleaning With Ironing (Men's)",
+    //   "use code": "iLJ1bt",
+    //   'name': "test",
+    //   "image": "assets/customer_application_logo.svg",
+    //   "offer%": 10,
+    //   'QTY': 0,
+    //   'price': 100
+    // },
   ];
+
+  List<dynamic> cleaningwaysoffer = [];
 
   int itemCount = 0;
 
@@ -133,11 +152,13 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
       buttonslist.clear();
     }
     super.initState();
-    if (widget.isFrom == "offer"){
-      selectedtabIndex = tabs.length-1;
+    if (widget.isFrom == "offer") {
+      selectedtabIndex = tabs.length - 1;
       _selectedbuttonIndex = 0;
       buttonslist.clear();
     }
+    GetVendorOffer_ApiCall();
+    // GetVendorservice_ApiCall();
   }
 
   Future<void> _showproductdialogbox(BuildContext context) async {
@@ -241,538 +262,350 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(15),
-            height: Sizee.height * 1,
-            child: Column(
-              children: [
-                // if(isDesktop(context))
-                SizedBox(
-                  height: 20,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: (isReload == false)
+            ? SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  // height: Sizee.height * 1,
+                  child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Icon(
-                            Icons.location_on,
-                            color: Color(0xFF000052),
-                            size: 17,
-                          ),
-                          Text(
-                            "Delivery Range : 30KM",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: const Color(0xFF000052),
-                                borderRadius: BorderRadius.circular(4)),
-                            height: 25,
-                            width: 30,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                      // if(isDesktop(context))
+                      SizedBox(
+                        height: 20,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: const [
                                 Icon(
-                                  Icons.star,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                                SizedBox(
-                                  width: 2,
+                                  Icons.location_on,
+                                  color: Color(0xFF000052),
+                                  size: 17,
                                 ),
                                 Text(
-                                  "3",
+                                  "Delivery Range : 30KM",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w500,
+                                    fontSize: 15,
                                   ),
-                                )
+                                ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                _isShow
-                    ? Column(
-                        children: [
-                          const Divider(
-                            color: CupertinoColors.systemGrey6,
-                            thickness: 2,
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            // color: Colors.red,
-                            height: 25,
-                            child: ListView.builder(
-                                // controller: _scrollController,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: tabs.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  // _scrollToBottom();
-                                  return Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            selectedtabIndex = index;
-                                            _selectedbuttonIndex = 0;
-                                            buttonslist.clear();
-                                            if (selectedtabIndex == 0) {
-                                              buttonslist.add("Men's");
-                                              buttonslist.add("Shoes");
-                                              buttonslist.add("Household");
-                                            } else if (selectedtabIndex == 1) {
-                                              buttonslist.add("Shoes");
-                                              buttonslist.add("Household");
-                                            } else if (selectedtabIndex == 2) {
-                                              buttonslist.add("Shoes");
-                                              buttonslist.add("Men's");
-                                            } else if (selectedtabIndex == 3) {
-                                              buttonslist.clear();
-                                            }
-                                          });
-                                        },
-                                        child: (selectedtabIndex == index)
-                                            ? InkWell(
-                                                child: Container(
-                                                  // height: 12,
-                                                  // color:Colors.blue,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10, right: 10),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        tabs[index],
-                                                        style: const TextStyle(
-                                                            color: Color(
-                                                                0xFF000052),
-                                                            fontSize: 13),
-                                                      ),
-                                                      Container(
-                                                        height: 3,
-                                                        width: Sizee.width / 5 -
-                                                            23,
-                                                        color: const Color(
-                                                            0xFF000052),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            : InkWell(
-                                                child: Container(
-                                                  alignment:
-                                                      Alignment.topCenter,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10, right: 10),
-                                                  child: Text(
-                                                    tabs[index],
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 13),
-                                                  ),
-                                                ),
-                                              ),
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFF000052),
+                                      borderRadius: BorderRadius.circular(4)),
+                                  height: 25,
+                                  width: 30,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.white,
+                                        size: 15,
                                       ),
-                                    ],
-                                  );
-                                }),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          buttonslist.length > 0
-                              ? Container(
-                            // alignment: Alignment.topLeft,
-                            // color: Colors.red,
-                            height: 50,
-                            // width: Sizee.width / 2 - 35,
-                            child: ListView.builder(
-                                // controller: _scrollController,
-                                physics: const NeverScrollableScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                itemCount: buttonslist.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  // _scrollToBottom();
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.only(
-                                            right: 5, left: 5),
-                                        height: 45,
-                                        //width: 80,
-                                        child: RaisedButton(
-                                          elevation: 0,
-                                          color: (_selectedbuttonIndex == index)
-                                              ? Colors.lightBlue
-                                              : Colors.grey,
-                                          shape: RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  color:
-                                                      (_selectedbuttonIndex ==
-                                                              index)
-                                                          ? const Color(
-                                                              0xFF000052)
-                                                          : Colors.black45,
-                                                  width: 2),
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedbuttonIndex = index;
-                                              //productList.clear();
-                                              if (index == 1) {
-                                                productList = productList2;
-                                              } else {
-                                                productList = productList3;
-                                              }
-                                              print(productList);
-                                            });
-                                          },
-                                          child: Text(
-                                            buttonslist[index],
-                                            style: TextStyle(
-                                              color: (_selectedbuttonIndex ==
-                                                      index)
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              fontSize: 13.6,
-                                            ),
-                                          ),
+                                      SizedBox(
+                                        width: 2,
+                                      ),
+                                      Text(
+                                        "3",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       )
                                     ],
-                                  );
-                                }),
-                          )
-                              :SizedBox(),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            // color: Colors.red,
-                            height: 50,
-                            child: TextFormField(
-                              onTap: () {
-                                setState(() {
-                                  _searchcursor = !_searchcursor;
-                                });
-                              },
-                              controller: searchcontroller,
-                              cursorColor: Colors.black,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF000052)),
-                                    borderRadius: BorderRadius.circular(10)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF000052)),
-                                    borderRadius: BorderRadius.circular(10)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF000052)),
-                                    borderRadius: BorderRadius.circular(10)),
-                                suffixIcon: _searchcursor
-                                    ? const Icon(
-                                        Icons.search,
-                                        color: Color(0xFF000052),
-                                      )
-                                    : const Icon(
-                                        Icons.search,
-                                        color: Colors.grey,
-                                      ),
-                                hintText: "Search within the menu....",
-                                hintStyle: const TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          selectedtabIndex == tabs.length - 1
-                              ? Container(
-                                  height: offerList.length * 180,
-                                  child: ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: offerList.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        // color: Colors.red,
-                                        height: 180,
-                                        // width: Sizee.width,
-                                        child: Card(
-                                          elevation: 0,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              side: const BorderSide(
-                                                  color: CupertinoColors
-                                                      .systemGrey3)),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      // color: Colors.blue,
-                                                      width:
-                                                          Sizee.width / 2 - 20,
-                                                      height: 20,
-                                                      child: Text(
-                                                        offerList[index]
-                                                            ["name"],
-                                                        style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      // color: Colors.blue,
-                                                      width:
-                                                          Sizee.width / 2 - 20,
-                                                      height: 20,
-                                                      child: Text(
-                                                        "Flat ${offerList[index]["offer%"]} % Off",
-                                                        style: const TextStyle(
-                                                          fontSize: 16,
-                                                          color:
-                                                              Color(0xFF000052),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      // color: Colors.blue,
-                                                      width:
-                                                          Sizee.width / 2 - 20,
-                                                      height: 20,
-                                                      child: const Text(
-                                                        "3r3",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Container(
-                                                          height: 7,
-                                                          width: 7,
-                                                          decoration:
-                                                              const BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 10,
-                                                                  bottom: 4),
-                                                          // color: Colors.blue,
-                                                          width:
-                                                              Sizee.width / 2 +
-                                                                  20,
-                                                          height: 20,
-                                                          child: Text(
-                                                            offerList[index]
-                                                                ["clean"],
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 14,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        _showfluttertoast();
-                                                      },
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        height: 40,
-                                                        width: Sizee.width / 2 -
-                                                            20,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape: BoxShape
-                                                              .rectangle,
-                                                          border: Border.all(
-                                                            color: const Color(
-                                                                0xFF000052),
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          "USE CODE: ${offerList[index]["use code"]}",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Colors
-                                                                .indigo[900],
-                                                            fontSize: 16,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 15,
-                                                              top: 15),
-                                                      height: 50,
-                                                      width:
-                                                          Sizee.width / 3 - 20,
-                                                      decoration: BoxDecoration(
-                                                          shape: BoxShape
-                                                              .rectangle,
-                                                          border: Border.all(
-                                                              color: Colors
-                                                                  .indigo)),
-                                                      child: SvgPicture.asset(
-                                                          offerList[index]
-                                                              ["image"]),
-                                                    ),
-                                                    Container(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      height: 45,
-                                                      width:
-                                                          Sizee.width / 3 - 20,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          color: Colors
-                                                              .indigo[900]),
-                                                      child: TextButton(
-                                                        onPressed: () {
-                                                          _showfluttertoast();
-                                                        },
-                                                        child: const Text(
-                                                          "Apply",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
                                   ),
-                                )
-                              : Container(
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      _isShow
+                          ? Column(
+                              children: [
+                                const Divider(
+                                  color: CupertinoColors.systemGrey6,
+                                  thickness: 2,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
                                   // color: Colors.red,
-                                  height: productList.length * 180,
-                                  // height: Sizee.height / 2,
+                                  height: 25,
                                   child: ListView.builder(
-                                      itemCount: productList.length,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
+                                      // controller: _scrollController,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: tabs.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return Container(
-                                          // color: Colors.red,
-                                          height: 165,
-                                          // width: Sizee.width,
-                                          child: Card(
-                                            elevation: 0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                side: const BorderSide(
-                                                    color: CupertinoColors
-                                                        .systemGrey3)),
-                                            child: Container(
-                                              padding: const EdgeInsets.only(
-                                                top: 15,
-                                              ),
-                                              child: Column(
-                                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                        // _scrollToBottom();
+                                        return Row(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  selectedtabIndex = index;
+                                                  _selectedbuttonIndex = 0;
+                                                  buttonslist.clear();
+                                                  if (selectedtabIndex == 0) {
+                                                    buttonslist.add("Men's");
+                                                    buttonslist.add("Shoes");
+                                                    buttonslist
+                                                        .add("Household");
+                                                  } else if (selectedtabIndex ==
+                                                      1) {
+                                                    buttonslist.add("Shoes");
+                                                    buttonslist
+                                                        .add("Household");
+                                                  } else if (selectedtabIndex ==
+                                                      2) {
+                                                    buttonslist.add("Shoes");
+                                                    buttonslist.add("Men's");
+                                                  } else if (selectedtabIndex ==
+                                                      3) {
+                                                    buttonslist.clear();
+                                                  }
+                                                });
+                                              },
+                                              child: (selectedtabIndex == index)
+                                                  ? InkWell(
+                                                      child: Container(
+                                                        // height: 12,
+                                                        // color:Colors.blue,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 10,
+                                                                right: 10),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              tabs[index],
+                                                              style: const TextStyle(
+                                                                  color: Color(
+                                                                      0xFF000052),
+                                                                  fontSize: 13),
+                                                            ),
+                                                            Container(
+                                                              height: 3,
+                                                              width:
+                                                                  Sizee.width /
+                                                                          5 -
+                                                                      23,
+                                                              color: const Color(
+                                                                  0xFF000052),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : InkWell(
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.topCenter,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 10,
+                                                                right: 10),
+                                                        child: Text(
+                                                          tabs[index],
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 13),
+                                                        ),
+                                                      ),
+                                                    ),
+                                            ),
+                                          ],
+                                        );
+                                      }),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                buttonslist.length > 0
+                                    ? Container(
+                                        // alignment: Alignment.topLeft,
+                                        // color: Colors.red,
+                                        height: 50,
+                                        // width: Sizee.width / 2 - 35,
+                                        child: ListView.builder(
+                                            // controller: _scrollController,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: buttonslist.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              // _scrollToBottom();
+                                              return Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Container(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 35),
+                                                            right: 5, left: 5),
+                                                    height: 45,
+                                                    //width: 80,
+                                                    child: RaisedButton(
+                                                      elevation: 0,
+                                                      color:
+                                                          (_selectedbuttonIndex ==
+                                                                  index)
+                                                              ? Colors.lightBlue
+                                                              : Colors.grey,
+                                                      shape: RoundedRectangleBorder(
+                                                          side: BorderSide(
+                                                              color: (_selectedbuttonIndex ==
+                                                                      index)
+                                                                  ? const Color(
+                                                                      0xFF000052)
+                                                                  : Colors
+                                                                      .black45,
+                                                              width: 2),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5)),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _selectedbuttonIndex =
+                                                              index;
+                                                          //productList.clear();
+                                                          if (index == 1) {
+                                                            productList =
+                                                                productList2;
+                                                          } else {
+                                                            productList =
+                                                                productList3;
+                                                          }
+                                                          print(productList);
+                                                        });
+                                                      },
+                                                      child: Text(
+                                                        buttonslist[index],
+                                                        style: TextStyle(
+                                                          color:
+                                                              (_selectedbuttonIndex ==
+                                                                      index)
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black,
+                                                          fontSize: 13.6,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              );
+                                            }),
+                                      )
+                                    : SizedBox(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  // color: Colors.red,
+                                  height: 50,
+                                  child: TextField(
+                                    onTap: () {
+                                      setState(() {
+                                        _searchcursor = !_searchcursor;
+                                      });
+                                    },
+                                    controller: searchcontroller,
+                                    cursorColor: Colors.black,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF000052)),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF000052)),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF000052)),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      suffixIcon: _searchcursor
+                                          ? const Icon(
+                                              Icons.search,
+                                              color: Color(0xFF000052),
+                                            )
+                                          : const Icon(
+                                              Icons.search,
+                                              color: Colors.grey,
+                                            ),
+                                      hintText: "Search within the menu....",
+                                      hintStyle: const TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    onSubmitted: (value) {
+                                      searchoffer = value;
+                                      //GetOffer_ApiCall();
+                                      GetVendorOffer_ApiCall();
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                selectedtabIndex == tabs.length - 1
+                                    ? Flexible(
+                                        flex: 0,
+                                        child: Container(
+                                          height: crazyofferlist.length * 230,
+                                          child: ListView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemCount: crazyofferlist.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Container(
+                                                // color: Colors.red,
+                                                height: 230,
+                                                // width: Sizee.width,
+                                                child: Card(
+                                                  elevation: 0,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      side: const BorderSide(
+                                                          color: CupertinoColors
+                                                              .systemGrey3)),
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -781,7 +614,7 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                         Column(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
-                                                                  .center,
+                                                                  .spaceBetween,
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
@@ -794,359 +627,665 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                                                       20,
                                                               height: 20,
                                                               child: Text(
-                                                                productList[
-                                                                        index]
-                                                                    ["clean"],
-                                                                //productList[index]["clean"],
+                                                                crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        "offer_name"]
+                                                                    .toString(),
                                                                 style:
                                                                     const TextStyle(
-                                                                  fontSize: 13,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
                                                                   color: Colors
                                                                       .black,
                                                                 ),
                                                               ),
                                                             ),
-                                                            Text(
-                                                              productList[index]
-                                                                  ["name"],
-                                                              maxLines: 2,
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                color: Colors
-                                                                    .black,
+                                                            Container(
+                                                              // color: Colors.blue,
+                                                              width:
+                                                                  Sizee.width /
+                                                                          2 -
+                                                                      20,
+                                                              height: 20,
+                                                              child: Text(
+                                                                "Flat ${crazyofferlist[index]["amount_percentage"].toString()} % Off",
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Color(
+                                                                      0xFF000052),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              // color: Colors.blue,
+                                                              width:
+                                                                  Sizee.width /
+                                                                          2 -
+                                                                      20,
+                                                              height: 20,
+                                                              child: Text(
+                                                                crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        "description"]
+                                                                    .toString(),
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              // color: Colors.red,
+                                                              width:
+                                                                  Sizee.width /
+                                                                          2 +
+                                                                      27,
+                                                              height:
+                                                                  cleaningwaysoffer
+                                                                          .length *
+                                                                      25,
+                                                              child: ListView
+                                                                  .builder(
+                                                                      itemCount:
+                                                                          cleaningwaysoffer
+                                                                              .length,
+                                                                      physics:
+                                                                          const NeverScrollableScrollPhysics(),
+                                                                      itemBuilder:
+                                                                          (BuildContext cntx,
+                                                                              int index) {
+                                                                        return Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Container(
+                                                                              height: 7,
+                                                                              width: 7,
+                                                                              decoration: const BoxDecoration(
+                                                                                shape: BoxShape.circle,
+                                                                                color: Colors.black,
+                                                                              ),
+                                                                            ),
+                                                                            Container(
+                                                                              padding: const EdgeInsets.only(left: 8, bottom: 6),
+                                                                              // color: Colors.blue,
+                                                                              width: Sizee.width / 2 + 20,
+                                                                              height: 25,
+                                                                              child: Text(
+                                                                                "${cleaningwaysoffer[index]["offer_applicable_services"][index]["parent_category_name"].toString()} (${cleaningwaysoffer[index]["offer_applicable_services"][index]["name"].toString()})",
+                                                                                style: const TextStyle(
+                                                                                  fontSize: 12.2,
+                                                                                  color: Colors.black,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                      }),
+                                                            ),
+                                                            Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .topLeft,
+                                                              height: 33,
+                                                              // color: Colors.red,
+                                                              child: TextButton(
+                                                                onPressed:
+                                                                    () {},
+                                                                child:
+                                                                    const Text(
+                                                                  "See more",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .left,
+                                                                  style: TextStyle(
+                                                                      color: Color(
+                                                                          0xFF000052),
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                _showfluttertoast();
+                                                              },
+                                                              child: Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                height: 40,
+                                                                width:
+                                                                    Sizee.width /
+                                                                            2 -
+                                                                        30,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .rectangle,
+                                                                  border: Border
+                                                                      .all(
+                                                                    color: const Color(
+                                                                        0xFF000052),
+                                                                  ),
+                                                                ),
+                                                                child: Text(
+                                                                  "USE CODE: ${crazyofferlist[index]["offer_code"].toString()}",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color: Color(
+                                                                        0xFF000052),
+                                                                    fontSize:
+                                                                        14,
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
                                                           ],
                                                         ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            _showproductdialogbox(
-                                                                context);
-                                                          },
-                                                          child: Container(
-                                                            height: 80,
-                                                            width: 80,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              border: Border.all(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  width: 1),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          3),
-                                                            ),
-                                                            child: Image.asset(
-                                                                productList[
-                                                                        index]
-                                                                    ["image"]),
+                                                        Container(
+                                                          // color: Colors.blue,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Container(
+                                                                // padding:
+                                                                //     const EdgeInsets
+                                                                //             .only(
+                                                                //         bottom:
+                                                                //             15,
+                                                                //         top:
+                                                                //             15),
+                                                                height: 50,
+                                                                width:
+                                                                    Sizee.width /
+                                                                            3 -
+                                                                        20,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .rectangle,
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .black),
+                                                                ),
+                                                                child: Image
+                                                                    .network(
+                                                                  crazyofferlist[
+                                                                              index]
+                                                                          [
+                                                                          "offer_image"]
+                                                                      .toString(),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                height: 40,
+                                                                width:
+                                                                    Sizee.width /
+                                                                            3 -
+                                                                        20,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  color: const Color(
+                                                                      0xFF000052),
+                                                                ),
+                                                                child:
+                                                                    TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    _showfluttertoast();
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    "Apply",
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          18,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Container(
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        // color: Colors.red,
+                                        height: productList.length * 180,
+                                        // height: Sizee.height / 2,
+                                        child: ListView.builder(
+                                            itemCount: productList.length,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Container(
+                                                // color: Colors.red,
+                                                height: 165,
+                                                // width: Sizee.width,
+                                                child: Card(
+                                                  elevation: 0,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      side: const BorderSide(
+                                                          color: CupertinoColors
+                                                              .systemGrey3)),
+                                                  child: Container(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      top: 15,
+                                                    ),
+                                                    child: Column(
+                                                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
-                                                              .center,
+                                                              .start,
                                                       children: [
                                                         Container(
-                                                          // padding: EdgeInsets.only(left: 13),
-                                                          // color: Colors.blue,
-                                                          width:
-                                                              Sizee.width / 2 -
-                                                                  22,
-                                                          height: 20,
-                                                          child: Text(
-                                                            "Rs ${productList[index]["price"]}",
-                                                            maxLines: 2,
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        productList[index]
-                                                                    ["QTY"] >
-                                                                0
-                                                            ? Container(
-                                                                // height: 50,
-                                                                // width: 80,
-                                                                decoration: BoxDecoration(
-                                                                    color: const Color(
-                                                                        0xFF000052),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            7),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15,
+                                                                  right: 35),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Container(
+                                                                    // color: Colors.blue,
+                                                                    width: Sizee.width /
+                                                                            2 -
+                                                                        20,
+                                                                    height: 20,
+                                                                    child: Text(
+                                                                      productList[
+                                                                              index]
+                                                                          [
+                                                                          "clean"],
+                                                                      //productList[index]["clean"],
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            13,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    productList[
+                                                                            index]
+                                                                        [
+                                                                        "name"],
+                                                                    maxLines: 2,
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontSize:
+                                                                          17,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w900,
+                                                                      color: Colors
+                                                                          .black,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  _showproductdialogbox(
+                                                                      context);
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  height: 80,
+                                                                  width: 80,
+                                                                  decoration:
+                                                                      BoxDecoration(
                                                                     border: Border.all(
                                                                         color: Colors
-                                                                            .grey)),
-                                                                child: Row(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Container(
+                                                                            .black,
+                                                                        width:
+                                                                            1),
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(3),
+                                                                  ),
+                                                                  child: Image.asset(
+                                                                      productList[
+                                                                              index]
+                                                                          [
+                                                                          "image"]),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15,
+                                                                  right: 10),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                // padding: EdgeInsets.only(left: 13),
+                                                                // color: Colors.blue,
+                                                                width:
+                                                                    Sizee.width /
+                                                                            2 -
+                                                                        22,
+                                                                height: 20,
+                                                                child: Text(
+                                                                  "Rs ${productList[index]["price"]}",
+                                                                  maxLines: 2,
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w900,
+                                                                    color: Colors
+                                                                        .black,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              productList[index]
+                                                                          [
+                                                                          "QTY"] >
+                                                                      0
+                                                                  ? Container(
+                                                                      // height: 50,
+                                                                      // width: 80,
+                                                                      decoration: BoxDecoration(
+                                                                          color: const Color(
+                                                                              0xFF000052),
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              7),
+                                                                          border:
+                                                                              Border.all(color: Colors.grey)),
+                                                                      child:
+                                                                          Row(
+                                                                        children: <
+                                                                            Widget>[
+                                                                          Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                Sizee.width / 8 - 5,
+                                                                            child:
+                                                                                RaisedButton(
+                                                                              elevation: 0,
+                                                                              shape: const RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(7), bottomLeft: Radius.circular(7)),
+                                                                              ),
+                                                                              color: const Color(
+                                                                                0xFF000052,
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  productList[index]["QTY"] = int.parse(productList[index]["QTY"].toString()) - 1;
+                                                                                  print(productList[index]["QTY"]);
+                                                                                  UpdateCartPrice();
+                                                                                });
+                                                                              },
+                                                                              child: const Text(
+                                                                                "-",
+                                                                                style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                  fontSize: 20,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                Sizee.width / 8 - 9.69,
+                                                                            child:
+                                                                                Text(
+                                                                              productList[index]["QTY"].toString(),
+                                                                              textAlign: TextAlign.center,
+                                                                              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: Colors.black),
+                                                                            ),
+                                                                          ),
+                                                                          Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                Sizee.width / 8 - 5,
+                                                                            child:
+                                                                                RaisedButton(
+                                                                              shape: const RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7)),
+                                                                              ),
+                                                                              color: const Color(0xFF000052),
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  setState(() {
+                                                                                    productList[index]["QTY"] = int.parse(productList[index]["QTY"].toString()) + 1;
+                                                                                    print(productList[index]["QTY"]);
+                                                                                    UpdateCartPrice();
+                                                                                  });
+                                                                                });
+                                                                              },
+                                                                              child: const Text(
+                                                                                "+",
+                                                                                textAlign: TextAlign.left,
+                                                                                style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                  fontSize: 20,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )
+                                                                  : Container(
                                                                       height:
                                                                           45,
                                                                       width:
-                                                                          Sizee.width / 8 -
-                                                                              5,
+                                                                          Sizee.width /
+                                                                              3,
+                                                                      decoration: BoxDecoration(
+                                                                          color: const Color(
+                                                                              0xFF000052),
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              6),
+                                                                          border:
+                                                                              Border.all(color: Colors.white70)),
                                                                       child:
                                                                           RaisedButton(
                                                                         elevation:
                                                                             0,
-                                                                        shape:
-                                                                            const RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.only(
-                                                                              topLeft: Radius.circular(7),
-                                                                              bottomLeft: Radius.circular(7)),
-                                                                        ),
-                                                                        color:
-                                                                            const Color(
-                                                                          0xFF000052,
-                                                                        ),
-                                                                        onPressed:
-                                                                            () {
-                                                                          setState(
-                                                                              () {
-                                                                            productList[index]["QTY"] =
-                                                                                int.parse(productList[index]["QTY"].toString()) - 1;
-                                                                            print(productList[index]["QTY"]);
-                                                                            UpdateCartPrice();
-                                                                          });
-                                                                        },
-                                                                        child:
-                                                                            const Text(
-                                                                          "-",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontSize:
-                                                                                20,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      height:
-                                                                          45,
-                                                                      width: Sizee.width /
-                                                                              8 -
-                                                                          9.69,
-                                                                      child:
-                                                                          Text(
-                                                                        productList[index]["QTY"]
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                17,
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                            color: Colors.black),
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      height:
-                                                                          45,
-                                                                      width:
-                                                                          Sizee.width / 8 -
-                                                                              5,
-                                                                      child:
-                                                                          RaisedButton(
-                                                                        shape:
-                                                                            const RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.only(
-                                                                              topRight: Radius.circular(7),
-                                                                              bottomRight: Radius.circular(7)),
-                                                                        ),
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(5)),
                                                                         color: const Color(
                                                                             0xFF000052),
                                                                         onPressed:
                                                                             () {
                                                                           setState(
                                                                               () {
-                                                                            setState(() {
-                                                                              productList[index]["QTY"] = int.parse(productList[index]["QTY"].toString()) + 1;
-                                                                              print(productList[index]["QTY"]);
-                                                                              UpdateCartPrice();
-                                                                            });
+                                                                            productList[index]["QTY"] =
+                                                                                1;
+                                                                            UpdateCartPrice();
                                                                           });
                                                                         },
                                                                         child:
                                                                             const Text(
-                                                                          "+",
-                                                                          textAlign:
-                                                                              TextAlign.left,
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontSize:
-                                                                                20,
-                                                                          ),
+                                                                          "ADD+",
+                                                                          style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 17),
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                  ],
-                                                                ),
-                                                              )
-                                                            : Container(
-                                                                height: 45,
-                                                                width: Sizee
-                                                                        .width /
-                                                                    3,
-                                                                decoration: BoxDecoration(
-                                                                    color: const Color(
-                                                                        0xFF000052),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            6),
-                                                                    border: Border.all(
-                                                                        color: Colors
-                                                                            .white70)),
-                                                                child:
-                                                                    RaisedButton(
-                                                                  elevation: 0,
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5)),
-                                                                  color: const Color(
-                                                                      0xFF000052),
-                                                                  onPressed:
-                                                                      () {
-                                                                    setState(
-                                                                        () {
-                                                                      productList[
-                                                                              index]
-                                                                          [
-                                                                          "QTY"] = 1;
-                                                                      UpdateCartPrice();
-                                                                    });
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                    "ADD+",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            17),
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                ),
-                        ],
-                      )
-                    : SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Container(
-                              // padding:
-                              //     const EdgeInsets.only(left: 10, right: 10),
-                              // color: Colors.red,
-                              height: Sizee.height / 3.5,
-                              width: Sizee.width,
-                              child: ClipRRect(
-                                child: Image.asset(
-                                  "assets/exp1.jpg",
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 60,
-                            ),
-                            Container(
-                              // padding: const EdgeInsets.only(left: 10),
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                              ],
+                            )
+                          : SingleChildScrollView(
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    alignment: Alignment.topLeft,
-                                    child: const Text(
-                                      "Operational Hours",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w600,
+                                    // padding:
+                                    //     const EdgeInsets.only(left: 10, right: 10),
+                                    // color: Colors.red,
+                                    height: Sizee.height / 3.5,
+                                    width: Sizee.width,
+                                    child: ClipRRect(
+                                      child: Image.asset(
+                                        "assets/exp1.jpg",
+                                        fit: BoxFit.fill,
                                       ),
                                     ),
                                   ),
                                   const SizedBox(
-                                    height: 10,
+                                    height: 60,
                                   ),
                                   Container(
-                                    alignment: Alignment.topLeft,
-                                    height: 3,
-                                    width: Sizee.width / 5 - 15,
-                                    color: const Color(0xFF000052),
+                                    // padding: const EdgeInsets.only(left: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: const Text(
+                                            "Operational Hours",
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          height: 3,
+                                          width: Sizee.width / 5 - 15,
+                                          color: const Color(0xFF000052),
+                                        ),
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(
-                                    height: 25,
+                                  Container(
+                                    // padding: const EdgeInsets.only(
+                                    //   left: 15,
+                                    // ),
+                                    // color: Colors.red,
+                                    height: Sizee.height / 3,
+                                    child: ListView(
+                                      children: [_createDataTable()],
+                                    ),
+                                  ),
+                                  const Divider(
+                                    color: CupertinoColors.systemGrey6,
+                                    thickness: 2,
                                   ),
                                 ],
                               ),
                             ),
-                            Container(
-                              // padding: const EdgeInsets.only(
-                              //   left: 15,
-                              // ),
-                              // color: Colors.red,
-                              height: Sizee.height / 3,
-                              child: ListView(
-                                children: [_createDataTable()],
-                              ),
-                            ),
-                            const Divider(
-                              color: CupertinoColors.systemGrey6,
-                              thickness: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-              ],
-            ),
-          ),
-        ),
+                    ],
+                  ),
+                ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF000052),
+                ),
+              ),
         bottomSheet: (cartQTY == 0)
             ? const SizedBox()
             : Container(
@@ -1272,6 +1411,91 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
       ),
     );
   }
+
+  GetVendorOffer_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user_id = prefs.getString("id") ?? "";
+
+      print(
+          "$GetVendorserviceoffer_Api/${widget.vendorid}/?search=$searchoffer&user_id=$user_id");
+      var response = await http.get(
+        Uri.parse(
+            "$GetVendorserviceoffer_Api/${widget.vendorid}/?search=$searchoffer&user_id=$user_id"),
+      );
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          crazyofferlist.clear();
+          crazyofferlist = decode["data"];
+
+          cleaningwaysoffer.clear();
+          cleaningwaysoffer = decode["data"];
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+
+        setState(() {
+          isReload = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getoffer =>" + e.toString());
+      throw e;
+    }
+  }
+
+  // GetVendorservice_ApiCall() async {
+  //   setState(() {
+  //     isReload = true;
+  //   });
+  //   try {
+  //     // SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     // var user_id = prefs.getString("id") ?? "";
+  //
+  //     print(GetVendorserviceoffer_Api + "/${widget.vendorid}");
+  //     var response = await http.get(
+  //       Uri.parse(GetVendorserviceoffer_Api + "/${widget.vendorid}"),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       var decode = jsonDecode(response.body);
+  //       print(decode);
+  //       if (decode["success"] = true) {
+  //         buttonslist.clear();
+  //         buttonslist = decode["data"];
+  //       } else {}
+  //       setState(() {
+  //         isReload = false;
+  //       });
+  //     } else {
+  //       print("Error" + response.statusCode.toString());
+  //       print("Error" + response.body.toString());
+  //
+  //       setState(() {
+  //         isReload = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       isReload = false;
+  //     });
+  //     print("Exception in getoffer =>" + e.toString());
+  //     throw e;
+  //   }
+  // }
 
   UpdateCartPrice() {
     setState(() {

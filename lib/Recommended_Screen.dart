@@ -7,17 +7,17 @@ import 'package:safaidaar_customer/FeaturedStore_Detail_Screen.dart';
 import 'package:http/http.dart' as http;
 import 'Api/Api_Url.dart';
 
-class Featuredstore extends StatefulWidget {
-  const Featuredstore({Key? key}) : super(key: key);
+class Recommendedscreen extends StatefulWidget {
+  const Recommendedscreen({Key? key}) : super(key: key);
 
   @override
-  State<Featuredstore> createState() => _FeaturedstoreState();
+  State<Recommendedscreen> createState() => _RecommendedscreenState();
 }
 
-class _FeaturedstoreState extends State<Featuredstore> {
+class _RecommendedscreenState extends State<Recommendedscreen> {
   bool isReload = false;
 
-  List<dynamic> featuredstorelist = [
+  List<dynamic> recommendedlist = [
     // {
     //   'image': 'assets/exp1.jpg',
     //   'name': 'Exp-1',
@@ -52,12 +52,12 @@ class _FeaturedstoreState extends State<Featuredstore> {
 
   @override
   void initState() {
-    FeatureStore_ApiCall(false);
+    Recommended_ApiCall(false);
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
         if (currentPage != lastPage) {
-          FeatureStore_ApiCall(true);
+          Recommended_ApiCall(true);
         }
         print("orderlist pagination");
       }
@@ -87,7 +87,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
           title: Transform(
             transform: Matrix4.translationValues(-20, 0.0, 0.0),
             child: const Text(
-              "Featured Store/Vendor",
+              "Recommended for you",
               style: TextStyle(
                 // fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -108,7 +108,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                       Container(
                         alignment: Alignment.topLeft,
                         child: const Text(
-                          "All Vendors Providing Featured Store/ ...",
+                          "All Vendors Providing Recommended for ...",
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Colors.black,
@@ -119,14 +119,14 @@ class _FeaturedstoreState extends State<Featuredstore> {
                       ),
                       Container(
                         padding: const EdgeInsets.only(top: 15),
-                        height: featuredstorelist.length * 355,
+                        height: recommendedlist.length * 355,
                         width: Sizee.width,
                         //     color: Colors.green,
                         child: ListView.builder(
                           // scrollDirection: Axis.horizontal,
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: featuredstorelist.length,
+                          itemCount: recommendedlist.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
                               // color: Colors.blue,
@@ -145,15 +145,15 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                 color: Colors.white,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print(featuredstorelist[index]["user_id"]
+                                    print(recommendedlist[index]["user_id"]
                                         .toString());
-                                    print(featuredstorelist[index]["vendor_id"]
+                                    print(recommendedlist[index]["vendor_id"]
                                         .toString());
-                                    featuredstorelist[index]["user_id"]
+                                    recommendedlist[index]["user_id"]
                                         .toString();
-                                    featuredstorelist[index]["vendor_id"]
+                                    recommendedlist[index]["vendor_id"]
                                         .toString();
-                                    // featuredstorelist[index]
+                                    // recommendedlist[index]
                                     // ["vendor_id"]
                                     //     .toString();
                                     Navigator.of(context).push(
@@ -161,10 +161,10 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                         builder: (context) =>
                                             DetailFeatured_Store(
                                           isFrom: 'service',
-                                          userid: featuredstorelist[index]
+                                          userid: recommendedlist[index]
                                                   ["user_id"]
                                               .toString(),
-                                          vendorid: featuredstorelist[index]
+                                          vendorid: recommendedlist[index]
                                                   ["vendor_id"]
                                               .toString(),
                                         ),
@@ -182,16 +182,13 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                           height: 10,
                                           child: ClipRRect(
                                             borderRadius:
-                                            const BorderRadius
-                                                .only(
-                                                topLeft: Radius
-                                                    .circular(
-                                                    10),
-                                                topRight: Radius
-                                                    .circular(
-                                                    10)),
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10)),
                                             child: Image.network(
-                                              featuredstorelist[index]
+                                              recommendedlist[index]
                                                       ['vendor_banner_image']
                                                   .toString(),
                                               fit: BoxFit.fill,
@@ -214,7 +211,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                             Container(
                                               height: 30,
                                               child: Text(
-                                                featuredstorelist[index]
+                                                recommendedlist[index]
                                                         ['vendor_name']
                                                     .toString(),
                                                 maxLines: 2,
@@ -226,8 +223,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                                 ),
                                               ),
                                             ),
-                                            featuredstorelist[index]
-                                                        ["rating"] ==
+                                            recommendedlist[index]["rating"] ==
                                                     "0"
                                                 ? SizedBox()
                                                 : Container(
@@ -256,8 +252,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                                           width: 2,
                                                         ),
                                                         Text(
-                                                          featuredstorelist[
-                                                                      index]
+                                                          recommendedlist[index]
                                                                   ["rating"]
                                                               .toString(),
                                                           style:
@@ -303,7 +298,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                                         const EdgeInsets.only(
                                                             left: 7),
                                                     child: Text(
-                                                      "Delivery Range: ${featuredstorelist[index]['delivery_range'].toString()} KM",
+                                                      "Delivery Range: ${recommendedlist[index]['delivery_range'].toString()} KM",
                                                       style: const TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.grey,
@@ -338,7 +333,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                                         const EdgeInsets.only(
                                                             left: 7),
                                                     child: Text(
-                                                      "Starting From Rs ${featuredstorelist[index]['min_price'].toString()}",
+                                                      "Starting From Rs ${recommendedlist[index]['min_price'].toString()}",
                                                       style: const TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.grey,
@@ -372,7 +367,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
     );
   }
 
-  FeatureStore_ApiCall(bool isPaginate) async {
+  Recommended_ApiCall(bool isPaginate) async {
     setState(() {
       if (!isPaginate) {
         isReload = true;
@@ -385,9 +380,9 @@ class _FeaturedstoreState extends State<Featuredstore> {
       //   'Content-type': 'application/json',
       //   'Accept': 'application/json',
       // };
-      print(FeaturedStore_Api +
+      print(Recommended_Api +
           "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}");
-      var response = await http.get(Uri.parse(FeaturedStore_Api +
+      var response = await http.get(Uri.parse(Recommended_Api +
           "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}"));
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
@@ -397,18 +392,18 @@ class _FeaturedstoreState extends State<Featuredstore> {
             currentPage = decode["data"]["current_page"];
             lastPage = decode["data"]["last_page"];
             if (currentPage == 1) {
-              featuredstorelist.clear();
+              recommendedlist.clear();
             }
 
             for (int i = 0; i < decode["data"]["data"].length; i++) {
-              featuredstorelist.add(decode['data']['data'][i]);
+              recommendedlist.add(decode['data']['data'][i]);
             }
             //print("decode ${decode["data"][0]["data"]} " );
             // orderlist.clear();
             // orderlist = decode["data"]["data"];
           });
-          // featuredstorelist.clear();
-          // featuredstorelist = decode["data"]["data"];
+          // recommendedlist.clear();
+          // recommendedlist = decode["data"]["data"];
           print(decode);
         } else {
           print("Error");

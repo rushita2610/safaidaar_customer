@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -15,6 +15,8 @@ import 'package:safaidaar_customer/FeaturedStore_Detail_Screen.dart';
 import 'package:safaidaar_customer/FeaturedStore_VendorScreen.dart';
 import 'package:safaidaar_customer/Feedback_Screen.dart';
 import 'package:safaidaar_customer/Notifications_Screen.dart';
+import 'package:safaidaar_customer/Offers_Screen.dart';
+import 'package:safaidaar_customer/Recommended_Screen.dart';
 import 'package:safaidaar_customer/Services_detail_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,19 +28,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
 import 'Login.dart';
-
-List<dynamic> crazyofferlist = [
-  {
-    'image': 'assets/customer_application_logo.svg',
-    'name': 'Diyanshi',
-    'offer': 10,
-  },
-  {
-    'image': 'assets/customer_application_logo.svg',
-    'name': 'Diyanshi',
-    'offer': 20,
-  },
-];
 
 List<dynamic> topserviceslist = [
   // {
@@ -74,7 +63,47 @@ class _homeScreenState extends State<homeScreen> {
   bool isReload = false;
   String serviceid = "";
 
+  List<dynamic> crazyofferlist = [
+    // {
+    //   'image': 'assets/customer_application_logo.svg',
+    //   'name': 'Diyanshi',
+    //   'offer': 10,
+    // },
+    // {
+    //   'image': 'assets/customer_application_logo.svg',
+    //   'name': 'Diyanshi',
+    //   'offer': 20,
+    // },
+  ];
+
   List<dynamic> featuredstorelist = [
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-1',
+    //   'deliveryrange': 66,
+    //   'starting': 52.5,
+    // },
+    // {
+    //   'image': 'assets/exp2.jpg',
+    //   'name': 'Exp-2',
+    //   'deliveryrange': 50,
+    //   'starting': 65.5,
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-3',
+    //   'deliveryrange': 55,
+    //   'starting': 89.5,
+    // },
+    // {
+    //   'image': 'assets/exp1.jpg',
+    //   'name': 'Exp-4',
+    //   'deliveryrange': 72,
+    //   'starting': 40.5,
+    // },
+  ];
+
+  List<dynamic> recommendedlist = [
     // {
     //   'image': 'assets/exp1.jpg',
     //   'name': 'Exp-1',
@@ -132,15 +161,15 @@ class _homeScreenState extends State<homeScreen> {
   ];
 
   List<dynamic> addresslist = [
-    {
-      "addresstype": "Office",
-    },
-    {
-      "addresstype": "Home",
-    },
-    {
-      "addresstype": "Other",
-    },
+    // {
+    //   "addresstype": "Office",
+    // },
+    // {
+    //   "addresstype": "Home",
+    // },
+    // {
+    //   "addresstype": "Other",
+    // },
   ];
 
   TextEditingController searchcontroller = TextEditingController();
@@ -155,17 +184,11 @@ class _homeScreenState extends State<homeScreen> {
     // HomeBannerApi();
     setDrawerdata();
     TopServices_ApiCall();
-    FeatureStore_ApiCall(false);
+    FeatureStore_ApiCall();
+    Recommended_ApiCall();
+    GetOffer_ApiCall();
+    GetAddress_ApiCall();
     profile();
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.position.pixels) {
-        if (currentPage != lastPage) {
-          FeatureStore_ApiCall(true);
-        }
-        print("orderlist pagination");
-      }
-    });
     super.initState();
   }
 
@@ -202,12 +225,6 @@ class _homeScreenState extends State<homeScreen> {
 
   String Address = 'search';
 
-  int currentPage = 0;
-  int lastPage = 0;
-  int pageIndex = 0;
-  bool isReloadPagination = false;
-  ScrollController scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     //final Sizee = MediaQuery.of(context).size;
@@ -220,7 +237,7 @@ class _homeScreenState extends State<homeScreen> {
         body: (isReload == false)
             ? SingleChildScrollView(
                 child: Container(
-                  height: height * 1.56,
+                  height: height * 2,
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 0),
                   child: Column(
@@ -236,6 +253,7 @@ class _homeScreenState extends State<homeScreen> {
                             InkWell(
                               onTap: () {
                                 _settingModelBottomSheet(context);
+                                GetAddress_ApiCall();
                               },
                               child: Container(
                                 width: width * 0.78,
@@ -540,503 +558,994 @@ class _homeScreenState extends State<homeScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Flexible(
-                        flex: 0,
-                        child: Container(
-                          // padding: const EdgeInsets.only(bottom: 10),
-                          // height: Sizee.height,
-                          color: Colors.transparent,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              (featuredstorelist.isNotEmpty)
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.topLeft,
-                                              child: const Text(
-                                                "Featured Store/Vendor",
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              // padding: const EdgeInsets.only(top: 10),
-                                              alignment: Alignment.topLeft,
-                                              height: 3,
-                                              //width: Sizee.width / 5 - 15,
-                                              width: width * 0.15,
-                                              color: const Color(0xFF000052),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          // padding: const EdgeInsets.only(bottom: 10),
-                                          alignment: Alignment.topRight,
-                                          child: TextButton(
-                                            child: const Text(
-                                              "See all",
-                                              style: TextStyle(
-                                                  color: Color(0xFF000052),
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return const Featuredstore();
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : const SizedBox(),
-                              (featuredstorelist.length > 0)
-                                  ? Container(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      // height: Sizee.height / 2.5,
-                                      height: featuredstorelist.length * 60,
-                                      // width: Sizee.width + 10,
-                                      // color: Colors.green,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          physics:
-                                              const AlwaysScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              (featuredstorelist.length >= 5)
-                                                  ? 5
-                                                  : featuredstorelist.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              // color: Colors.blue,
-                                              padding: const EdgeInsets.only(
-                                                bottom: 30,
-                                              ),
-                                              width: 220,
-                                              // height: 100,
-                                              child: Card(
-                                                elevation: 4,
-                                                shape: RoundedRectangleBorder(
-                                                  // side: const BorderSide(
-                                                  //     color: Colors.grey),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                ),
-                                                color: Colors.white,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            DetailFeatured_Store(
-                                                          isFrom: 'service',
+                      recommendedlist.length > 0
+                          ? Flexible(
+                              flex: 0,
+                              child: Container(
+                                // padding: const EdgeInsets.only(bottom: 10),
+                                // height: Sizee.height,
+                                color: Colors.transparent,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    (recommendedlist.isNotEmpty)
+                                        ? Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 35,
+                                                // color:Colors.blue,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: const Text(
+                                                        "Recommended for you",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w900,
                                                         ),
                                                       ),
-                                                    );
-                                                  },
-                                                  child: Stack(
-                                                    children: [
-                                                      Positioned(
-                                                        left: 0,
-                                                        // bottom: Sizee.height / 6.5,
-                                                        bottom: height * 0.13,
-                                                        right: 0,
-                                                        top: 0,
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.0),
-                                                          child: Image.network(
-                                                            featuredstorelist[
-                                                                        index][
-                                                                    'vendor_banner_image']
-                                                                .toString(),
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        left: 5,
-                                                        // top: 50,
-                                                        right: 0,
-                                                        bottom: 0,
-                                                        // height: Sizee.height / 8,
-                                                        height: height * 0.12,
-                                                        child: Text(
-                                                          featuredstorelist[
-                                                                      index][
-                                                                  'vendor_name']
-                                                              .toString(),
-                                                          maxLines: 2,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
+                                                    ),
+                                                    InkWell(
+                                                      child: const Text(
+                                                        "See all",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF000052),
+                                                            fontSize: 17.5,
                                                             fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 19,
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder: (context) {
+                                                              return const Recommendedscreen();
+                                                            },
                                                           ),
-                                                        ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                // padding: const EdgeInsets.only(top: 10),
+                                                alignment: Alignment.topLeft,
+                                                height: 3,
+                                                //width: Sizee.width / 5 - 15,
+                                                width: width * 0.15,
+                                                color: const Color(0xFF000052),
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+                                    (recommendedlist.length > 0)
+                                        ? Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            height: height * 0.35,
+                                            width: recommendedlist.length * 220,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                physics:
+                                                    const AlwaysScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: (recommendedlist
+                                                            .length >=
+                                                        5)
+                                                    ? 5
+                                                    : recommendedlist.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    // color: Colors.blue,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      bottom: 30,
+                                                    ),
+                                                    width: 220,
+                                                    // height: 100,
+                                                    child: Card(
+                                                      elevation: 4,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        // side: const BorderSide(
+                                                        //     color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
                                                       ),
-                                                      Positioned(
-                                                        bottom: 45,
-                                                        height: height * 0.02,
-                                                        left: 10,
-                                                        child: Row(
+                                                      color: Colors.white,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          print(recommendedlist[
+                                                                      index]
+                                                                  ["user_id"]
+                                                              .toString());
+                                                          print(recommendedlist[
+                                                                      index]
+                                                                  ["vendor_id"]
+                                                              .toString());
+                                                          recommendedlist[index]
+                                                                  ["user_id"]
+                                                              .toString();
+                                                          recommendedlist[index]
+                                                                  ["vendor_id"]
+                                                              .toString();
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  DetailFeatured_Store(
+                                                                isFrom:
+                                                                    'service',
+                                                                userid: recommendedlist[
+                                                                            index]
+                                                                        [
+                                                                        "user_id"]
+                                                                    .toString(),
+                                                                vendorid: recommendedlist[
+                                                                            index]
+                                                                        [
+                                                                        "vendor_id"]
+                                                                    .toString(),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Stack(
                                                           children: [
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      top: 5),
-                                                              height: 20,
-                                                              child:
-                                                                  Image.asset(
-                                                                "assets/map-blue.png",
-                                                                color: Colors
-                                                                    .black87,
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 7),
-                                                              child: Text(
-                                                                "Delivery Range: ${featuredstorelist[index]['delivery_range'].toString()} KM",
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        bottom: 15,
-                                                        left: 10,
-                                                        //  height: height * 1,
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              // padding:
-                                                              //     const EdgeInsets.only(top: 5),
-                                                              //height: 10,
-                                                              child: const Icon(
-                                                                Icons
-                                                                    .account_balance_wallet,
-                                                                color: Colors
-                                                                    .black87,
-                                                                size: 15,
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 7),
-                                                              child: Text(
-                                                                "Starting From Rs ${featuredstorelist[index]['min_price'].toString()}",
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        top: 8,
-                                                        left: 10,
-                                                        // right: 0,
-                                                        child: featuredstorelist[
-                                                                        index][
-                                                                    "rating"] ==
-                                                                "0"
-                                                            ? SizedBox()
-                                                            : Container(
-                                                                decoration: BoxDecoration(
-                                                                    color: const Color(
-                                                                        0xFF000052),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
+                                                            Positioned(
+                                                              left: 0,
+                                                              // bottom: Sizee.height / 6.5,
+                                                              bottom:
+                                                                  height * 0.13,
+                                                              right: 0,
+                                                              top: 0,
+                                                              child: ClipRRect(
+                                                                borderRadius: const BorderRadius
+                                                                        .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10),
+                                                                    topRight: Radius
+                                                                        .circular(
                                                                             10)),
-                                                                height: 25,
-                                                                width: 70,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    const Icon(
-                                                                      Icons
-                                                                          .star,
+                                                                child: Image
+                                                                    .network(
+                                                                  recommendedlist[
+                                                                              index]
+                                                                          [
+                                                                          'vendor_banner_image']
+                                                                      .toString(),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              left: 5,
+                                                              // top: 50,
+                                                              right: 0,
+                                                              bottom: 0,
+                                                              // height: Sizee.height / 8,
+                                                              height:
+                                                                  height * 0.12,
+                                                              child: Text(
+                                                                recommendedlist[
+                                                                            index]
+                                                                        [
+                                                                        'vendor_name']
+                                                                    .toString(),
+                                                                maxLines: 2,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 19,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 45,
+                                                              height:
+                                                                  height * 0.02,
+                                                              left: 10,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        top: 5),
+                                                                    height: 20,
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/map-blue.png",
                                                                       color: Colors
-                                                                          .white,
-                                                                      size: 20,
+                                                                          .black87,
                                                                     ),
-                                                                    const SizedBox(
-                                                                      width: 2,
-                                                                    ),
-                                                                    Text(
-                                                                      featuredstorelist[index]
-                                                                              [
-                                                                              "rating"]
-                                                                          .toString(),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                    child: Text(
+                                                                      "Delivery Range: ${recommendedlist[index]['delivery_range'].toString()} KM",
                                                                       style:
                                                                           const TextStyle(
-                                                                        color: Colors
-                                                                            .white,
                                                                         fontSize:
-                                                                            17,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
                                                                       ),
-                                                                    )
-                                                                  ],
-                                                                ),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 15,
+                                                              left: 10,
+                                                              //  height: height * 1,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    // padding:
+                                                                    //     const EdgeInsets.only(top: 5),
+                                                                    //height: 10,
+                                                                    child:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .account_balance_wallet,
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      size: 15,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                    child: Text(
+                                                                      "Starting From Rs ${recommendedlist[index]['min_price'].toString()}",
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              top: 8,
+                                                              left: 10,
+                                                              // right: 0,
+                                                              child: recommendedlist[
+                                                                              index]
+                                                                          [
+                                                                          "rating"] ==
+                                                                      "0"
+                                                                  ? const SizedBox()
+                                                                  : Container(
+                                                                      decoration: BoxDecoration(
+                                                                          color: const Color(
+                                                                              0xFF000052),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10)),
+                                                                      height:
+                                                                          25,
+                                                                      width: 70,
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          const Icon(
+                                                                            Icons.star,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                20,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                2,
+                                                                          ),
+                                                                          Text(
+                                                                            recommendedlist[index]["rating"].toString(),
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 17,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }),
-                                    )
-                                  : const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                          )
+                                        : const SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                       const SizedBox(
                         height: 20,
                       ),
-                      Flexible(
-                        child: Container(
-                          // padding: const EdgeInsets.only(bottom: 10),
-                          // height: Sizee.height,
-                          color: Colors.transparent,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              (crazyofferlist.isNotEmpty)
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.topLeft,
-                                              child: const Text(
-                                                "Crazy Offers",
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              // padding: const EdgeInsets.only(top: 10),
-                                              alignment: Alignment.topLeft,
-                                              height: 3,
-                                              //width: Sizee.width / 5 - 15,
-                                              width: width * 0.15,
-                                              color: const Color(0xFF000052),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          // padding: const EdgeInsets.only(bottom: 10),
-                                          alignment: Alignment.topRight,
-                                          child: TextButton(
-                                            child: const Text(
-                                              "See all",
-                                              style: TextStyle(
-                                                  color: Color(0xFF000052),
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return const BottomNavigationScreen(
-                                                        4);
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : const SizedBox(),
-                              (crazyofferlist.length > 0)
-                                  ? Container(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      // height: Sizee.height / 2.5,
-                                      height: crazyofferlist.length * 130,
-                                      // width: Sizee.width + 10,
-                                      // color: Colors.green,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          physics:
-                                              const AlwaysScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              (crazyofferlist.length >= 5)
-                                                  ? 5
-                                                  : crazyofferlist.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              // color: Colors.blue,
-                                              padding: const EdgeInsets.only(
-                                                bottom: 30,
-                                              ),
-                                              width: 200,
-                                              // height: 180,
-                                              child: Card(
-                                                elevation: 4,
-                                                shape: RoundedRectangleBorder(
-                                                  // side: const BorderSide(
-                                                  //     color: Colors.grey),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                ),
-                                                color: Colors.white,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DetailFeatured_Store(
-                                                                isFrom: 'offer',
-                                                              )),
-                                                    );
-                                                  },
-                                                  child: Stack(
-                                                    children: [
-                                                      Positioned(
-                                                        left: 10,
-                                                        // bottom: Sizee.height / 6.5,
-                                                        bottom: height * 0.15,
-                                                        right: 10,
-                                                        top: 50,
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.0),
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            crazyofferlist[
-                                                                index]['image'],
-                                                            fit: BoxFit.fill,
-                                                          ),
+                      featuredstorelist.length > 0
+                          ? Flexible(
+                              flex: 0,
+                              child: Container(
+                                // padding: const EdgeInsets.only(bottom: 10),
+                                // height: Sizee.height,
+                                color: Colors.transparent,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    (featuredstorelist.isNotEmpty)
+                                        ? Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 35,
+                                                // color:Colors.blue,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: const Text(
+                                                        "Featured Store/Vendor",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w900,
                                                         ),
                                                       ),
-                                                      Positioned(
-                                                        left: 8,
-                                                        // top: 50,
-                                                        right: 0,
-                                                        bottom: 0,
-                                                        // height: Sizee.height / 8,
-                                                        height: height * 0.08,
-                                                        child: Text(
-                                                          crazyofferlist[index]
-                                                              ['name'],
-                                                          maxLines: 2,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
+                                                    ),
+                                                    InkWell(
+                                                      child: const Text(
+                                                        "See all",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF000052),
+                                                            fontSize: 17.5,
                                                             fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 19,
-                                                          ),
-                                                        ),
+                                                                FontWeight
+                                                                    .w900),
                                                       ),
-                                                      Positioned(
-                                                        bottom: 15,
-                                                        // height: Sizee.height / 8.5,
-                                                        left: 0,
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 7),
-                                                          child: Text(
-                                                            "${crazyofferlist[index]['offer']} % off on some services",
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder: (context) {
+                                                              return const Featuredstore();
+                                                            },
                                                           ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            );
-                                          }),
-                                    )
-                                  : const SizedBox(),
-                            ],
-                          ),
-                        ),
+                                              Container(
+                                                // padding: const EdgeInsets.only(top: 10),
+                                                alignment: Alignment.topLeft,
+                                                height: 3,
+                                                //width: Sizee.width / 5 - 15,
+                                                width: width * 0.15,
+                                                color: const Color(0xFF000052),
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+                                    (featuredstorelist.length > 0)
+                                        ? Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            // height: Sizee.height / 2.5,
+                                            height: height * 0.35,
+                                            // featuredstorelist.length * 60,
+                                            width:
+                                                featuredstorelist.length * 220,
+                                            // color: Colors.green,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                physics:
+                                                    const AlwaysScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: (featuredstorelist
+                                                            .length >=
+                                                        5)
+                                                    ? 5
+                                                    : featuredstorelist.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    // color: Colors.blue,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      bottom: 30,
+                                                    ),
+                                                    width: 220,
+                                                    // height: 100,
+                                                    child: Card(
+                                                      elevation: 4,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        // side: const BorderSide(
+                                                        //     color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                      ),
+                                                      color: Colors.white,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          print(
+                                                              featuredstorelist[
+                                                                          index]
+                                                                      [
+                                                                      "user_id"]
+                                                                  .toString());
+                                                          print(featuredstorelist[
+                                                                      index]
+                                                                  ["vendor_id"]
+                                                              .toString());
+                                                          featuredstorelist[
+                                                                      index]
+                                                                  ["user_id"]
+                                                              .toString();
+                                                          featuredstorelist[
+                                                                      index]
+                                                                  ["vendor_id"]
+                                                              .toString();
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  DetailFeatured_Store(
+                                                                isFrom:
+                                                                    'service',
+                                                                userid: featuredstorelist[
+                                                                            index]
+                                                                        [
+                                                                        "user_id"]
+                                                                    .toString(),
+                                                                vendorid: featuredstorelist[
+                                                                            index]
+                                                                        [
+                                                                        "vendor_id"]
+                                                                    .toString(),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Stack(
+                                                          children: [
+                                                            Positioned(
+                                                              left: 0,
+                                                              // bottom: Sizee.height / 6.5,
+                                                              bottom:
+                                                                  height * 0.13,
+                                                              right: 0,
+                                                              top: 0,
+                                                              child: ClipRRect(
+                                                                borderRadius: const BorderRadius
+                                                                        .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            10)),
+                                                                child: Image
+                                                                    .network(
+                                                                  featuredstorelist[
+                                                                              index]
+                                                                          [
+                                                                          'vendor_banner_image']
+                                                                      .toString(),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              left: 5,
+                                                              // top: 50,
+                                                              right: 0,
+                                                              bottom: 0,
+                                                              // height: Sizee.height / 8,
+                                                              height:
+                                                                  height * 0.12,
+                                                              child: Text(
+                                                                featuredstorelist[
+                                                                            index]
+                                                                        [
+                                                                        'vendor_name']
+                                                                    .toString(),
+                                                                maxLines: 2,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 19,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 45,
+                                                              height:
+                                                                  height * 0.02,
+                                                              left: 10,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        top: 5),
+                                                                    height: 20,
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/map-blue.png",
+                                                                      color: Colors
+                                                                          .black87,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                    child: Text(
+                                                                      "Delivery Range: ${featuredstorelist[index]['delivery_range'].toString()} KM",
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 15,
+                                                              left: 10,
+                                                              //  height: height * 1,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    // padding:
+                                                                    //     const EdgeInsets.only(top: 5),
+                                                                    //height: 10,
+                                                                    child:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .account_balance_wallet,
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      size: 15,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                    child: Text(
+                                                                      "Starting From Rs ${featuredstorelist[index]['min_price'].toString()}",
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              top: 8,
+                                                              left: 10,
+                                                              // right: 0,
+                                                              child: featuredstorelist[
+                                                                              index]
+                                                                          [
+                                                                          "rating"] ==
+                                                                      "0"
+                                                                  ? const SizedBox()
+                                                                  : Container(
+                                                                      decoration: BoxDecoration(
+                                                                          color: const Color(
+                                                                              0xFF000052),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10)),
+                                                                      height:
+                                                                          25,
+                                                                      width: 70,
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          const Icon(
+                                                                            Icons.star,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                18,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                2,
+                                                                          ),
+                                                                          Text(
+                                                                            featuredstorelist[index]["rating"].toString(),
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                          )
+                                        : const SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      const SizedBox(
+                        height: 20,
                       ),
+                      crazyofferlist.length > 0
+                          ? Flexible(
+                              flex: 0,
+                              child: Container(
+                                // padding: const EdgeInsets.only(bottom: 10),
+                                // height: Sizee.height,
+                                color: Colors.transparent,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    (crazyofferlist.isNotEmpty)
+                                        ? Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 35,
+                                                // color:Colors.blue,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: const Text(
+                                                        "Crazy Offers",
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      child: const Text(
+                                                        "See all",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xFF000052),
+                                                            fontSize: 17.5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder: (context) {
+                                                              return const BottomNavigationScreen(
+                                                                  4);
+                                                            },
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                // padding: const EdgeInsets.only(top: 10),
+                                                alignment: Alignment.topLeft,
+                                                height: 3,
+                                                //width: Sizee.width / 5 - 15,
+                                                width: width * 0.12,
+                                                color: const Color(0xFF000052),
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+                                    (crazyofferlist.length > 0)
+                                        ? Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            // height: Sizee.height / 2.5,
+                                            height: height * 0.35,
+                                            // featuredstorelist.length * 60,
+                                            width: crazyofferlist.length * 220,
+                                            // width: Sizee.width + 10,
+                                            // color: Colors.green,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                physics:
+                                                    const AlwaysScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    (crazyofferlist.length >= 5)
+                                                        ? 5
+                                                        : crazyofferlist.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    // color: Colors.blue,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      bottom: 30,
+                                                    ),
+                                                    width: 220,
+                                                    // height: 180,
+                                                    child: Card(
+                                                      elevation: 4,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        // side: const BorderSide(
+                                                        //     color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                      ),
+                                                      color: Colors.white,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          crazyofferlist[index]
+                                                                  ["offer_id"]
+                                                              .toString();
+                                                          crazyofferlist[index]
+                                                                  ["vendor_id"]
+                                                              .toString();
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  DetailFeatured_Store(
+                                                                isFrom: 'offer',
+                                                                userid: crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        "offer_id"]
+                                                                    .toString(),
+                                                                vendorid: crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        "vendor_id"]
+                                                                    .toString(),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Stack(
+                                                          children: [
+                                                            Positioned(
+                                                              left: 0,
+                                                              bottom: height *
+                                                                  0.085,
+                                                              right: 0,
+                                                              top: 0,
+                                                              child: ClipRRect(
+                                                                // borderRadius:
+                                                                //     BorderRadius
+                                                                //         .circular(
+                                                                //             10.0),
+                                                                child: Image
+                                                                    .network(
+                                                                  crazyofferlist[
+                                                                              index]
+                                                                          [
+                                                                          'offer_image']
+                                                                      .toString(),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              left: 8,
+                                                              // top: 50,
+                                                              right: 0,
+                                                              bottom: 0,
+                                                              // height: Sizee.height / 8,
+                                                              height:
+                                                                  height * 0.08,
+                                                              child: Text(
+                                                                crazyofferlist[
+                                                                            index]
+                                                                        [
+                                                                        'vendor_name']
+                                                                    .toString(),
+                                                                maxLines: 2,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 19,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              bottom: 15,
+                                                              // height: Sizee.height / 8.5,
+                                                              left: 0,
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            7),
+                                                                child: Text(
+                                                                  "${crazyofferlist[index]['amount_percentage'].toString()} % off on some services",
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                          )
+                                        : Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Container(
+                                                height: 250,
+                                                width: 250,
+                                                child: Center(
+                                                  child: Image.asset(
+                                                      "assets/no_offer.png"),
+                                                ),
+                                              ),
+                                              const Text(
+                                                "No Offers Found.",
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              const Text(
+                                                "We did not find anything here.",
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                            ],
+                                          ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),
@@ -1155,9 +1664,7 @@ class _homeScreenState extends State<homeScreen> {
                                 } else if (menuname[index] == "Address Book") {
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return AddressScreen(
-                                      Address: Address,
-                                    );
+                                    return AddressScreen();
                                   }));
                                 } else if (menuname[index] == "Notifications") {
                                   Navigator.of(context).push(
@@ -1400,6 +1907,9 @@ class _homeScreenState extends State<homeScreen> {
           isReload = false;
         });
       } else {
+        setState(() {
+          isReload = false;
+        });
         print("Error" + response.statusCode.toString());
         print("Error" + response.body.toString());
       }
@@ -1437,6 +1947,9 @@ class _homeScreenState extends State<homeScreen> {
           isReload = false;
         });
       } else {
+        setState(() {
+          isReload = false;
+        });
         print("Error" + response.statusCode.toString());
         print("Error" + response.body.toString());
       }
@@ -1449,13 +1962,9 @@ class _homeScreenState extends State<homeScreen> {
     }
   }
 
-  FeatureStore_ApiCall(bool isPaginate) async {
+  FeatureStore_ApiCall() async {
     setState(() {
-      if (!isPaginate) {
-        isReload = true;
-      } else {
-        isReloadPagination = true;
-      }
+      isReload = true;
     });
     try {
       // final Header = {
@@ -1463,53 +1972,115 @@ class _homeScreenState extends State<homeScreen> {
       //   'Accept': 'application/json',
       // };
       print(FeaturedStore_Api +
-          "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}");
+          "?lattitude=23.03984909999999&longitude=72.5602797");
       var response = await http.get(Uri.parse(FeaturedStore_Api +
-          "?lattitude=23.03984909999999&longitude=72.5602797&page=${currentPage + 1}"));
+          "?lattitude=23.03984909999999&longitude=72.5602797"));
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
         print(decode);
         if (decode["success"] == true) {
-          setState(() {
-            currentPage = decode["data"]["current_page"];
-            lastPage = decode["data"]["last_page"];
-            if (currentPage == 1) {
-              featuredstorelist.clear();
-            }
-
-            for (int i = 0; i < decode["data"]["data"].length; i++) {
-              featuredstorelist.add(decode['data']['data'][i]);
-            }
-            //print("decode ${decode["data"][0]["data"]} " );
-            // orderlist.clear();
-            // orderlist = decode["data"]["data"];
-          });
-          // featuredstorelist.clear();
-          // featuredstorelist = decode["data"]["data"];
+          featuredstorelist.clear();
+          featuredstorelist = decode["data"]["data"];
           print(decode);
         } else {
           print("Error");
         }
         setState(() {
-          if (!isPaginate) {
-            isReload = false;
-          } else {
-            isReloadPagination = false;
-          }
+          isReload = false;
         });
       } else {
+        setState(() {
+          isReload = false;
+        });
         print("Error" + response.statusCode.toString());
         print("Error" + response.body.toString());
       }
     } catch (e) {
       setState(() {
-        if (!isPaginate) {
-          isReload = false;
-        } else {
-          isReloadPagination = false;
-        }
+        isReload = false;
       });
       print("Exception in featurestore =>$e");
+      throw e;
+    }
+  }
+
+  Recommended_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      print(Recommended_Api +
+          "?lattitude=23.03984909999999&longitude=72.5602797");
+      var response = await http.get(Uri.parse(Recommended_Api +
+          "?lattitude=23.03984909999999&longitude=72.5602797"));
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] == true) {
+          recommendedlist.clear();
+          recommendedlist = decode["data"]["data"];
+          print(decode);
+        } else {
+          print("Error");
+        }
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in featurestore =>$e");
+      throw e;
+    }
+  }
+
+  GetOffer_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      var user_id = prefs.getString("id") ?? "";
+
+      print(GetOffers_Api +
+          "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}");
+      var response = await http.get(
+        Uri.parse(GetOffers_Api +
+            "?lattitude=23.03984909999999&longitude=72.5602797&user_id=${user_id}"),
+      );
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          crazyofferlist.clear();
+          crazyofferlist = decode["data"]["data"];
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+
+        setState(() {
+          isReload = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getoffer =>" + e.toString());
       throw e;
     }
   }
@@ -1529,8 +2100,8 @@ class _homeScreenState extends State<homeScreen> {
           builder: (BuildContext context, StateSetter setState) {
             return SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.only(left: 15, right: 10),
+                // height: MediaQuery.of(context).size.height,
+                padding: const EdgeInsets.only(left: 0, right: 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -1541,6 +2112,7 @@ class _homeScreenState extends State<homeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
+                          padding: const EdgeInsets.only(left: 10),
                           child: const Text(
                             "Select a Location",
                             style: TextStyle(
@@ -1548,6 +2120,7 @@ class _homeScreenState extends State<homeScreen> {
                           ),
                         ),
                         Container(
+                          padding: const EdgeInsets.only(left: 0, right: 10),
                           child: IconButton(
                             onPressed: () {
                               Navigator.pop(context);
@@ -1561,6 +2134,7 @@ class _homeScreenState extends State<homeScreen> {
                       ],
                     ),
                     Container(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
                       height: 50,
                       child: Card(
                         elevation: 2,
@@ -1613,59 +2187,62 @@ class _homeScreenState extends State<homeScreen> {
                           ),
                         );
                       },
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 25,
-                            // width: 20,
-                            // color: Colors.red,
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Image.asset("assets/direction.png"),
-                          ),
-                          Container(
-                            height: 67,
-                            // color: Colors.red,
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Column(
-                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddaddressScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    "Use your current location",
-                                    style: TextStyle(
-                                      color: Color(0xFF000052),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                    left: 5,
-                                  ),
-                                  // color: Colors.blue,
-                                  child: Text(
-                                    "$Address",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 25,
+                              // width: 20,
+                              // color: Colors.red,
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Image.asset("assets/direction.png"),
                             ),
-                          ),
-                        ],
+                            Container(
+                              height: 67,
+                              // color: Colors.red,
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddaddressScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "Use your current location",
+                                      style: TextStyle(
+                                        color: Color(0xFF000052),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.only(
+                                      left: 5,
+                                    ),
+                                    // color: Colors.blue,
+                                    child: Text(
+                                      "$Address",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -1675,132 +2252,181 @@ class _homeScreenState extends State<homeScreen> {
                       thickness: 1,
                       color: CupertinoColors.systemGrey3,
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              // _searchdialogbox(context);
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => AddaddressScreen(),
-                                ),
-                              );
-                            },
-                            icon: const Icon(
-                              CupertinoIcons.add_circled,
-                              color: Colors.black,
-                              // size: 22,
-                            ),
-                          ),
-                          // const SizedBox(
-                          //   width: 5,
-                          // ),
-                          TextButton(
-                            onPressed: () {
-                              // _searchdialogbox(context);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => AddaddressScreen(),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              "Add Address",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: const Text(
-                        "Saved Addresses",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: addresslist.length * 100,
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: addresslist.length,
-                          itemBuilder: (BuildContext cntx, int index) {
-                            return InkWell(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    // crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 25,
-                                        // width: 20,
-                                        // color: Colors.red,
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child:
-                                            Image.asset("assets/direction.png"),
+                    addresslist.isEmpty
+                        ? Container(
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    // _searchdialogbox(context);
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddaddressScreen(),
                                       ),
-                                      Container(
-                                        height: 67,
-                                        // color: Colors.red,
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              addresslist[index]["addresstype"],
-                                              style: const TextStyle(
-                                                color: Color(0xFF000052),
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Container(
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    CupertinoIcons.add_circled,
+                                    color: Colors.black,
+                                    // size: 22,
+                                  ),
+                                ),
+                                // const SizedBox(
+                                //   width: 5,
+                                // ),
+                                TextButton(
+                                  onPressed: () {
+                                    // _searchdialogbox(context);
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddaddressScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Add Address",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: const Text(
+                                    "Saved Addresses",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 0,
+                                  child: Container(
+                                    height: addresslist.length * 200,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: addresslist.length,
+                                        itemBuilder:
+                                            (BuildContext cntx, int index) {
+                                          return InkWell(
+                                            onTap: () {},
+                                            child: Container(
                                               padding: const EdgeInsets.only(
-                                                left: 0,
-                                              ),
-                                              // color: Colors.blue,
-                                              child: const Text(
-                                                "User location",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                  top: 30),
+                                              // color: Colors.red,
+                                              height: 140,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Row(
+                                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    height: 25,
+                                                    // width: 20,
+                                                    // color: Colors.red,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10),
+                                                    child: Image.asset(
+                                                        "assets/direction.png"),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 12,
+                                                  ),
+                                                  Container(
+                                                    // height: 67,
+                                                    // color: Colors.red,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 1),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          addresslist[index][
+                                                                  'address_type_text']
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              color: Color(
+                                                                  0xFF000052),
+                                                              fontSize: 16.5,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Container(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.05,
+                                                          //color: Colors.red,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.8,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            left: 0,
+                                                          ),
+                                                          // color: Colors.blue,
+                                                          child: Text(
+                                                            addresslist[index]
+                                                                    ["address"]
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                          );
+                                        }),
                                   ),
-                                ],
-                              ),
-                            );
-                          }),
-                    ),
+                                ),
+                              ],
+                            ),
+                          ),
                   ],
                 ),
               ),
@@ -1809,5 +2435,47 @@ class _homeScreenState extends State<homeScreen> {
         );
       },
     );
+  }
+
+  GetAddress_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token") ?? "";
+      print(token);
+      final Header = {
+        "Authorization": "Bearer ${token.toString()}",
+      };
+      print(Header);
+      print(GetCustomeraddress_Api);
+      var response =
+          await http.get(Uri.parse(GetCustomeraddress_Api), headers: Header);
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] = true) {
+          addresslist.clear();
+          addresslist = decode["data"];
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        setState(() {
+          isReload = false;
+        });
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getaddress =>" + e.toString());
+      throw e;
+    }
   }
 }
