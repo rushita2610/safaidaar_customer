@@ -1161,6 +1161,7 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
               }
             }
           }
+          print(errorMsg);
           setState(() {
             isReload = false;
           });
@@ -1190,7 +1191,6 @@ class _AddaddressScreenState extends State<AddaddressScreen> {
       final body = {
         "place_id": place_Id,
       };
-
       print("Body Detail Search  $body");
 
       var response = await http.post(Uri.parse(Detail_Place_Api), body: body);

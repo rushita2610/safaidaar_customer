@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously, non_constant_identifier_names
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -1221,11 +1221,13 @@ class _homeScreenState extends State<homeScreen> {
                                                                       "0"
                                                                   ? const SizedBox()
                                                                   : Container(
-                                                                      decoration: BoxDecoration(
-                                                                          color: const Color(
-                                                                              0xFF000052),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10)),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: const Color(
+                                                                            0xFF000052),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                      ),
                                                                       height:
                                                                           25,
                                                                       width: 70,
@@ -1931,12 +1933,13 @@ class _homeScreenState extends State<homeScreen> {
       //   "all": true,
       // };
       //   var response = await http.post(Uri.parse(login), body: body);
+      print(TopService_Api);
       var response = await http.get(
         Uri.parse(TopService_Api),
       );
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
-
+        print(decode);
         if (decode["success"] == true) {
           setState(() {
             topserviceslist.clear();
@@ -1967,14 +1970,10 @@ class _homeScreenState extends State<homeScreen> {
       isReload = true;
     });
     try {
-      // final Header = {
-      //   'Content-type': 'application/json',
-      //   'Accept': 'application/json',
-      // };
-      print(FeaturedStore_Api +
-          "?lattitude=23.03984909999999&longitude=72.5602797");
-      var response = await http.get(Uri.parse(FeaturedStore_Api +
-          "?lattitude=23.03984909999999&longitude=72.5602797"));
+      print(
+          "$FeaturedStore_Api?lattitude=23.03984909999999&longitude=72.5602797");
+      var response = await http.get(Uri.parse(
+          "$FeaturedStore_Api?lattitude=23.03984909999999&longitude=72.5602797"));
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
         print(decode);

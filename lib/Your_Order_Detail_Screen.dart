@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:safaidaar_customer/OrderStatus_history.dart';
 import 'package:safaidaar_customer/PaymentMethod_Screen.dart';
 import 'package:safaidaar_customer/Support_Screen.dart';
 
@@ -556,7 +557,7 @@ class _YourorderdetailState extends State<Yourorderdetail> {
           ),
         ),
         bottomNavigationBar: Container(
-          height: 150,
+          height: 200,
           width: width,
           child: Column(
             children: [
@@ -590,6 +591,23 @@ class _YourorderdetailState extends State<Yourorderdetail> {
                   },
                   child: const Text(
                     "Cancel Order",
+                    style: TextStyle(color: Color(0xFF000052), fontSize: 20),
+                  ),
+                ),
+              ),
+              Container(
+                height: 50,
+                width: width,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Orderstatus(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    "Order Status History",
                     style: TextStyle(color: Color(0xFF000052), fontSize: 20),
                   ),
                 ),
