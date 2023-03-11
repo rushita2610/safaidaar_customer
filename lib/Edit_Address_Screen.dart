@@ -1363,7 +1363,7 @@ class _EditaddressScreenState extends State<EditaddressScreen> {
         "lattitude": "23.04006",
         "longitude": "72.56114",
       };
-
+      print(body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token") ?? "";
       print(token);

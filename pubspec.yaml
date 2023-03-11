@@ -44,9 +44,6 @@ dependencies:
   dropdown_textfield: ^1.0.8
   url_launcher: ^6.1.7
   google_maps_flutter: ^2.2.3
-#  flutter_google_places: ^0.3.0
-#  latlong2: ^0.8.1
-#  location: ^4.3.0
   geolocator: ^9.0.2
   geocoding: ^2.0.5
   flutter_share: ^2.0.0

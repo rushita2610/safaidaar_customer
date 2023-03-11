@@ -581,319 +581,344 @@ class _DetailFeatured_StoreState extends State<DetailFeatured_Store> {
                                 selectedtabIndex == tabs.length - 1
                                     ? Flexible(
                                         flex: 0,
-                                        child: Container(
-                                          height: crazyofferlist.length * 230,
-                                          child: ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: crazyofferlist.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return Container(
-                                                // color: Colors.red,
-                                                height: 230,
-                                                // width: Sizee.width,
-                                                child: Card(
-                                                  elevation: 0,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      side: const BorderSide(
-                                                          color: CupertinoColors
-                                                              .systemGrey3)),
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              // color: Colors.blue,
-                                                              width:
-                                                                  Sizee.width /
-                                                                          2 -
-                                                                      20,
-                                                              height: 20,
-                                                              child: Text(
-                                                                crazyofferlist[
-                                                                            index]
-                                                                        [
-                                                                        "offer_name"]
-                                                                    .toString(),
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              // color: Colors.blue,
-                                                              width:
-                                                                  Sizee.width /
-                                                                          2 -
-                                                                      20,
-                                                              height: 20,
-                                                              child: Text(
-                                                                "Flat ${crazyofferlist[index]["amount_percentage"].toString()} % Off",
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Color(
-                                                                      0xFF000052),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              // color: Colors.blue,
-                                                              width:
-                                                                  Sizee.width /
-                                                                          2 -
-                                                                      20,
-                                                              height: 20,
-                                                              child: Text(
-                                                                crazyofferlist[
-                                                                            index]
-                                                                        [
-                                                                        "description"]
-                                                                    .toString(),
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              // color: Colors.red,
-                                                              width:
-                                                                  Sizee.width /
-                                                                          2 +
-                                                                      27,
-                                                              height:
-                                                                  cleaningwaysoffer
-                                                                          .length *
-                                                                      25,
-                                                              child: ListView
-                                                                  .builder(
-                                                                      itemCount:
-                                                                          cleaningwaysoffer
-                                                                              .length,
-                                                                      physics:
-                                                                          const NeverScrollableScrollPhysics(),
-                                                                      itemBuilder:
-                                                                          (BuildContext cntx,
-                                                                              int index) {
-                                                                        return Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            Container(
-                                                                              height: 7,
-                                                                              width: 7,
-                                                                              decoration: const BoxDecoration(
-                                                                                shape: BoxShape.circle,
-                                                                                color: Colors.black,
-                                                                              ),
-                                                                            ),
-                                                                            Container(
-                                                                              padding: const EdgeInsets.only(left: 8, bottom: 6),
-                                                                              // color: Colors.blue,
-                                                                              width: Sizee.width / 2 + 20,
-                                                                              height: 25,
-                                                                              child: Text(
-                                                                                "${cleaningwaysoffer[index]["offer_applicable_services"][index]["parent_category_name"].toString()} (${cleaningwaysoffer[index]["offer_applicable_services"][index]["name"].toString()})",
-                                                                                style: const TextStyle(
-                                                                                  fontSize: 12.2,
-                                                                                  color: Colors.black,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        );
-                                                                      }),
-                                                            ),
-                                                            Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .topLeft,
-                                                              height: 33,
-                                                              // color: Colors.red,
-                                                              child: TextButton(
-                                                                onPressed:
-                                                                    () {},
-                                                                child:
-                                                                    const Text(
-                                                                  "See more",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                  style: TextStyle(
-                                                                      color: Color(
-                                                                          0xFF000052),
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                _showfluttertoast();
-                                                              },
-                                                              child: Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                height: 40,
-                                                                width:
-                                                                    Sizee.width /
-                                                                            2 -
-                                                                        30,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .rectangle,
-                                                                  border: Border
-                                                                      .all(
-                                                                    color: const Color(
-                                                                        0xFF000052),
-                                                                  ),
-                                                                ),
-                                                                child: Text(
-                                                                  "USE CODE: ${crazyofferlist[index]["offer_code"].toString()}",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: Color(
-                                                                        0xFF000052),
-                                                                    fontSize:
-                                                                        14,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Container(
-                                                          // color: Colors.blue,
-                                                          child: Column(
+                                        child: crazyofferlist.length > 0
+                                            ? Container(
+                                                height:
+                                                    crazyofferlist.length * 230,
+                                                child: ListView.builder(
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  itemCount:
+                                                      crazyofferlist.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    return Container(
+                                                      // color: Colors.red,
+                                                      height: 230,
+                                                      // width: Sizee.width,
+                                                      child: Card(
+                                                        elevation: 0,
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                            side: const BorderSide(
+                                                                color: CupertinoColors
+                                                                    .systemGrey3)),
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(10),
+                                                          child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
                                                             children: [
-                                                              Container(
-                                                                // padding:
-                                                                //     const EdgeInsets
-                                                                //             .only(
-                                                                //         bottom:
-                                                                //             15,
-                                                                //         top:
-                                                                //             15),
-                                                                height: 50,
-                                                                width:
-                                                                    Sizee.width /
-                                                                            3 -
+                                                              Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Container(
+                                                                    // color: Colors.blue,
+                                                                    width: Sizee.width /
+                                                                            2 -
                                                                         20,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .rectangle,
-                                                                  border: Border.all(
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                                child: Image
-                                                                    .network(
-                                                                  crazyofferlist[
-                                                                              index]
-                                                                          [
-                                                                          "offer_image"]
-                                                                      .toString(),
-                                                                  fit: BoxFit
-                                                                      .fill,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                height: 40,
-                                                                width:
-                                                                    Sizee.width /
-                                                                            3 -
-                                                                        20,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10),
-                                                                  color: const Color(
-                                                                      0xFF000052),
-                                                                ),
-                                                                child:
-                                                                    TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    _showfluttertoast();
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                    "Apply",
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          18,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
+                                                                    height: 20,
+                                                                    child: Text(
+                                                                      crazyofferlist[index]
+                                                                              [
+                                                                              "offer_name"]
+                                                                          .toString(),
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w900,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
                                                                     ),
                                                                   ),
+                                                                  Container(
+                                                                    // color: Colors.blue,
+                                                                    width: Sizee.width /
+                                                                            2 -
+                                                                        20,
+                                                                    height: 20,
+                                                                    child: Text(
+                                                                      "Flat ${crazyofferlist[index]["amount_percentage"].toString()} % Off",
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color(
+                                                                            0xFF000052),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    // color: Colors.blue,
+                                                                    width: Sizee.width /
+                                                                            2 -
+                                                                        20,
+                                                                    height: 20,
+                                                                    child: Text(
+                                                                      crazyofferlist[index]
+                                                                              [
+                                                                              "description"]
+                                                                          .toString(),
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    // color: Colors.red,
+                                                                    width: Sizee.width /
+                                                                            2 +
+                                                                        27,
+                                                                    height:
+                                                                        cleaningwaysoffer.length *
+                                                                            25,
+                                                                    child: ListView.builder(
+                                                                        itemCount: cleaningwaysoffer.length,
+                                                                        physics: const NeverScrollableScrollPhysics(),
+                                                                        itemBuilder: (BuildContext cntx, int index) {
+                                                                          return Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Container(
+                                                                                height: 7,
+                                                                                width: 7,
+                                                                                decoration: const BoxDecoration(
+                                                                                  shape: BoxShape.circle,
+                                                                                  color: Colors.black,
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                padding: const EdgeInsets.only(left: 8, bottom: 6),
+                                                                                // color: Colors.blue,
+                                                                                width: Sizee.width / 2 + 20,
+                                                                                height: 25,
+                                                                                child: Text(
+                                                                                  "${cleaningwaysoffer[index]["offer_applicable_services"][index]["parent_category_name"].toString()} (${cleaningwaysoffer[index]["offer_applicable_services"][index]["name"].toString()})",
+                                                                                  style: const TextStyle(
+                                                                                    fontSize: 12.2,
+                                                                                    color: Colors.black,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          );
+                                                                        }),
+                                                                  ),
+                                                                  Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topLeft,
+                                                                    height: 33,
+                                                                    // color: Colors.red,
+                                                                    child:
+                                                                        TextButton(
+                                                                      onPressed:
+                                                                          () {},
+                                                                      child:
+                                                                          const Text(
+                                                                        "See more",
+                                                                        textAlign:
+                                                                            TextAlign.left,
+                                                                        style: TextStyle(
+                                                                            color: Color(
+                                                                                0xFF000052),
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontWeight:
+                                                                                FontWeight.w700),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      _showfluttertoast();
+                                                                    },
+                                                                    child:
+                                                                        Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      height:
+                                                                          40,
+                                                                      width: Sizee.width /
+                                                                              2 -
+                                                                          30,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        shape: BoxShape
+                                                                            .rectangle,
+                                                                        border:
+                                                                            Border.all(
+                                                                          color:
+                                                                              const Color(0xFF000052),
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        "USE CODE: ${crazyofferlist[index]["offer_code"].toString()}",
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          color:
+                                                                              Color(0xFF000052),
+                                                                          fontSize:
+                                                                              14,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Container(
+                                                                // color: Colors.blue,
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Container(
+                                                                      // padding:
+                                                                      //     const EdgeInsets
+                                                                      //             .only(
+                                                                      //         bottom:
+                                                                      //             15,
+                                                                      //         top:
+                                                                      //             15),
+                                                                      height:
+                                                                          50,
+                                                                      width: Sizee.width /
+                                                                              3 -
+                                                                          20,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        shape: BoxShape
+                                                                            .rectangle,
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Colors.black),
+                                                                      ),
+                                                                      child: Image
+                                                                          .network(
+                                                                        crazyofferlist[index]["offer_image"]
+                                                                            .toString(),
+                                                                        fit: BoxFit
+                                                                            .fill,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      height:
+                                                                          40,
+                                                                      width: Sizee.width /
+                                                                              3 -
+                                                                          20,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                        color: const Color(
+                                                                            0xFF000052),
+                                                                      ),
+                                                                      child:
+                                                                          TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          _showfluttertoast();
+                                                                        },
+                                                                        child:
+                                                                            const Text(
+                                                                          "Apply",
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize:
+                                                                                18,
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                        ),
+                                              )
+                                            : Container(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                //color: Colors.red,
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Container(
+                                                      height: 200,
+                                                      width: 200,
+                                                      child: Center(
+                                                        child: Image.asset(
+                                                            "assets/no_offer.png"),
+                                                      ),
+                                                    ),
+                                                    const Text(
+                                                      "Opps... It's empty here",
+                                                      style: TextStyle(
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    const Text(
+                                                      "No offers has been added yet.",
+                                                      style: TextStyle(
+                                                        fontSize: 17,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 15,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                       )
                                     : Container(
                                         // color: Colors.red,

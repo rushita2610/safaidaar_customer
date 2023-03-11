@@ -89,7 +89,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
             child: const Text(
               "Featured Store/Vendor",
               style: TextStyle(
-                // fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: Colors.black,
                 fontSize: 20,
               ),
@@ -112,14 +112,14 @@ class _FeaturedstoreState extends State<Featuredstore> {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 17,
                           ),
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.only(top: 15),
-                        height: featuredstorelist.length * 355,
+                        height: featuredstorelist.length * 305,
                         width: Sizee.width,
                         //     color: Colors.green,
                         child: ListView.builder(
@@ -250,7 +250,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                                         const Icon(
                                                           Icons.star,
                                                           color: Colors.white,
-                                                          size: 20,
+                                                          size: 13,
                                                         ),
                                                         const SizedBox(
                                                           width: 2,
@@ -263,7 +263,7 @@ class _FeaturedstoreState extends State<Featuredstore> {
                                                           style:
                                                               const TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 17,
+                                                            fontSize: 10,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),

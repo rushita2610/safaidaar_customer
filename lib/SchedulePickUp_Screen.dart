@@ -44,9 +44,9 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
 
   String deliveryway = '1';
   List<dynamic> deliveryData = [
-    {"name": "Superfast Delivery in 1 Working Day", "id": 1},
-    {"name": "Express Delivery in 1 Working Day", "id": 2},
-    {"name": "Regular Delivery in 1 Working Day", "id": 3},
+    // {"name": "Superfast Delivery in 1 Working Day", "id": 1},
+    // {"name": "Express Delivery in 1 Working Day", "id": 2},
+    // {"name": "Regular Delivery in 1 Working Day", "id": 3},
   ];
 
   int deliverywayid = 1;
@@ -694,37 +694,37 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
     );
   }
 
-// Getdeliveryoptions_ApiCall() async {
-//   setState(() {
-//     isReload = true;
-//   });
-//   try {
-//     print(Getdeliveryoption_Api);
-//     var response = await http.get(Uri.parse(Getdeliveryoption_Api));
-//
-//     if (response.statusCode == 200) {
-//       var decode = jsonDecode(response.body);
-//       print(decode);
-//       if (decode["success"] == true) {
-//         setState(() {
-//           deliveryData.clear();
-//           deliveryData = decode["data"];
-//           deliveryway = deliveryData[0]["delivery_option_label"];
-//         });
-//       } else {}
-//       setState(() {
-//         isReload = false;
-//       });
-//     } else {
-//       print("Error" + response.statusCode.toString());
-//       print("Error" + response.body.toString());
-//     }
-//   } catch (e) {
-//     setState(() {
-//       isReload = false;
-//     });
-//     print("Exception in getdeliveryoption =>" + e.toString());
-//     throw e;
-//   }
-// }
+  Getdeliveryoptions_ApiCall() async {
+    setState(() {
+      isReload = true;
+    });
+    try {
+      print(Getdeliveryoption_Api);
+      var response = await http.get(Uri.parse(Getdeliveryoption_Api));
+
+      if (response.statusCode == 200) {
+        var decode = jsonDecode(response.body);
+        print(decode);
+        if (decode["success"] == true) {
+          setState(() {
+            deliveryData.clear();
+            deliveryData = decode["data"];
+            deliveryway = deliveryData[0]["delivery_option_label"];
+          });
+        } else {}
+        setState(() {
+          isReload = false;
+        });
+      } else {
+        print("Error" + response.statusCode.toString());
+        print("Error" + response.body.toString());
+      }
+    } catch (e) {
+      setState(() {
+        isReload = false;
+      });
+      print("Exception in getdeliveryoption =>" + e.toString());
+      throw e;
+    }
+  }
 }

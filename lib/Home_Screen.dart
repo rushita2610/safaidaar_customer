@@ -15,7 +15,6 @@ import 'package:safaidaar_customer/FeaturedStore_Detail_Screen.dart';
 import 'package:safaidaar_customer/FeaturedStore_VendorScreen.dart';
 import 'package:safaidaar_customer/Feedback_Screen.dart';
 import 'package:safaidaar_customer/Notifications_Screen.dart';
-import 'package:safaidaar_customer/Offers_Screen.dart';
 import 'package:safaidaar_customer/Recommended_Screen.dart';
 import 'package:safaidaar_customer/Services_detail_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +22,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'Add_Address_Screen.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'FeaturedStore_Detail_Screen.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -637,6 +635,8 @@ class _homeScreenState extends State<homeScreen> {
                                         : const SizedBox(),
                                     (recommendedlist.length > 0)
                                         ? Container(
+                                            //color: Colors.red,
+                                            alignment: Alignment.centerLeft,
                                             padding:
                                                 const EdgeInsets.only(top: 15),
                                             height: height * 0.35,
@@ -656,8 +656,6 @@ class _homeScreenState extends State<homeScreen> {
                                                     (BuildContext context,
                                                         int index) {
                                                   return Container(
-                                                    alignment:
-                                                        Alignment.topLeft,
                                                     // color: Colors.blue,
                                                     padding:
                                                         const EdgeInsets.only(
@@ -817,9 +815,6 @@ class _homeScreenState extends State<homeScreen> {
                                                               child: Row(
                                                                 children: [
                                                                   Container(
-                                                                    // padding:
-                                                                    //     const EdgeInsets.only(top: 5),
-                                                                    //height: 10,
                                                                     child:
                                                                         const Icon(
                                                                       Icons
@@ -879,7 +874,7 @@ class _homeScreenState extends State<homeScreen> {
                                                                             color:
                                                                                 Colors.white,
                                                                             size:
-                                                                                20,
+                                                                                18,
                                                                           ),
                                                                           const SizedBox(
                                                                             width:
@@ -890,7 +885,7 @@ class _homeScreenState extends State<homeScreen> {
                                                                             style:
                                                                                 const TextStyle(
                                                                               color: Colors.white,
-                                                                              fontSize: 17,
+                                                                              fontSize: 15,
                                                                               fontWeight: FontWeight.w500,
                                                                             ),
                                                                           )
@@ -1972,8 +1967,10 @@ class _homeScreenState extends State<homeScreen> {
     try {
       print(
           "$FeaturedStore_Api?lattitude=23.03984909999999&longitude=72.5602797");
-      var response = await http.get(Uri.parse(
-          "$FeaturedStore_Api?lattitude=23.03984909999999&longitude=72.5602797"));
+      var response = await http.get(
+        Uri.parse(
+            "$FeaturedStore_Api?lattitude=23.03984909999999&longitude=72.5602797"),
+      );
       if (response.statusCode == 200) {
         var decode = jsonDecode(response.body);
         print(decode);

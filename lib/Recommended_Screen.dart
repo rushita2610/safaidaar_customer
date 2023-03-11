@@ -89,7 +89,7 @@ class _RecommendedscreenState extends State<Recommendedscreen> {
             child: const Text(
               "Recommended for you",
               style: TextStyle(
-                // fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: Colors.black,
                 fontSize: 20,
               ),
@@ -112,8 +112,8 @@ class _RecommendedscreenState extends State<Recommendedscreen> {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 17,
                           ),
                         ),
                       ),
@@ -153,9 +153,6 @@ class _RecommendedscreenState extends State<Recommendedscreen> {
                                         .toString();
                                     recommendedlist[index]["vendor_id"]
                                         .toString();
-                                    // recommendedlist[index]
-                                    // ["vendor_id"]
-                                    //     .toString();
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -246,7 +243,7 @@ class _RecommendedscreenState extends State<Recommendedscreen> {
                                                         const Icon(
                                                           Icons.star,
                                                           color: Colors.white,
-                                                          size: 20,
+                                                          size: 13,
                                                         ),
                                                         const SizedBox(
                                                           width: 2,
@@ -258,7 +255,7 @@ class _RecommendedscreenState extends State<Recommendedscreen> {
                                                           style:
                                                               const TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 17,
+                                                            fontSize: 10,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),

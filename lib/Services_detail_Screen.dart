@@ -51,7 +51,6 @@ class _ServicedetailState extends State<Servicedetail> {
 
   @override
   void initState() {
-    // TODO: implement initState
     Alltopservicedetail_ApiCall();
     super.initState();
   }
@@ -80,7 +79,7 @@ class _ServicedetailState extends State<Servicedetail> {
             child: Text(
               strtitle,
               style: const TextStyle(
-                // fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: Colors.black,
                 fontSize: 20,
               ),
@@ -103,14 +102,14 @@ class _ServicedetailState extends State<Servicedetail> {
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 17,
                           ),
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.only(top: 15),
-                        height: topserviceslist.length * 355,
+                        height: topserviceslist.length * 305,
                         width: Sizee.width,
                         //     color: Colors.green,
                         child: ListView.builder(
@@ -125,7 +124,7 @@ class _ServicedetailState extends State<Servicedetail> {
                                 bottom: 10,
                               ),
                               width: 180,
-                              height: 350,
+                              height: 300,
                               child: Card(
                                 elevation: 4,
                                 shape: RoundedRectangleBorder(
@@ -224,7 +223,7 @@ class _ServicedetailState extends State<Servicedetail> {
                                                         const Icon(
                                                           Icons.star,
                                                           color: Colors.white,
-                                                          size: 20,
+                                                          size: 13,
                                                         ),
                                                         const SizedBox(
                                                           width: 2,
@@ -236,7 +235,7 @@ class _ServicedetailState extends State<Servicedetail> {
                                                           style:
                                                               const TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 17,
+                                                            fontSize: 10,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),
